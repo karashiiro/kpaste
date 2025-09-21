@@ -14,6 +14,9 @@ importers:
       '@atcute/client':
         specifier: ^4.0.3
         version: 4.0.3
+      '@atcute/lexicons':
+        specifier: ^1.1.1
+        version: 1.1.1
       react:
         specifier: ^19.1.1
         version: 19.1.1
@@ -21,6 +24,9 @@ importers:
         specifier: ^19.1.1
         version: 19.1.1(react@19.1.1)
     devDependencies:
+      '@atcute/lex-cli':
+        specifier: ^2.2.0
+        version: 2.2.0
       '@eslint/js':
         specifier: ^9.35.0
         version: 9.36.0
@@ -71,6 +77,13 @@ packages:
 
   '@atcute/identity@1.1.0':
     resolution: {integrity: sha512-6vRvRqJatDB+JUQsb+UswYmtBGQnSZcqC3a2y6H5DB/v5KcIh+6nFFtc17G0+3W9rxdk7k9M4KkgkdKf/YDNoQ==}
+
+  '@atcute/lex-cli@2.2.0':
+    resolution: {integrity: sha512-noikZui2a7zeGGp0KdQQqCkhfrgXORZ5RiFI9lyxD/SoL+g1LZBZ2vOo92kcbZT1j37Guj4+DmpFC4pWbxhuUA==}
+    hasBin: true
+
+  '@atcute/lexicon-doc@1.1.1':
+    resolution: {integrity: sha512-/6M4K34ICZWa9rRiM9YWSsDZs0Vjv05SFJBb03mD+x14W01gIVLPK2UXiP0yIodgzWHhPQ79LLdyMJ8LirC84w==}
 
   '@atcute/lexicons@1.1.1':
     resolution: {integrity: sha512-k6qy5p3j9fJJ6ekaMPfEfp3ni4TW/XNuH9ZmsuwC0fi0tOjp+Fa8ZQakHwnqOzFt/cVBfGcmYE/lKNAbeTjgUg==}
@@ -272,6 +285,11 @@ packages:
   '@eslint/plugin-kit@0.3.5':
     resolution: {integrity: sha512-Z5kJ+wU3oA7MMIqVR9tyZRtjYPr4OC004Q4Rw7pgOKUOKkJfZ3O24nz3WYfGRpMDNmcOi3TwQOmgm7B7Tpii0w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@externdefs/collider@0.3.0':
+    resolution: {integrity: sha512-x5CpeZ4c8n+1wMFthUMWSQKqCGcQo52/Qbda5ES+JFRRg/D8Ep6/JOvUUq5HExFuv/wW+6UYG2U/mXzw0IAd8Q==}
+    peerDependencies:
+      '@badrap/valita': ^0.4.4
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -1075,6 +1093,18 @@ snapshots:
       '@atcute/lexicons': 1.1.1
       '@badrap/valita': 0.4.6
 
+  '@atcute/lex-cli@2.2.0':
+    dependencies:
+      '@atcute/lexicon-doc': 1.1.1
+      '@badrap/valita': 0.4.6
+      '@externdefs/collider': 0.3.0(@badrap/valita@0.4.6)
+      picocolors: 1.1.1
+      prettier: 3.6.2
+
+  '@atcute/lexicon-doc@1.1.1':
+    dependencies:
+      '@badrap/valita': 0.4.6
+
   '@atcute/lexicons@1.1.1':
     dependencies:
       esm-env: 1.2.2
@@ -1202,6 +1232,10 @@ snapshots:
     dependencies:
       '@eslint/core': 0.15.2
       levn: 0.4.1
+
+  '@externdefs/collider@0.3.0(@badrap/valita@0.4.6)':
+    dependencies:
+      '@badrap/valita': 0.4.6
 
   '@humanfs/core@0.19.1': {}
 
