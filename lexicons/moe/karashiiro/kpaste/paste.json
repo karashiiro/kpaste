@@ -9,7 +9,7 @@
       "record": {
         "type": "object",
         "description": "A code/text paste",
-        "required": ["content", "isPublic", "createdAt"],
+        "required": ["content", "createdAt"],
         "properties": {
           "content": {
             "type": "blob",
@@ -27,10 +27,6 @@
             "description": "Programming language for syntax highlighting",
             "maxLength": 50,
             "default": "text"
-          },
-          "isPublic": {
-            "type": "boolean",
-            "description": "Whether the paste is publicly visible"
           },
           "expiresAt": {
             "type": "string",

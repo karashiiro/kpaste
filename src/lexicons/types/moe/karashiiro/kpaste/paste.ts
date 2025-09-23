@@ -9,7 +9,6 @@ const _mainSchema = /*#__PURE__*/ v.record(
     content: /*#__PURE__*/ v.blob(),
     createdAt: /*#__PURE__*/ v.datetimeString(),
     expiresAt: /*#__PURE__*/ v.optional(/*#__PURE__*/ v.datetimeString()),
-    isPublic: /*#__PURE__*/ v.boolean(),
     language: /*#__PURE__*/ v.optional(
       /*#__PURE__*/ v.constrain(/*#__PURE__*/ v.string(), [
         /*#__PURE__*/ v.stringLength(0, 50),
