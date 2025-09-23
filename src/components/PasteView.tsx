@@ -11,7 +11,7 @@ export function PasteView() {
 
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
-      <Header variant="simple" showCreateLink={true} />
+      <Header />
 
       <YStack
         padding="$4"

@@ -10,7 +10,7 @@ import { usePasteForm } from "../hooks/usePasteForm";
 import { useCreatePaste } from "../hooks/useCreatePaste";
 
 export function PasteEditor() {
-  const { isAuthenticated, session } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   const { createPaste, loading, error } = useCreatePaste();
@@ -20,11 +20,7 @@ export function PasteEditor() {
   if (!isAuthenticated) {
     return (
       <YStack minHeight="100vh" backgroundColor="$background">
-        <Header
-          variant="unauthenticated"
-          onLoginClick={() => setIsAuthModalOpen(true)}
-          showCreateLink={false}
-        />
+        <Header onLoginClick={() => setIsAuthModalOpen(true)} />
 
         <AuthRequiredView
           title="Welcome to KPaste!"
@@ -43,12 +39,7 @@ export function PasteEditor() {
 
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
-      <Header
-        variant="account"
-        userHandle={session?.handle}
-        onAccountClick={() => setIsAuthModalOpen(true)}
-        showCreateLink={false}
-      />
+      <Header />
 
       {/* Main Editor */}
       <View

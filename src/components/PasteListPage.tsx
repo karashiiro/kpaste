@@ -10,7 +10,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
 
 export function PasteListPage() {
-  const { isAuthenticated, session, logout } = useAuth();
+  const { isAuthenticated, session } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { pastes, nextCursor, prevCursor } =
     useLoaderData() as PasteListLoaderData;
@@ -32,10 +32,7 @@ export function PasteListPage() {
   if (!isAuthenticated) {
     return (
       <YStack minHeight="100vh" backgroundColor="$background">
-        <Header
-          variant="unauthenticated"
-          onLoginClick={() => setIsAuthModalOpen(true)}
-        />
+        <Header onLoginClick={() => setIsAuthModalOpen(true)} />
 
         <AuthRequiredView
           title="Browse AT Protocol Pastes"
@@ -54,12 +51,7 @@ export function PasteListPage() {
 
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
-      <Header
-        variant="authenticated"
-        userHandle={session?.handle}
-        onLogoutClick={logout}
-        showCreateLink={true}
-      />
+      <Header />
 
       {/* Main Content */}
       <View
