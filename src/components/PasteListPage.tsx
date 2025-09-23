@@ -1,4 +1,5 @@
 import { YStack, View, XStack, Text, Button } from "tamagui";
+import { BookOpenIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import { Link, useLoaderData, useSearchParams } from "react-router";
 import { PasteList } from "./PasteList";
 import { AuthModal } from "./AuthModal";
@@ -37,9 +38,9 @@ export function PasteListPage() {
         />
 
         <AuthRequiredView
-          title="Browse AT Protocol Pastes 📚"
+          title="Browse AT Protocol Pastes"
           subtitle="Please log in to view and manage your pastes."
-          buttonText="🚀 Login to Browse"
+          buttonText="Login to Browse"
           onLoginClick={() => setIsAuthModalOpen(true)}
         />
 
@@ -71,9 +72,12 @@ export function PasteListPage() {
         <YStack space="$6">
           <YStack space="$4">
             <YStack space="$2">
-              <Text fontSize="$8" fontWeight="700">
-                📚 Your Pastes
-              </Text>
+              <XStack alignItems="center" space="$2">
+                <BookOpenIcon width={32} height={32} />
+                <Text fontSize="$8" fontWeight="700">
+                  Your Pastes
+                </Text>
+              </XStack>
               <Text fontSize="$4">Manage all your AT Protocol pastes</Text>
             </YStack>
 
@@ -83,7 +87,10 @@ export function PasteListPage() {
                 style={{ textDecoration: "none", flex: 1, minWidth: 120 }}
               >
                 <Button theme="green" size="$4" width="100%">
-                  ✨ Create New Paste
+                  <XStack alignItems="center" space="$2">
+                    <SparklesIcon width={20} height={20} />
+                    <Text>Create New Paste</Text>
+                  </XStack>
                 </Button>
               </Link>
             </XStack>

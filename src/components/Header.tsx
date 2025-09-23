@@ -1,5 +1,11 @@
 import { XStack, Text, Button, View } from "tamagui";
 import { Link } from "react-router";
+import {
+  SparklesIcon,
+  RocketLaunchIcon,
+  HandRaisedIcon,
+  DocumentTextIcon,
+} from "@heroicons/react/24/outline";
 
 export interface HeaderProps {
   variant: "authenticated" | "unauthenticated" | "simple" | "account";
@@ -27,9 +33,12 @@ export function Header({
             textDecoration: "none",
           }}
         >
-          <Text color="white" fontWeight="600">
-            ✨ Create Paste
-          </Text>
+          <XStack alignItems="center" space="$2">
+            <SparklesIcon width={20} height={20} color="white" />
+            <Text color="white" fontWeight="600">
+              Create Paste
+            </Text>
+          </XStack>
         </Link>
       );
     }
@@ -42,9 +51,12 @@ export function Header({
             textDecoration: "none",
           }}
         >
-          <Text color="white" fontWeight="600">
-            ✨ Create Paste
-          </Text>
+          <XStack alignItems="center" space="$2">
+            <SparklesIcon width={20} height={20} color="white" />
+            <Text color="white" fontWeight="600">
+              Create Paste
+            </Text>
+          </XStack>
         </Link>
       );
     }
@@ -87,7 +99,10 @@ export function Header({
           size="$4"
           borderRadius="$10"
         >
-          🚀 Login
+          <XStack alignItems="center" space="$2">
+            <RocketLaunchIcon width={20} height={20} color="white" />
+            <Text color="white">Login</Text>
+          </XStack>
         </Button>
       );
     }
@@ -112,7 +127,10 @@ export function Header({
             size="$3"
             borderRadius="$8"
           >
-            👋 Logout
+            <XStack alignItems="center" space="$2">
+              <HandRaisedIcon width={16} height={16} color="white" />
+              <Text color="white">Logout</Text>
+            </XStack>
           </Button>
         </XStack>
       );
@@ -129,7 +147,10 @@ export function Header({
           size="$4"
           borderRadius="$10"
         >
-          👋 Account
+          <XStack alignItems="center" space="$2">
+            <HandRaisedIcon width={20} height={20} color="white" />
+            <Text color="white">Account</Text>
+          </XStack>
         </Button>
       );
     }
@@ -152,9 +173,12 @@ export function Header({
       >
         {renderLeftContent()}
 
-        <Text fontSize="$7" fontWeight="700" color="white">
-          📝 KPaste
-        </Text>
+        <XStack alignItems="center" space="$2">
+          <DocumentTextIcon width={32} height={32} color="white" />
+          <Text fontSize="$7" fontWeight="700" color="white">
+            KPaste
+          </Text>
+        </XStack>
 
         {renderRightContent()}
       </XStack>

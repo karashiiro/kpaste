@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { YStack, View, Text, Card } from "tamagui";
+import { YStack, View, Text, Card, XStack } from "tamagui";
+import { SparklesIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "../hooks/useAuth";
 import { CreateForm } from "./CreateForm";
 import { AuthModal } from "./AuthModal";
@@ -26,9 +27,9 @@ export function PasteEditor() {
         />
 
         <AuthRequiredView
-          title="Welcome to KPaste! 📝"
+          title="Welcome to KPaste!"
           subtitle="Please log in to create and manage your pastes on the AT Protocol."
-          buttonText="🚀 Get Started"
+          buttonText="Get Started"
           onLoginClick={() => setIsAuthModalOpen(true)}
         />
 
@@ -59,9 +60,12 @@ export function PasteEditor() {
       >
         <YStack space="$6">
           <YStack space="$2">
-            <Text fontSize="$8" fontWeight="700">
-              ✨ Create New Paste
-            </Text>
+            <XStack alignItems="center" space="$2">
+              <SparklesIcon width={32} height={32} />
+              <Text fontSize="$8" fontWeight="700">
+                Create New Paste
+              </Text>
+            </XStack>
             <Text fontSize="$4">
               Share your code or text on the AT Protocol
             </Text>
@@ -76,7 +80,10 @@ export function PasteEditor() {
 
           {error && (
             <Card theme="red" padding="$3">
-              <Text fontWeight="600">❌ Error: {error}</Text>
+              <XStack alignItems="center" space="$2">
+                <XMarkIcon width={20} height={20} />
+                <Text fontWeight="600">Error: {error}</Text>
+              </XStack>
             </Card>
           )}
         </YStack>

@@ -1,5 +1,14 @@
 import { YStack, Text, Button, Card, XStack, ScrollView } from "tamagui";
 import { Link } from "react-router";
+import {
+  DocumentTextIcon,
+  ArrowPathIcon,
+  ClockIcon,
+  EyeIcon,
+  PencilIcon,
+  TrashIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import type { PasteListItem } from "../types";
 import { useDeletePaste } from "../hooks/useDeletePaste";
 import { useCallback } from "react";
@@ -54,9 +63,12 @@ export function PasteList({ pastes, userHandle }: PasteListProps) {
   if (pastes.length === 0) {
     return (
       <Card padding="$6" marginTop="$4" alignItems="center">
-        <Text fontSize="$5" textAlign="center">
-          📝 No pastes found. Create your first paste!
-        </Text>
+        <XStack alignItems="center" space="$2">
+          <DocumentTextIcon width={24} height={24} />
+          <Text fontSize="$5" textAlign="center">
+            No pastes found. Create your first paste!
+          </Text>
+        </XStack>
       </Card>
     );
   }
@@ -69,9 +81,12 @@ export function PasteList({ pastes, userHandle }: PasteListProps) {
     <YStack space="$5">
       {pastes.map((paste) => (
         <Card key={paste.uri} padding="$5" space="$4" bordered>
-          <Text fontSize="$7" fontWeight="600" color="$color">
-            {paste.value.title || "📝 Untitled Paste"}
-          </Text>
+          <XStack alignItems="center" space="$2">
+            <DocumentTextIcon width={24} height={24} />
+            <Text fontSize="$7" fontWeight="600" color="$color">
+              {paste.value.title || "Untitled Paste"}
+            </Text>
+          </XStack>
 
           <YStack space="$3">
             <XStack alignItems="center" space="$3" flexWrap="wrap">
@@ -139,9 +154,19 @@ export function PasteList({ pastes, userHandle }: PasteListProps) {
                 </ScrollView>
               </Card>
             ) : paste.contentLoading ? (
-              <Text fontSize="$3">🔄 Loading content...</Text>
+              <XStack alignItems="center" space="$2">
+                <ArrowPathIcon
+                  width={16}
+                  height={16}
+                  className="animate-spin"
+                />
+                <Text fontSize="$3">Loading content...</Text>
+              </XStack>
             ) : (
-              <Text fontSize="$3">⏳ Content will load automatically...</Text>
+              <XStack alignItems="center" space="$2">
+                <ClockIcon width={16} height={16} />
+                <Text fontSize="$3">Content will load automatically...</Text>
+              </XStack>
             )}
           </YStack>
 
@@ -158,14 +183,20 @@ export function PasteList({ pastes, userHandle }: PasteListProps) {
                     style={{ flex: 1, textDecoration: "none" }}
                   >
                     <Button size="$4" width="100%">
-                      👁️ View
+                      <XStack alignItems="center" space="$2">
+                        <EyeIcon width={20} height={20} />
+                        <Text>View</Text>
+                      </XStack>
                     </Button>
                   </Link>
                 );
               })()}
 
             <Button onPress={() => startEdit(paste)} size="$4" flex={1}>
-              ✏️ Edit
+              <XStack alignItems="center" space="$2">
+                <PencilIcon width={20} height={20} />
+                <Text>Edit</Text>
+              </XStack>
             </Button>
 
             <Button
@@ -175,7 +206,18 @@ export function PasteList({ pastes, userHandle }: PasteListProps) {
               size="$4"
               flex={1}
             >
-              {deleteLoading ? "🔄 Deleting..." : "🗑️ Delete"}
+              <XStack alignItems="center" space="$2">
+                {deleteLoading ? (
+                  <ArrowPathIcon
+                    width={20}
+                    height={20}
+                    className="animate-spin"
+                  />
+                ) : (
+                  <TrashIcon width={20} height={20} />
+                )}
+                <Text>{deleteLoading ? "Deleting..." : "Delete"}</Text>
+              </XStack>
             </Button>
           </XStack>
 
@@ -191,13 +233,19 @@ export function PasteList({ pastes, userHandle }: PasteListProps) {
 
           {deleteError && (
             <Card theme="red" padding="$3">
-              <Text fontWeight="600">❌ Error: {deleteError}</Text>
+              <XStack alignItems="center" space="$2">
+                <XMarkIcon width={20} height={20} />
+                <Text fontWeight="600">Error: {deleteError}</Text>
+              </XStack>
             </Card>
           )}
 
           {updateError && (
             <Card theme="red" padding="$3">
-              <Text fontWeight="600">❌ Error: {updateError}</Text>
+              <XStack alignItems="center" space="$2">
+                <XMarkIcon width={20} height={20} />
+                <Text fontWeight="600">Error: {updateError}</Text>
+              </XStack>
             </Card>
           )}
         </Card>

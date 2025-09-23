@@ -1,5 +1,6 @@
 import { useLoaderData, Link } from "react-router";
 import { YStack, XStack, Text, Card } from "tamagui";
+import { DocumentTextIcon } from "@heroicons/react/24/outline";
 import { Header } from "./Header";
 import { safeHighlight } from "../prismUtils";
 import type { PasteLoaderData } from "../loaders/pasteLoader";
@@ -19,9 +20,12 @@ export function PasteView() {
         space="$4"
       >
         <YStack space="$2">
-          <Text fontSize="$8" fontWeight="700">
-            {paste.value.title || "📝 Untitled Paste"}
-          </Text>
+          <XStack alignItems="center" space="$2">
+            <DocumentTextIcon width={32} height={32} />
+            <Text fontSize="$8" fontWeight="700">
+              {paste.value.title || "Untitled Paste"}
+            </Text>
+          </XStack>
           <XStack alignItems="center" space="$2">
             <Text fontSize="$4">
               by{" "}

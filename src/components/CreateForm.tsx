@@ -1,4 +1,9 @@
-import { YStack, Text, Button, Card } from "tamagui";
+import { YStack, Text, Button, Card, XStack } from "tamagui";
+import {
+  SparklesIcon,
+  DocumentTextIcon,
+  ArrowPathIcon,
+} from "@heroicons/react/24/outline";
 import type { CreatePasteForm } from "../hooks/usePasteForm";
 import { PasteFormField } from "./PasteFormField";
 import { CodeEditor } from "./CodeEditor";
@@ -19,9 +24,12 @@ export function CreateForm({
 }: CreateFormProps) {
   return (
     <Card padding="$4" space="$4">
-      <Text fontSize="$6" fontWeight="600" color="$color">
-        ✨ Create New Paste
-      </Text>
+      <XStack alignItems="center" space="$2">
+        <SparklesIcon width={24} height={24} />
+        <Text fontSize="$6" fontWeight="600" color="$color">
+          Create New Paste
+        </Text>
+      </XStack>
 
       <YStack space="$3">
         <PasteFormField
@@ -55,9 +63,12 @@ export function CreateForm({
         </YStack>
 
         <Card theme="blue" padding="$3">
-          <Text fontSize="$3">
-            📝 Note: All pastes are public in AT Protocol repos
-          </Text>
+          <XStack alignItems="center" space="$2">
+            <DocumentTextIcon width={16} height={16} />
+            <Text fontSize="$3">
+              Note: All pastes are public in AT Protocol repos
+            </Text>
+          </XStack>
         </Card>
 
         <Button
@@ -67,7 +78,14 @@ export function CreateForm({
           size="$4"
           marginTop="$2"
         >
-          {loading ? "🔄 Creating..." : "✨ Create Paste"}
+          <XStack alignItems="center" space="$2">
+            {loading ? (
+              <ArrowPathIcon width={20} height={20} className="animate-spin" />
+            ) : (
+              <SparklesIcon width={20} height={20} />
+            )}
+            <Text>{loading ? "Creating..." : "Create Paste"}</Text>
+          </XStack>
         </Button>
       </YStack>
     </Card>

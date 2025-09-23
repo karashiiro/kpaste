@@ -13,6 +13,7 @@ import {
   Card,
   Separator,
 } from "tamagui";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -180,7 +181,10 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
                 {hasError && error && (
                   <Card backgroundColor="$red2" padding="$3">
-                    <Text color="$red10">❌ {error.message}</Text>
+                    <XStack alignItems="center" space="$2">
+                      <XMarkIcon width={20} height={20} color="red" />
+                      <Text color="$red10">{error.message}</Text>
+                    </XStack>
                   </Card>
                 )}
 
@@ -265,7 +269,10 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
                 {hasError && error && (
                   <Card backgroundColor="$red2" padding="$3">
-                    <Text color="$red10">❌ {error.message}</Text>
+                    <XStack alignItems="center" space="$2">
+                      <XMarkIcon width={20} height={20} color="red" />
+                      <Text color="$red10">{error.message}</Text>
+                    </XStack>
                   </Card>
                 )}
 

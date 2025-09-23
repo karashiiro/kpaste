@@ -1,4 +1,10 @@
 import { YStack, Text, Button, Card, XStack } from "tamagui";
+import {
+  PencilIcon,
+  DocumentTextIcon,
+  ArrowPathIcon,
+  CheckIcon,
+} from "@heroicons/react/24/outline";
 import type { EditPasteForm } from "../hooks/usePasteForm";
 import { PasteFormField } from "./PasteFormField";
 import { CodeEditor } from "./CodeEditor";
@@ -21,9 +27,12 @@ export function EditForm({
 }: EditFormProps) {
   return (
     <Card padding="$4" space="$4">
-      <Text fontSize="$6" fontWeight="600" color="$color">
-        ✏️ Edit Paste
-      </Text>
+      <XStack alignItems="center" space="$2">
+        <PencilIcon width={24} height={24} />
+        <Text fontSize="$6" fontWeight="600" color="$color">
+          Edit Paste
+        </Text>
+      </XStack>
 
       <YStack space="$3">
         <PasteFormField
@@ -57,9 +66,12 @@ export function EditForm({
         </YStack>
 
         <Card theme="blue" padding="$3">
-          <Text fontSize="$3">
-            📝 Note: All pastes are public in AT Protocol repos
-          </Text>
+          <XStack alignItems="center" space="$2">
+            <DocumentTextIcon width={16} height={16} />
+            <Text fontSize="$3">
+              Note: All pastes are public in AT Protocol repos
+            </Text>
+          </XStack>
         </Card>
 
         <XStack space="$3" marginTop="$2">
@@ -70,7 +82,18 @@ export function EditForm({
             size="$4"
             flex={1}
           >
-            {loading ? "🔄 Updating..." : "✅ Update Paste"}
+            <XStack alignItems="center" space="$2">
+              {loading ? (
+                <ArrowPathIcon
+                  width={20}
+                  height={20}
+                  className="animate-spin"
+                />
+              ) : (
+                <CheckIcon width={20} height={20} />
+              )}
+              <Text>{loading ? "Updating..." : "Update Paste"}</Text>
+            </XStack>
           </Button>
           <Button
             onPress={() => onCancel()}
