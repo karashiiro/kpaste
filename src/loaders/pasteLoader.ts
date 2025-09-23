@@ -1,6 +1,7 @@
 import { Client, simpleFetchHandler } from "@atcute/client";
 import type { LoaderFunctionArgs } from "react-router";
 import type { Main as PasteRecord } from "../lexicons/types/moe/karashiiro/kpaste/paste";
+import { getTextBlob, resolveUser } from "../pdsUtils";
 
 export interface PasteLoaderData {
   uri: string;
@@ -10,15 +11,6 @@ export interface PasteLoaderData {
   rkey: string;
   pdsUrl: string;
   content: string;
-}
-
-interface PlcDirectoryDoc {
-  id: string;
-  service?: Array<{
-    id: string;
-    type: string;
-    serviceEndpoint: string;
-  }>;
 }
 
 export async function pasteLoader({
@@ -31,49 +23,8 @@ export async function pasteLoader({
   }
 
   try {
-    // Step 1: Resolve handle to DID using bsky.social
-    const bskyHandler = simpleFetchHandler({
-      service: "https://bsky.social",
-    });
-    const bskyClient = new Client({ handler: bskyHandler });
+    const { did, pdsUrl } = await resolveUser(handle);
 
-    const resolveResponse = await bskyClient.get(
-      "com.atproto.identity.resolveHandle",
-      {
-        params: { handle: handle as `${string}.${string}` },
-      },
-    );
-
-    if (!resolveResponse.ok) {
-      throw new Response(`Failed to resolve handle: ${handle}`, {
-        status: 404,
-      });
-    }
-
-    const did = resolveResponse.data.did;
-
-    // Step 2: Get user's PDS from plc.directory
-    const plcUrl = `https://plc.directory/${did}`;
-    const plcResponse = await fetch(plcUrl);
-
-    if (!plcResponse.ok) {
-      throw new Response(`Failed to get PDS for DID: ${did}`, { status: 404 });
-    }
-
-    const plcDoc: PlcDirectoryDoc = await plcResponse.json();
-
-    // Find the atproto_pds service
-    const pdsService = plcDoc.service?.find(
-      (s) => s.type === "AtprotoPersonalDataServer" || s.id === "#atproto_pds",
-    );
-
-    if (!pdsService) {
-      throw new Response("No PDS found for user", { status: 404 });
-    }
-
-    const pdsUrl = pdsService.serviceEndpoint;
-
-    // Step 3: Get the paste record from user's PDS
     const pdsHandler = simpleFetchHandler({
       service: pdsUrl,
     });
@@ -93,33 +44,14 @@ export async function pasteLoader({
 
     const pasteData = recordResponse.data;
 
-    // Step 4: Load the blob content immediately
+    // Load the blob content
     const blobContent = (pasteData.value as PasteRecord).content;
     if (!blobContent || !("ref" in blobContent)) {
       throw new Response("Invalid blob reference in paste", { status: 500 });
     }
 
     const contentCid = blobContent.ref.$link;
-
-    const blobHandler = simpleFetchHandler({
-      service: pdsUrl,
-    });
-    const blobClient = new Client({ handler: blobHandler });
-
-    const blobResponse = await blobClient.get("com.atproto.sync.getBlob", {
-      params: {
-        did: did,
-        cid: contentCid,
-      },
-      as: "blob",
-    });
-
-    if (!blobResponse.ok) {
-      throw new Response("Failed to load paste content", { status: 500 });
-    }
-
-    const blob = blobResponse.data as Blob;
-    const content = await blob.text();
+    const content = await getTextBlob(pdsUrl, did, contentCid);
 
     return {
       uri: pasteData.uri,

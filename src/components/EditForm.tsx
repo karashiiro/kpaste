@@ -11,7 +11,7 @@ import {
   XStack,
   useTheme,
 } from "tamagui";
-import type { EditPasteForm } from "../hooks/usePasteManager";
+import type { EditPasteForm } from "../hooks/usePasteForm";
 import { safeHighlight } from "../prismUtils";
 
 interface EditFormProps {
@@ -29,8 +29,6 @@ export function EditForm({
   onSubmit,
   onCancel,
 }: EditFormProps) {
-  console.log("🔄 EditForm render");
-
   const theme = useTheme();
 
   // Memoized highlight function

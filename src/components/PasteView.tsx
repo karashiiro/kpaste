@@ -4,8 +4,6 @@ import { safeHighlight } from "../prismUtils";
 import type { PasteLoaderData } from "../loaders/pasteLoader";
 
 export function PasteView() {
-  console.log("🔄 PasteView render");
-
   const paste = useLoaderData() as PasteLoaderData;
 
   return (
@@ -20,7 +18,12 @@ export function PasteView() {
           justifyContent="space-between"
           maxWidth={1200}
           marginHorizontal="auto"
+          width="100%"
         >
+          <Text fontSize="$7" fontWeight="700" color="white">
+            📝 KPaste
+          </Text>
+
           <Link
             to="/"
             style={{
@@ -29,7 +32,7 @@ export function PasteView() {
               fontWeight: "600",
             }}
           >
-            ← Back to KPaste
+            ✨ Create Paste
           </Link>
         </XStack>
       </View>
@@ -47,7 +50,15 @@ export function PasteView() {
           </Text>
           <XStack alignItems="center" space="$2">
             <Text fontSize="$4">
-              by <Text fontWeight="600">@{paste.handle}</Text>
+              by{" "}
+              <Text fontWeight="600">
+                <Link
+                  to={`/pastes/${paste.handle}`}
+                  style={{ color: "white", textDecoration: "underline" }}
+                >
+                  @{paste.handle}
+                </Link>
+              </Text>
             </Text>
             <Text fontSize="$4">•</Text>
             <Text

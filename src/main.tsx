@@ -5,7 +5,8 @@ import { RouterProvider } from "react-router/dom";
 import { TamaguiProvider, createTamagui, Theme } from "tamagui";
 import { defaultConfig } from "@tamagui/config/v4";
 import "./index.css";
-import App from "./App.tsx";
+import { PasteEditor } from "./components/PasteEditor.tsx";
+import { PasteListPage } from "./components/PasteListPage.tsx";
 import { PasteView } from "./components/PasteView.tsx";
 import { pasteLoader } from "./loaders/pasteLoader.ts";
 
@@ -22,16 +23,22 @@ import "prismjs/components/prism-go";
 import "prismjs/components/prism-css";
 import "prismjs/components/prism-json";
 import "prismjs/components/prism-markdown";
+import { pasteListLoader } from "./loaders/pasteListLoader.ts";
 
 const tamaguiConfig = createTamagui(defaultConfig);
 
 const router = createHashRouter([
   {
     path: "/",
-    element: <App />,
+    element: <PasteEditor />,
   },
   {
-    path: "/:handle/:rkey",
+    path: "/pastes/:handle",
+    element: <PasteListPage />,
+    loader: pasteListLoader,
+  },
+  {
+    path: "/p/:handle/:rkey",
     element: <PasteView />,
     loader: pasteLoader,
     errorElement: (

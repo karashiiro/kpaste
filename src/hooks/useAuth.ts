@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { AtProtoAuthManager } from "./AtProtoAuthManager";
+import { AtProtoAuthManager } from "../auth/AtProtoAuthManager";
 import type {
   AuthStateData,
   LoginCredentials,
@@ -7,7 +7,7 @@ import type {
   ServiceEndpoint,
   AtProtoClient,
   AuthManagerConfig,
-} from "./types";
+} from "../auth/types";
 
 let globalAuthManager: AtProtoAuthManager | null = null;
 

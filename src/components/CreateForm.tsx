@@ -11,7 +11,7 @@ import {
   useTheme,
 } from "tamagui";
 
-import type { CreatePasteForm } from "../hooks/usePasteManager";
+import type { CreatePasteForm } from "../hooks/usePasteForm";
 import { safeHighlight } from "../prismUtils";
 
 interface CreateFormProps {
@@ -27,8 +27,6 @@ export function CreateForm({
   onFormChange,
   onSubmit,
 }: CreateFormProps) {
-  console.log("🔄 CreateForm render");
-
   const theme = useTheme();
 
   // Memoized highlight function

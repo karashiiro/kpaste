@@ -1,33 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { useAuth } from "../auth/useAuth";
-import type { Main as PasteRecord } from "../lexicons/types/moe/karashiiro/kpaste/paste";
-
-// Hook for form state management
-function usePasteForm() {
-  const [showCreateForm, setShowCreateForm] = useState(false);
-  const [createForm, setCreateForm] =
-    useState<CreatePasteForm>(defaultCreateForm);
-  const [editForm, setEditForm] = useState<EditPasteForm | null>(null);
-
-  const resetForm = useCallback(() => {
-    setCreateForm(defaultCreateForm);
-  }, []);
-
-  const cancelEdit = useCallback(() => {
-    setEditForm(null);
-  }, []);
-
-  return {
-    showCreateForm,
-    setShowCreateForm,
-    createForm,
-    setCreateForm,
-    editForm,
-    setEditForm,
-    resetForm,
-    cancelEdit,
-  };
-}
+import { useAuth } from "./useAuth";
+import {
+  type CreatePasteForm,
+  type EditPasteForm,
+  usePasteForm,
+} from "./usePasteForm";
+import type { PasteListItem } from "../types";
 
 // Hook for blob content handling
 function useBlobContent(
@@ -118,29 +96,12 @@ function useBlobContent(
   };
 }
 
-export interface PasteListItem {
-  uri: string;
-  value: PasteRecord;
-  content?: string; // Fetched blob content
-  contentLoading?: boolean; // Loading state for blob fetch
-}
-
-export interface CreatePasteForm {
-  title: string;
-  content: string;
-  language: string;
-}
-
-export interface EditPasteForm extends CreatePasteForm {
-  uri: string;
-  originalRecord: PasteRecord;
-}
-
 export interface UsePasteManagerReturn {
   // State
   pastes: PasteListItem[];
   loading: boolean;
   error: string | null;
+  cursor?: string; // Pagination cursor
 
   // Form state
   showCreateForm: boolean;
@@ -148,7 +109,7 @@ export interface UsePasteManagerReturn {
   editForm: EditPasteForm | null;
 
   // Actions
-  loadPastes: () => Promise<void>;
+  loadPastes: (cursor?: string) => Promise<string | undefined>;
   createPaste: () => Promise<void>;
   updatePaste: () => Promise<void>;
   deletePaste: (uri: string) => Promise<void>;
@@ -161,59 +122,74 @@ export interface UsePasteManagerReturn {
   resetForm: () => void;
 }
 
-const defaultCreateForm: CreatePasteForm = {
-  title: "",
-  content: "",
-  language: "text",
-};
-
 export function usePasteManager(): UsePasteManagerReturn {
   const { isAuthenticated, getClient, session } = useAuth();
 
-  // CRUD operations state - moved back from usePasteOperations
+  // CRUD operations state
   const [pastes, setPastes] = useState<PasteListItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [cursor, setCursor] = useState<string | undefined>(undefined);
 
   // Use the smaller hooks for form and blob handling
   const forms = usePasteForm();
   const blobContent = useBlobContent(pastes, setPastes);
 
-  // CRUD operations - moved back from usePasteOperations
-  const loadPastes = useCallback(async () => {
-    const client = getClient();
-    if (!client || !isAuthenticated || !session?.did) {
-      setError("Not authenticated or missing DID");
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Use com.atproto.repo.listRecords to get our pastes (it's a query, so use get())
-      const response = await client.get("com.atproto.repo.listRecords", {
-        params: {
-          repo: session.did,
-          collection: "moe.karashiiro.kpaste.paste",
-          limit: 50,
-        },
-      });
-
-      if (response.ok) {
-        // The response records need to be cast more carefully
-        setPastes(response.data.records as unknown as PasteListItem[]);
-      } else {
-        console.error("API error:", response.data);
-        setError(`API error: ${response.status}`);
+  // CRUD operations
+  const loadPastes = useCallback(
+    async (cursor?: string) => {
+      const client = getClient();
+      if (!client || !isAuthenticated || !session?.did) {
+        setError("Not authenticated or missing DID");
+        return;
       }
-    } catch (err) {
-      console.error("Failed to load pastes:", err);
-      setError(err instanceof Error ? err.message : "Failed to load pastes");
-    } finally {
-      setLoading(false);
-    }
-  }, [getClient, isAuthenticated, session?.did]);
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await client.get("com.atproto.repo.listRecords", {
+          params: {
+            repo: session.did,
+            collection: "moe.karashiiro.kpaste.paste",
+            limit: 10,
+            cursor,
+          },
+        });
+
+        if (response.ok) {
+          // The response records need to be cast more carefully
+          const loadedPastes = response.data
+            .records as unknown as PasteListItem[];
+          setPastes(loadedPastes);
+
+          // Store the cursor for pagination
+          setCursor(response.data.cursor);
+
+          // Eagerly fetch content for all pastes
+          for (const paste of loadedPastes) {
+            if (paste.value.content && "ref" in paste.value.content) {
+              // Fetch content in background without blocking UI
+              setTimeout(() => {
+                blobContent.fetchBlobContent(paste.uri);
+              }, 0);
+            }
+          }
+
+          return response.data.cursor; // Return cursor for pagination logic
+        } else {
+          console.error("API error:", response.data);
+          setError(`API error: ${response.status}`);
+        }
+      } catch (err) {
+        console.error("Failed to load pastes:", err);
+        setError(err instanceof Error ? err.message : "Failed to load pastes");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [getClient, isAuthenticated, session?.did, blobContent],
+  );
 
   const createPasteOperation = useCallback(
     async (form: CreatePasteForm) => {
@@ -451,18 +427,19 @@ export function usePasteManager(): UsePasteManagerReturn {
     }
   }, [updatePasteOperation, forms]);
 
-  // Load pastes when authentication changes - use stable dependencies
+  // Load pastes when authentication changes
   useEffect(() => {
-    if (isAuthenticated && session?.did) {
+    if (isAuthenticated && session) {
       loadPastes();
     }
-  }, [isAuthenticated, getClient, session?.did, loadPastes]);
+  }, [isAuthenticated, session, loadPastes]);
 
   return {
     // State - now local to this hook
     pastes,
     loading,
     error,
+    cursor,
 
     // Form state
     showCreateForm: forms.showCreateForm,

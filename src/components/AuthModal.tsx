@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAuth } from "../auth/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import type { ServiceEndpoint } from "../auth/types";
 import {
   Sheet,
