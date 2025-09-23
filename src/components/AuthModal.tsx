@@ -13,7 +13,18 @@ import {
   Card,
   Separator,
 } from "tamagui";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  XMarkIcon,
+  LockClosedIcon,
+  RocketLaunchIcon,
+  CheckIcon,
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+  ArrowPathIcon,
+  ShieldCheckIcon,
+  ServerIcon,
+  ClockIcon,
+} from "@heroicons/react/24/outline";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -46,9 +57,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     isValid?: boolean;
   }>({ isValidating: false });
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleLogin = async () => {
     const serviceEndpoint: ServiceEndpoint = {
       url: loginForm.endpoint,
       name: new URL(loginForm.endpoint).hostname,
@@ -65,9 +74,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     }
   };
 
-  const handleTwoFactorSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleTwoFactorSubmit = async () => {
     if (!twoFactorChallenge) return;
 
     try {
@@ -136,11 +143,18 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         space="$5"
       >
         <YStack space="$4" maxWidth={400} width="100%">
-          <H2 textAlign="center">
-            {requiresTwoFactor
-              ? "🔐 Two-Factor Authentication"
-              : "🚀 Login to AT Protocol"}
-          </H2>
+          <XStack justifyContent="center" alignItems="center" space="$2">
+            {requiresTwoFactor ? (
+              <LockClosedIcon width={32} height={32} />
+            ) : (
+              <RocketLaunchIcon width={32} height={32} />
+            )}
+            <H2 textAlign="center">
+              {requiresTwoFactor
+                ? "Two-Factor Authentication"
+                : "Login to AT Protocol"}
+            </H2>
+          </XStack>
 
           {requiresTwoFactor && twoFactorChallenge ? (
             <YStack space="$4">
@@ -189,14 +203,23 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 )}
 
                 <Button
-                  onPress={() => handleTwoFactorSubmit({} as React.FormEvent)}
+                  onPress={() => handleTwoFactorSubmit()}
                   disabled={isLoading || !twoFactorCode}
                   backgroundColor="$green9"
                   color="white"
                   size="$4"
                   fontWeight="600"
                 >
-                  {isLoading ? "🔄 Verifying..." : "✅ Verify Code"}
+                  <XStack alignItems="center" space="$2">
+                    {isLoading ? (
+                      <ArrowPathIcon width={20} height={20} color="white" />
+                    ) : (
+                      <CheckCircleIcon width={20} height={20} color="white" />
+                    )}
+                    <Text color="white">
+                      {isLoading ? "Verifying..." : "Verify Code"}
+                    </Text>
+                  </XStack>
                 </Button>
               </YStack>
             </YStack>
@@ -225,18 +248,35 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                       color="white"
                       size="$3"
                     >
-                      {endpointValidation.isValidating ? "🔄" : "✓"}
+                      {endpointValidation.isValidating ? (
+                        <ArrowPathIcon width={16} height={16} color="white" />
+                      ) : (
+                        <CheckIcon width={16} height={16} color="white" />
+                      )}
                     </Button>
                   </XStack>
                   {endpointValidation.isValid !== undefined && (
-                    <Text
-                      fontSize="$2"
-                      color={endpointValidation.isValid ? "$green10" : "$red10"}
-                    >
-                      {endpointValidation.isValid
-                        ? "✅ Valid endpoint"
-                        : "❌ Invalid endpoint"}
-                    </Text>
+                    <XStack alignItems="center" space="$1">
+                      {endpointValidation.isValid ? (
+                        <CheckCircleIcon width={16} height={16} color="green" />
+                      ) : (
+                        <ExclamationCircleIcon
+                          width={16}
+                          height={16}
+                          color="red"
+                        />
+                      )}
+                      <Text
+                        fontSize="$2"
+                        color={
+                          endpointValidation.isValid ? "$green10" : "$red10"
+                        }
+                      >
+                        {endpointValidation.isValid
+                          ? "Valid endpoint"
+                          : "Invalid endpoint"}
+                      </Text>
+                    </XStack>
                   )}
                 </YStack>
 
@@ -277,14 +317,23 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 )}
 
                 <Button
-                  onPress={() => handleLogin({} as React.FormEvent)}
+                  onPress={() => handleLogin()}
                   disabled={isLoading}
                   backgroundColor="$blue9"
                   color="white"
                   size="$4"
                   fontWeight="600"
                 >
-                  {isAuthenticating ? "🔄 Connecting..." : "🚀 Connect"}
+                  <XStack alignItems="center" space="$2">
+                    {isAuthenticating ? (
+                      <ArrowPathIcon width={20} height={20} color="white" />
+                    ) : (
+                      <RocketLaunchIcon width={20} height={20} color="white" />
+                    )}
+                    <Text color="white">
+                      {isAuthenticating ? "Connecting..." : "Connect"}
+                    </Text>
+                  </XStack>
                 </Button>
               </YStack>
 
@@ -295,13 +344,23 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   <Text fontWeight="600" fontSize="$4">
                     Features:
                   </Text>
-                  <YStack space="$1">
-                    <Text fontSize="$3">
-                      ✅ Flexible endpoint configuration
-                    </Text>
-                    <Text fontSize="$3">🔐 Two-factor authentication</Text>
-                    <Text fontSize="$3">💾 Session persistence</Text>
-                    <Text fontSize="$3">🔄 Automatic token refresh</Text>
+                  <YStack space="$2">
+                    <XStack alignItems="center" space="$2">
+                      <ServerIcon width={16} height={16} />
+                      <Text fontSize="$3">Flexible endpoint configuration</Text>
+                    </XStack>
+                    <XStack alignItems="center" space="$2">
+                      <ShieldCheckIcon width={16} height={16} />
+                      <Text fontSize="$3">Two-factor authentication</Text>
+                    </XStack>
+                    <XStack alignItems="center" space="$2">
+                      <CheckCircleIcon width={16} height={16} />
+                      <Text fontSize="$3">Session persistence</Text>
+                    </XStack>
+                    <XStack alignItems="center" space="$2">
+                      <ClockIcon width={16} height={16} />
+                      <Text fontSize="$3">Automatic token refresh</Text>
+                    </XStack>
                   </YStack>
                 </YStack>
               </Card>
