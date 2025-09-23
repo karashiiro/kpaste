@@ -2,6 +2,7 @@ import { useLoaderData, Link } from "react-router";
 import { YStack, XStack, Text, Card } from "tamagui";
 import { DocumentTextIcon } from "@heroicons/react/24/outline";
 import { Header } from "./Header";
+import { AtUriLink } from "./AtUriLink";
 import { safeHighlight } from "../prismUtils";
 import type { PasteLoaderData } from "../loaders/pasteLoader";
 
@@ -73,11 +74,7 @@ export function PasteView() {
           />
         </Card>
 
-        <Card padding="$3">
-          <Text fontSize="$3" fontFamily="$mono">
-            <Text fontWeight="600">URI:</Text> {paste.uri}
-          </Text>
-        </Card>
+        <AtUriLink uri={paste.uri} showLabel={true} />
       </YStack>
     </YStack>
   );

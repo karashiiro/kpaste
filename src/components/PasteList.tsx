@@ -4,7 +4,6 @@ import {
   DocumentTextIcon,
   ArrowPathIcon,
   ClockIcon,
-  EyeIcon,
   PencilIcon,
   TrashIcon,
   XMarkIcon,
@@ -15,19 +14,9 @@ import { useCallback } from "react";
 import { usePasteForm } from "../hooks/usePasteForm";
 import { useUpdatePaste } from "../hooks/useUpdatePaste";
 import { EditForm } from "./EditForm";
+import { AtUriLink } from "./AtUriLink";
 import { safeHighlight } from "../prismUtils";
-
-// Helper function to extract handle and rkey from AT URI
-function parseAtUri(uri: string): { handle: string; rkey: string } | null {
-  // Example URI: at://did:plc:abc123/moe.karashiiro.kpaste.paste/xyz789
-  const match = uri.match(/^at:\/\/([^/]+)\/[^/]+\/([^/]+)$/);
-  if (!match) return null;
-
-  const did = match[1];
-  const rkey = match[2];
-
-  return { handle: did, rkey };
-}
+import { parseAtUri } from "../pdsUtils";
 
 interface PasteListProps {
   pastes: PasteListItem[];
@@ -81,12 +70,38 @@ export function PasteList({ pastes, userHandle }: PasteListProps) {
     <YStack space="$5">
       {pastes.map((paste) => (
         <Card key={paste.uri} padding="$5" space="$4" bordered>
-          <XStack alignItems="center" space="$2">
-            <DocumentTextIcon width={24} height={24} />
-            <Text fontSize="$7" fontWeight="600" color="$color">
-              {paste.value.title || "Untitled Paste"}
-            </Text>
-          </XStack>
+          {userHandle ? (
+            (() => {
+              // Extract rkey from URI for view link
+              const uriParts = parseAtUri(paste.uri);
+              const rkey = uriParts?.rkey || paste.uri.split("/").pop();
+
+              return (
+                <Link
+                  to={`/p/${userHandle}/${rkey}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <XStack
+                    alignItems="center"
+                    space="$2"
+                    pressStyle={{ opacity: 0.7 }}
+                  >
+                    <DocumentTextIcon width={24} height={24} />
+                    <Text fontSize="$7" fontWeight="600" color="$blue10">
+                      {paste.value.title || "Untitled Paste"}
+                    </Text>
+                  </XStack>
+                </Link>
+              );
+            })()
+          ) : (
+            <XStack alignItems="center" space="$2">
+              <DocumentTextIcon width={24} height={24} />
+              <Text fontSize="$7" fontWeight="600" color="$color">
+                {paste.value.title || "Untitled Paste"}
+              </Text>
+            </XStack>
+          )}
 
           <YStack space="$3">
             <XStack alignItems="center" space="$3" flexWrap="wrap">
@@ -115,14 +130,7 @@ export function PasteList({ pastes, userHandle }: PasteListProps) {
               <Text fontSize="$4" fontWeight="500">
                 URI:
               </Text>
-              <Text
-                fontSize="$3"
-                fontFamily="$mono"
-                padding="$3"
-                borderRadius="$4"
-              >
-                {paste.uri}
-              </Text>
+              <AtUriLink uri={paste.uri} showLabel={false} />
             </YStack>
           </YStack>
 
@@ -171,27 +179,6 @@ export function PasteList({ pastes, userHandle }: PasteListProps) {
           </YStack>
 
           <XStack space="$3" marginTop="$4">
-            {userHandle &&
-              (() => {
-                // Extract rkey from URI for view link
-                const uriParts = parseAtUri(paste.uri);
-                const rkey = uriParts?.rkey || paste.uri.split("/").pop();
-
-                return (
-                  <Link
-                    to={`/p/${userHandle}/${rkey}`}
-                    style={{ flex: 1, textDecoration: "none" }}
-                  >
-                    <Button size="$4" width="100%">
-                      <XStack alignItems="center" space="$2">
-                        <EyeIcon width={20} height={20} />
-                        <Text>View</Text>
-                      </XStack>
-                    </Button>
-                  </Link>
-                );
-              })()}
-
             <Button onPress={() => startEdit(paste)} size="$4" flex={1}>
               <XStack alignItems="center" space="$2">
                 <PencilIcon width={20} height={20} />

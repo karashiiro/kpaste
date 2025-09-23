@@ -105,3 +105,16 @@ export async function getTextBlobs(
     blobCids.map((cid) => readTextBlob(blobClient, did, cid)),
   );
 }
+
+export function parseAtUri(
+  uri: string,
+): { handle: string; rkey: string } | null {
+  // Example URI: at://did:plc:abc123/moe.karashiiro.kpaste.paste/xyz789
+  const match = uri.match(/^at:\/\/([^/]+)\/[^/]+\/([^/]+)$/);
+  if (!match) return null;
+
+  const did = match[1];
+  const rkey = match[2];
+
+  return { handle: did, rkey };
+}
