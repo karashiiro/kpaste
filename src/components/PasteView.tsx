@@ -1,5 +1,6 @@
 import { useLoaderData, Link } from "react-router";
-import { YStack, XStack, Text, Card, View } from "tamagui";
+import { YStack, XStack, Text, Card } from "tamagui";
+import { Header } from "./Header";
 import { safeHighlight } from "../prismUtils";
 import type { PasteLoaderData } from "../loaders/pasteLoader";
 
@@ -8,34 +9,7 @@ export function PasteView() {
 
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
-      <View
-        background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-        paddingVertical="$4"
-        paddingHorizontal="$4"
-      >
-        <XStack
-          alignItems="center"
-          justifyContent="space-between"
-          maxWidth={1200}
-          marginHorizontal="auto"
-          width="100%"
-        >
-          <Text fontSize="$7" fontWeight="700" color="white">
-            📝 KPaste
-          </Text>
-
-          <Link
-            to="/"
-            style={{
-              color: "white",
-              textDecoration: "none",
-              fontWeight: "600",
-            }}
-          >
-            ✨ Create Paste
-          </Link>
-        </XStack>
-      </View>
+      <Header variant="simple" showCreateLink={true} />
 
       <YStack
         padding="$4"

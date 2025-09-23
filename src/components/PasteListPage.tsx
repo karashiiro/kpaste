@@ -2,6 +2,8 @@ import { YStack, View, XStack, Text, Button } from "tamagui";
 import { Link, useLoaderData, useSearchParams } from "react-router";
 import { PasteList } from "./PasteList";
 import { AuthModal } from "./AuthModal";
+import { Header } from "./Header";
+import { AuthRequiredView } from "./AuthRequiredView";
 import type { PasteListLoaderData } from "../loaders/pasteListLoader";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
@@ -29,68 +31,17 @@ export function PasteListPage() {
   if (!isAuthenticated) {
     return (
       <YStack minHeight="100vh" backgroundColor="$background">
-        {/* Compact Header */}
-        <View
-          background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-          paddingVertical="$4"
-          paddingHorizontal="$6"
-        >
-          <XStack
-            maxWidth={1200}
-            marginHorizontal="auto"
-            justifyContent="space-between"
-            alignItems="center"
-            width="100%"
-          >
-            <Link
-              to="/"
-              style={{
-                color: "white",
-                textDecoration: "none",
-                fontWeight: "600",
-              }}
-            >
-              ✨ Create Paste
-            </Link>
+        <Header
+          variant="unauthenticated"
+          onLoginClick={() => setIsAuthModalOpen(true)}
+        />
 
-            <Text fontSize="$7" fontWeight="700" color="white">
-              📝 KPaste
-            </Text>
-
-            <Button
-              onPress={() => setIsAuthModalOpen(true)}
-              backgroundColor="rgba(255, 255, 255, 0.2)"
-              borderColor="rgba(255, 255, 255, 0.3)"
-              borderWidth={2}
-              color="white"
-              fontWeight="600"
-              size="$4"
-              borderRadius="$10"
-            >
-              🚀 Login
-            </Button>
-          </XStack>
-        </View>
-
-        {/* Login Required Message */}
-        <View flex={1} justifyContent="center" alignItems="center" padding="$6">
-          <YStack space="$4" alignItems="center" maxWidth={400}>
-            <Text fontSize="$8" fontWeight="700" textAlign="center">
-              Browse AT Protocol Pastes 📚
-            </Text>
-            <Text fontSize="$5" textAlign="center">
-              Please log in to view and manage your pastes.
-            </Text>
-            <Button
-              onPress={() => setIsAuthModalOpen(true)}
-              theme="green"
-              size="$5"
-              marginTop="$2"
-            >
-              🚀 Login to Browse
-            </Button>
-          </YStack>
-        </View>
+        <AuthRequiredView
+          title="Browse AT Protocol Pastes 📚"
+          subtitle="Please log in to view and manage your pastes."
+          buttonText="🚀 Login to Browse"
+          onLoginClick={() => setIsAuthModalOpen(true)}
+        />
 
         <AuthModal
           isOpen={isAuthModalOpen}
@@ -102,57 +53,12 @@ export function PasteListPage() {
 
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
-      {/* Compact Header */}
-      <View
-        background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-        paddingVertical="$4"
-        paddingHorizontal="$6"
-      >
-        <XStack
-          maxWidth={1200}
-          marginHorizontal="auto"
-          justifyContent="space-between"
-          alignItems="center"
-          width="100%"
-        >
-          <Link
-            to="/"
-            style={{
-              color: "white",
-              textDecoration: "none",
-              fontWeight: "600",
-            }}
-          >
-            ✨ Create Paste
-          </Link>
-
-          <Text fontSize="$7" fontWeight="700" color="white">
-            📝 KPaste
-          </Text>
-
-          <XStack alignItems="center" space="$3">
-            <Text fontSize="$4" color="white" fontWeight="600">
-              <Link
-                to={`/pastes/${session?.handle}`}
-                style={{ color: "white", textDecoration: "underline" }}
-              >
-                @{session?.handle}
-              </Link>
-            </Text>
-            <Button
-              onPress={logout}
-              backgroundColor="rgba(255, 255, 255, 0.1)"
-              borderColor="rgba(255, 255, 255, 0.2)"
-              borderWidth={1}
-              color="white"
-              size="$3"
-              borderRadius="$8"
-            >
-              👋 Logout
-            </Button>
-          </XStack>
-        </XStack>
-      </View>
+      <Header
+        variant="authenticated"
+        userHandle={session?.handle}
+        onLogoutClick={logout}
+        showCreateLink={true}
+      />
 
       {/* Main Content */}
       <View

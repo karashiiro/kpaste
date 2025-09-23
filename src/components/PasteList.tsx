@@ -6,6 +6,7 @@ import { useCallback } from "react";
 import { usePasteForm } from "../hooks/usePasteForm";
 import { useUpdatePaste } from "../hooks/useUpdatePaste";
 import { EditForm } from "./EditForm";
+import { safeHighlight } from "../prismUtils";
 
 // Helper function to extract handle and rkey from AT URI
 function parseAtUri(uri: string): { handle: string; rkey: string } | null {
@@ -117,9 +118,24 @@ export function PasteList({ pastes, userHandle }: PasteListProps) {
             {paste.content ? (
               <Card padding="$3" borderRadius="$4" bordered>
                 <ScrollView maxHeight={200}>
-                  <Text fontSize="$3" fontFamily="$mono">
-                    {paste.content}
-                  </Text>
+                  <pre
+                    style={{
+                      fontFamily: '"Courier New", "Monaco", "Menlo", monospace',
+                      fontSize: 13,
+                      lineHeight: 1.4,
+                      margin: 0,
+                      padding: 0,
+                      overflow: "auto",
+                      whiteSpace: "pre-wrap",
+                      wordBreak: "break-word",
+                    }}
+                    dangerouslySetInnerHTML={{
+                      __html: safeHighlight(
+                        paste.content,
+                        paste.value.language || "text",
+                      ),
+                    }}
+                  />
                 </ScrollView>
               </Card>
             ) : paste.contentLoading ? (
