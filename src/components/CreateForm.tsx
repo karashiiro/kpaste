@@ -1,16 +1,18 @@
 import { useCallback } from "react";
-import styles from "./PasteManager.module.css";
 import Editor from "react-simple-code-editor";
+import {
+  YStack,
+  Text,
+  Button,
+  Input,
+  Label,
+  Select,
+  Card,
+  useTheme,
+} from "tamagui";
 
 import type { CreatePasteForm } from "../hooks/usePasteManager";
 import { safeHighlight } from "../prismUtils";
-
-const editorStyle = {
-  fontFamily: '"Courier New", "Monaco", "Menlo", monospace',
-  fontSize: 14,
-  lineHeight: 1.4,
-  minHeight: "200px",
-};
 
 interface CreateFormProps {
   createForm: CreatePasteForm;
@@ -27,75 +29,153 @@ export function CreateForm({
 }: CreateFormProps) {
   console.log("🔄 CreateForm render");
 
+  const theme = useTheme();
+
   // Memoized highlight function
   const highlightCode = useCallback(
     (code: string) => safeHighlight(code, createForm.language),
     [createForm.language],
   );
 
+  // Theme-aware editor styles
+  const editorStyle = {
+    fontFamily: '"Courier New", "Monaco", "Menlo", monospace',
+    fontSize: 14,
+    lineHeight: 1.4,
+    minHeight: "200px",
+    backgroundColor: theme.background?.get(),
+    color: theme.color?.get(),
+  };
+
   return (
-    <div className={styles.createForm}>
-      <h3>Create New Paste</h3>
+    <Card padding="$4" space="$4">
+      <Text fontSize="$6" fontWeight="600" color="$color">
+        ✨ Create New Paste
+      </Text>
 
-      <div className={styles.formGroup}>
-        <label className={styles.formLabel}>Title (optional):</label>
-        <input
-          type="text"
-          value={createForm.title}
-          onChange={(e) =>
-            onFormChange({ ...createForm, title: e.target.value })
-          }
-          className={styles.formInput}
-          placeholder="Enter a title for your paste..."
-        />
-      </div>
-
-      <div className={styles.formGroup}>
-        <label className={styles.formLabel}>Content:</label>
-        <Editor
-          value={createForm.content}
-          onValueChange={(content) => onFormChange({ ...createForm, content })}
-          highlight={highlightCode}
-          padding={12}
-          className={styles.formTextarea}
-          placeholder="Paste your code or text here..."
-          style={editorStyle}
-        />
-      </div>
-
-      <div className={styles.formRow}>
-        <div className={styles.formColumn}>
-          <label className={styles.formLabel}>Language:</label>
-          <select
-            value={createForm.language}
-            onChange={(e) =>
-              onFormChange({ ...createForm, language: e.target.value })
+      <YStack space="$3">
+        <YStack space="$2">
+          <Label fontSize="$4" fontWeight="500">
+            Title (optional):
+          </Label>
+          <Input
+            value={createForm.title}
+            onChangeText={(text) =>
+              onFormChange({ ...createForm, title: text })
             }
-            className={styles.formInput}
-          >
-            <option value="text">Plain Text</option>
-            <option value="javascript">JavaScript</option>
-            <option value="typescript">TypeScript</option>
-            <option value="python">Python</option>
-            <option value="java">Java</option>
-            <option value="cpp">C++</option>
-            <option value="rust">Rust</option>
-            <option value="go">Go</option>
-            <option value="html">HTML</option>
-            <option value="css">CSS</option>
-            <option value="json">JSON</option>
-            <option value="markdown">Markdown</option>
-          </select>
-        </div>
-      </div>
+            placeholder="Enter a title for your paste..."
+            size="$4"
+          />
+        </YStack>
 
-      <button
-        onClick={onSubmit}
-        disabled={loading || !createForm.content.trim()}
-        className={styles.successButton}
-      >
-        {loading ? "Creating..." : "Create Paste"}
-      </button>
-    </div>
+        <YStack space="$2">
+          <Label fontSize="$4" fontWeight="500">
+            Content:
+          </Label>
+          <Card padding="$0" bordered>
+            <Editor
+              value={createForm.content}
+              onValueChange={(content) =>
+                onFormChange({ ...createForm, content })
+              }
+              highlight={highlightCode}
+              padding={12}
+              placeholder="Paste your code or text here..."
+              style={editorStyle}
+            />
+          </Card>
+        </YStack>
+
+        <YStack space="$2">
+          <Label fontSize="$4" fontWeight="500">
+            Language:
+          </Label>
+          <Select
+            value={createForm.language}
+            onValueChange={(value) =>
+              onFormChange({ ...createForm, language: value })
+            }
+            size="$4"
+          >
+            <Select.Trigger iconAfter={<Text>▼</Text>}>
+              <Select.Value placeholder="Select language..." />
+            </Select.Trigger>
+
+            <Select.Content zIndex={200000}>
+              <Select.ScrollUpButton
+                alignItems="center"
+                justifyContent="center"
+                position="relative"
+                width="100%"
+                height="$3"
+              >
+                <Text>▲</Text>
+              </Select.ScrollUpButton>
+
+              <Select.Viewport minHeight={200}>
+                <Select.Group>
+                  <Select.Item index={0} value="text">
+                    <Select.ItemText>Plain Text</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item index={1} value="javascript">
+                    <Select.ItemText>JavaScript</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item index={2} value="typescript">
+                    <Select.ItemText>TypeScript</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item index={3} value="python">
+                    <Select.ItemText>Python</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item index={4} value="java">
+                    <Select.ItemText>Java</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item index={5} value="cpp">
+                    <Select.ItemText>C++</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item index={6} value="rust">
+                    <Select.ItemText>Rust</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item index={7} value="go">
+                    <Select.ItemText>Go</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item index={8} value="html">
+                    <Select.ItemText>HTML</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item index={9} value="css">
+                    <Select.ItemText>CSS</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item index={10} value="json">
+                    <Select.ItemText>JSON</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item index={11} value="markdown">
+                    <Select.ItemText>Markdown</Select.ItemText>
+                  </Select.Item>
+                </Select.Group>
+              </Select.Viewport>
+
+              <Select.ScrollDownButton
+                alignItems="center"
+                justifyContent="center"
+                position="relative"
+                width="100%"
+                height="$3"
+              >
+                <Text>▼</Text>
+              </Select.ScrollDownButton>
+            </Select.Content>
+          </Select>
+        </YStack>
+
+        <Button
+          onPress={() => onSubmit()}
+          disabled={loading || !createForm.content.trim()}
+          theme="green"
+          size="$4"
+          marginTop="$2"
+        >
+          {loading ? "🔄 Creating..." : "✨ Create Paste"}
+        </Button>
+      </YStack>
+    </Card>
   );
 }

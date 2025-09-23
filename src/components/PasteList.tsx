@@ -1,4 +1,4 @@
-import styles from "./PasteManager.module.css";
+import { YStack, Text, Button, Card, XStack, ScrollView } from "tamagui";
 import type { PasteListItem } from "../hooks/usePasteManager";
 
 interface PasteListProps {
@@ -20,9 +20,11 @@ export function PasteList({
 
   if (pastes.length === 0 && !loading) {
     return (
-      <p className={styles.emptyState}>
-        No pastes found. Create your first paste!
-      </p>
+      <Card padding="$6" marginTop="$4" alignItems="center">
+        <Text fontSize="$5" textAlign="center">
+          📝 No pastes found. Create your first paste!
+        </Text>
+      </Card>
     );
   }
 
@@ -31,61 +33,99 @@ export function PasteList({
   }
 
   return (
-    <div className={styles.pasteList}>
+    <YStack space="$5">
       {pastes.map((paste) => (
-        <div key={paste.uri} className={styles.pasteItem}>
-          <h3 className={styles.pasteTitle}>
-            {paste.value.title || "Untitled Paste"}
-          </h3>
-          <p className={styles.pasteMetadata}>
-            <strong>Language:</strong> {paste.value.language || "text"}
-          </p>
-          <p className={styles.pasteMetadata}>
-            <strong>Created:</strong>{" "}
-            {new Date(paste.value.createdAt).toLocaleString()}
-          </p>
-          <p className={styles.pasteMetadata}>
-            <strong>URI:</strong>{" "}
-            <code className={styles.pasteUri}>{paste.uri}</code>
-          </p>
-          <div className={styles.pasteMetadata}>
-            <strong>Content:</strong>
+        <Card key={paste.uri} padding="$5" space="$4" bordered>
+          <Text fontSize="$7" fontWeight="600" color="$color">
+            {paste.value.title || "📝 Untitled Paste"}
+          </Text>
+
+          <YStack space="$3">
+            <XStack alignItems="center" space="$3" flexWrap="wrap">
+              <XStack alignItems="center" space="$2">
+                <Text fontSize="$4" fontWeight="500">
+                  Language:
+                </Text>
+                <Text fontSize="$4" fontWeight="600">
+                  {paste.value.language || "text"}
+                </Text>
+              </XStack>
+
+              <Text fontSize="$4">•</Text>
+
+              <XStack alignItems="center" space="$2">
+                <Text fontSize="$4" fontWeight="500">
+                  Created:
+                </Text>
+                <Text fontSize="$4">
+                  {new Date(paste.value.createdAt).toLocaleString()}
+                </Text>
+              </XStack>
+            </XStack>
+
+            <YStack space="$2">
+              <Text fontSize="$4" fontWeight="500">
+                URI:
+              </Text>
+              <Text
+                fontSize="$3"
+                fontFamily="$mono"
+                padding="$3"
+                borderRadius="$4"
+              >
+                {paste.uri}
+              </Text>
+            </YStack>
+          </YStack>
+
+          <YStack space="$2">
+            <Text fontSize="$3" fontWeight="500">
+              Content:
+            </Text>
             {paste.content ? (
-              <div className={styles.contentDisplay}>
-                <pre className={styles.contentText}>{paste.content}</pre>
-              </div>
+              <Card padding="$3" borderRadius="$4" bordered>
+                <ScrollView maxHeight={200}>
+                  <Text fontSize="$3" fontFamily="$mono">
+                    {paste.content}
+                  </Text>
+                </ScrollView>
+              </Card>
             ) : paste.contentLoading ? (
-              <span className={styles.loadingText}> Loading content...</span>
+              <Text fontSize="$3">🔄 Loading content...</Text>
             ) : (
-              <button
-                onClick={() => onFetchContent(paste.uri)}
-                className={styles.loadContentButton}
+              <Button
+                onPress={() => onFetchContent(paste.uri)}
                 disabled={loading}
+                size="$3"
+                alignSelf="flex-start"
               >
                 📄 Load Content
-              </button>
+              </Button>
             )}
-          </div>
+          </YStack>
 
-          <div className={styles.pasteActions}>
-            <button
-              onClick={() => onDelete(paste.uri)}
+          <XStack space="$3" marginTop="$4">
+            <Button
+              onPress={() => onEdit(paste)}
               disabled={loading}
-              className={styles.dangerButton}
-            >
-              {loading ? "Deleting..." : "Delete"}
-            </button>
-
-            <button
-              onClick={() => onEdit(paste)}
-              disabled={loading}
-              className={styles.secondaryButton}
+              size="$4"
+              flex={1}
             >
               ✏️ Edit
-            </button>
-          </div>
-        </div>
+            </Button>
+
+            <Button
+              onPress={() => onDelete(paste.uri)}
+              disabled={loading}
+              theme="red"
+              size="$4"
+              flex={1}
+            >
+              {loading ? "🔄 Deleting..." : "🗑️ Delete"}
+            </Button>
+          </XStack>
+        </Card>
       ))}
-    </div>
+    </YStack>
   );
 }

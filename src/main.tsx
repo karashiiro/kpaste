@@ -2,6 +2,8 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createHashRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
+import { TamaguiProvider, createTamagui, Theme } from "tamagui";
+import { defaultConfig } from "@tamagui/config/v4";
 import "./index.css";
 import App from "./App.tsx";
 import { PasteView } from "./components/PasteView.tsx";
@@ -20,6 +22,8 @@ import "prismjs/components/prism-go";
 import "prismjs/components/prism-css";
 import "prismjs/components/prism-json";
 import "prismjs/components/prism-markdown";
+
+const tamaguiConfig = createTamagui(defaultConfig);
 
 const router = createHashRouter([
   {
@@ -69,6 +73,10 @@ const router = createHashRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <TamaguiProvider config={tamaguiConfig}>
+      <Theme name="dark">
+        <RouterProvider router={router} />
+      </Theme>
+    </TamaguiProvider>
   </StrictMode>,
 );

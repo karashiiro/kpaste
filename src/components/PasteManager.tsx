@@ -1,6 +1,6 @@
 import { useAuth } from "../auth/useAuth";
 import { usePasteManager } from "../hooks/usePasteManager";
-import styles from "./PasteManager.module.css";
+import { YStack, Text, Button, XStack, Card } from "tamagui";
 import { PasteList } from "./PasteList";
 import { CreateForm } from "./CreateForm";
 import { EditForm } from "./EditForm";
@@ -11,36 +11,49 @@ export function PasteManager() {
 
   if (!isAuthenticated) {
     return (
-      <div className={styles.pasteManager}>
-        <h2>Paste Manager</h2>
-        <p>Please log in to manage your pastes!</p>
-      </div>
+      <Card padding="$6" alignItems="center">
+        <Text fontSize="$7" fontWeight="600" color="$color" marginBottom="$3">
+          📝 Paste Manager
+        </Text>
+        <Text fontSize="$4" textAlign="center">
+          Please log in to manage your pastes!
+        </Text>
+      </Card>
     );
   }
 
   return (
-    <div className={styles.pasteManager}>
-      <h2>Your Pastes</h2>
+    <YStack space="$6">
+      <YStack space="$4">
+        <Text fontSize="$8" fontWeight="700" color="$color">
+          📚 Your Pastes
+        </Text>
 
-      <div className={styles.buttonGroup}>
-        <button
-          onClick={pasteManager.loadPastes}
-          disabled={pasteManager.loading}
-          className={styles.button}
-        >
-          {pasteManager.loading ? "Loading..." : "Refresh Pastes"}
-        </button>
+        <XStack space="$3" flexWrap="wrap">
+          <Button
+            onPress={() => pasteManager.loadPastes()}
+            disabled={pasteManager.loading}
+            size="$4"
+            flex={1}
+            minWidth={120}
+          >
+            {pasteManager.loading ? "🔄 Loading..." : "🔄 Refresh Pastes"}
+          </Button>
 
-        <button
-          onClick={() =>
-            pasteManager.setShowCreateForm(!pasteManager.showCreateForm)
-          }
-          disabled={pasteManager.loading}
-          className={styles.primaryButton}
-        >
-          {pasteManager.showCreateForm ? "Cancel" : "Create New Paste"}
-        </button>
-      </div>
+          <Button
+            onPress={() =>
+              pasteManager.setShowCreateForm(!pasteManager.showCreateForm)
+            }
+            disabled={pasteManager.loading}
+            theme="green"
+            size="$4"
+            flex={1}
+            minWidth={120}
+          >
+            {pasteManager.showCreateForm ? "❌ Cancel" : "✨ Create New Paste"}
+          </Button>
+        </XStack>
+      </YStack>
 
       {pasteManager.showCreateForm && (
         <CreateForm
@@ -62,7 +75,9 @@ export function PasteManager() {
       )}
 
       {pasteManager.error && (
-        <div className={styles.errorMessage}>Error: {pasteManager.error}</div>
+        <Card theme="red" padding="$3">
+          <Text fontWeight="600">❌ Error: {pasteManager.error}</Text>
+        </Card>
       )}
 
       <PasteList
@@ -72,6 +87,6 @@ export function PasteManager() {
         onEdit={pasteManager.startEdit}
         onFetchContent={pasteManager.fetchBlobContent}
       />
-    </div>
+    </YStack>
   );
 }

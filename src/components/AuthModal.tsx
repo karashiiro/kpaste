@@ -1,8 +1,18 @@
 import React, { useState } from "react";
 import { useAuth } from "../auth/useAuth";
 import type { ServiceEndpoint } from "../auth/types";
-import { Modal } from "./Modal";
-import styles from "./AuthModal.module.css";
+import {
+  Sheet,
+  XStack,
+  YStack,
+  Text,
+  H2,
+  Button,
+  Input,
+  Label,
+  Card,
+  Separator,
+} from "tamagui";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -103,157 +113,195 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     }
   }, [isOpen]);
 
-  const getModalTitle = () => {
-    if (requiresTwoFactor) return "🔐 Two-Factor Authentication";
-    return "🚀 Login to AT Protocol";
-  };
-
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={getModalTitle()}>
-      {requiresTwoFactor && twoFactorChallenge ? (
-        <div className={styles.authContent}>
-          <div className={styles.twoFactorCard}>
-            <p>
-              <strong>Method:</strong> {twoFactorChallenge.method.toUpperCase()}
-            </p>
-            {twoFactorChallenge.destination && (
-              <p>
-                <strong>Sent to:</strong> {twoFactorChallenge.destination}
-              </p>
-            )}
-            <p>
-              <strong>Expires:</strong>{" "}
-              {twoFactorChallenge.expiresAt.toLocaleString()}
-            </p>
-          </div>
+    <Sheet
+      forceRemoveScrollEnabled={isOpen}
+      modal={true}
+      open={isOpen}
+      onOpenChange={onClose}
+      snapPoints={[85, 50, 25]}
+      dismissOnSnapToBottom
+    >
+      <Sheet.Overlay
+        animation="lazy"
+        enterStyle={{ opacity: 0 }}
+        exitStyle={{ opacity: 0 }}
+      />
+      <Sheet.Handle />
+      <Sheet.Frame
+        padding="$4"
+        justifyContent="center"
+        alignItems="center"
+        space="$5"
+      >
+        <YStack space="$4" maxWidth={400} width="100%">
+          <H2 textAlign="center">
+            {requiresTwoFactor
+              ? "🔐 Two-Factor Authentication"
+              : "🚀 Login to AT Protocol"}
+          </H2>
 
-          <form onSubmit={handleTwoFactorSubmit} className={styles.form}>
-            <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Verification Code:</label>
-              <input
-                type="text"
-                value={twoFactorCode}
-                onChange={(e) => setTwoFactorCode(e.target.value)}
-                placeholder="Enter 6-digit code"
-                maxLength={6}
-                className={styles.twoFactorInput}
-                required
-              />
-            </div>
+          {requiresTwoFactor && twoFactorChallenge ? (
+            <YStack space="$4">
+              <Card backgroundColor="$blue2" padding="$4">
+                <YStack space="$2">
+                  <Text>
+                    <Text fontWeight="bold">Method:</Text>{" "}
+                    {twoFactorChallenge.method.toUpperCase()}
+                  </Text>
+                  {twoFactorChallenge.destination && (
+                    <Text>
+                      <Text fontWeight="bold">Sent to:</Text>{" "}
+                      {twoFactorChallenge.destination}
+                    </Text>
+                  )}
+                  <Text>
+                    <Text fontWeight="bold">Expires:</Text>{" "}
+                    {twoFactorChallenge.expiresAt.toLocaleString()}
+                  </Text>
+                </YStack>
+              </Card>
 
-            {hasError && error && (
-              <div className={styles.errorMessage}>❌ {error.message}</div>
-            )}
+              <YStack space="$3">
+                <YStack space="$2">
+                  <Label fontSize="$4" fontWeight="600">
+                    Verification Code:
+                  </Label>
+                  <Input
+                    value={twoFactorCode}
+                    onChangeText={setTwoFactorCode}
+                    placeholder="Enter 6-digit code"
+                    maxLength={6}
+                    textAlign="center"
+                    fontSize="$6"
+                    fontWeight="600"
+                  />
+                </YStack>
 
-            <button
-              type="submit"
-              disabled={isLoading || !twoFactorCode}
-              className={
-                twoFactorCode
-                  ? styles.primaryButton
-                  : styles.primaryButtonDisabled
-              }
-            >
-              {isLoading ? "🔄 Verifying..." : "✅ Verify Code"}
-            </button>
-          </form>
-        </div>
-      ) : (
-        <div className={styles.authContent}>
-          <p className={styles.subtitle}>Connect to any AT Protocol service</p>
+                {hasError && error && (
+                  <Card backgroundColor="$red2" padding="$3">
+                    <Text color="$red10">❌ {error.message}</Text>
+                  </Card>
+                )}
 
-          <form onSubmit={handleLogin} className={styles.form}>
-            <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Service Endpoint:</label>
-              <div className={styles.endpointRow}>
-                <input
-                  type="url"
-                  value={loginForm.endpoint}
-                  onChange={(e) =>
-                    setLoginForm({ ...loginForm, endpoint: e.target.value })
-                  }
-                  placeholder="https://bsky.social"
-                  className={styles.endpointInput}
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={handleValidateEndpoint}
-                  disabled={endpointValidation.isValidating}
-                  className={styles.validateButton}
+                <Button
+                  onPress={() => handleTwoFactorSubmit({} as React.FormEvent)}
+                  disabled={isLoading || !twoFactorCode}
+                  backgroundColor="$green9"
+                  color="white"
+                  size="$4"
+                  fontWeight="600"
                 >
-                  {endpointValidation.isValidating ? "🔄" : "✓"}
-                </button>
-              </div>
-              {endpointValidation.isValid !== undefined && (
-                <small
-                  className={
-                    endpointValidation.isValid
-                      ? styles.validationSuccess
-                      : styles.validationError
-                  }
+                  {isLoading ? "🔄 Verifying..." : "✅ Verify Code"}
+                </Button>
+              </YStack>
+            </YStack>
+          ) : (
+            <YStack space="$4">
+              <Text textAlign="center">Connect to any AT Protocol service</Text>
+
+              <YStack space="$3">
+                <YStack space="$2">
+                  <Label fontSize="$4" fontWeight="600">
+                    Service Endpoint:
+                  </Label>
+                  <XStack space="$2">
+                    <Input
+                      flex={1}
+                      value={loginForm.endpoint}
+                      onChangeText={(text) =>
+                        setLoginForm({ ...loginForm, endpoint: text })
+                      }
+                      placeholder="https://bsky.social"
+                    />
+                    <Button
+                      onPress={handleValidateEndpoint}
+                      disabled={endpointValidation.isValidating}
+                      backgroundColor="$blue9"
+                      color="white"
+                      size="$3"
+                    >
+                      {endpointValidation.isValidating ? "🔄" : "✓"}
+                    </Button>
+                  </XStack>
+                  {endpointValidation.isValid !== undefined && (
+                    <Text
+                      fontSize="$2"
+                      color={endpointValidation.isValid ? "$green10" : "$red10"}
+                    >
+                      {endpointValidation.isValid
+                        ? "✅ Valid endpoint"
+                        : "❌ Invalid endpoint"}
+                    </Text>
+                  )}
+                </YStack>
+
+                <YStack space="$2">
+                  <Label fontSize="$4" fontWeight="600">
+                    Handle or Email:
+                  </Label>
+                  <Input
+                    value={loginForm.identifier}
+                    onChangeText={(text) =>
+                      setLoginForm({ ...loginForm, identifier: text })
+                    }
+                    placeholder="your.handle or email@example.com"
+                  />
+                </YStack>
+
+                <YStack space="$2">
+                  <Label fontSize="$4" fontWeight="600">
+                    Password:
+                  </Label>
+                  <Input
+                    secureTextEntry
+                    value={loginForm.password}
+                    onChangeText={(text) =>
+                      setLoginForm({ ...loginForm, password: text })
+                    }
+                    placeholder="Enter your password"
+                  />
+                </YStack>
+
+                {hasError && error && (
+                  <Card backgroundColor="$red2" padding="$3">
+                    <Text color="$red10">❌ {error.message}</Text>
+                  </Card>
+                )}
+
+                <Button
+                  onPress={() => handleLogin({} as React.FormEvent)}
+                  disabled={isLoading}
+                  backgroundColor="$blue9"
+                  color="white"
+                  size="$4"
+                  fontWeight="600"
                 >
-                  {endpointValidation.isValid
-                    ? "✅ Valid endpoint"
-                    : "❌ Invalid endpoint"}
-                </small>
-              )}
-            </div>
+                  {isAuthenticating ? "🔄 Connecting..." : "🚀 Connect"}
+                </Button>
+              </YStack>
 
-            <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Handle or Email:</label>
-              <input
-                type="text"
-                value={loginForm.identifier}
-                onChange={(e) =>
-                  setLoginForm({ ...loginForm, identifier: e.target.value })
-                }
-                placeholder="your.handle or email@example.com"
-                className={styles.formInput}
-                required
-              />
-            </div>
+              <Separator />
 
-            <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Password:</label>
-              <input
-                type="password"
-                value={loginForm.password}
-                onChange={(e) =>
-                  setLoginForm({ ...loginForm, password: e.target.value })
-                }
-                placeholder="Enter your password"
-                className={styles.formInput}
-                required
-              />
-            </div>
-
-            {hasError && error && (
-              <div className={styles.errorMessage}>❌ {error.message}</div>
-            )}
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className={
-                isLoading ? styles.primaryButtonDisabled : styles.primaryButton
-              }
-            >
-              {isAuthenticating ? "🔄 Connecting..." : "🚀 Connect"}
-            </button>
-          </form>
-
-          <div className={styles.featuresInfo}>
-            <h4>Features:</h4>
-            <ul>
-              <li>✅ Flexible endpoint configuration</li>
-              <li>🔐 Two-factor authentication</li>
-              <li>💾 Session persistence</li>
-              <li>🔄 Automatic token refresh</li>
-            </ul>
-          </div>
-        </div>
-      )}
-    </Modal>
+              <Card backgroundColor="$blue2" padding="$4">
+                <YStack space="$2">
+                  <Text fontWeight="600" fontSize="$4">
+                    Features:
+                  </Text>
+                  <YStack space="$1">
+                    <Text fontSize="$3">
+                      ✅ Flexible endpoint configuration
+                    </Text>
+                    <Text fontSize="$3">🔐 Two-factor authentication</Text>
+                    <Text fontSize="$3">💾 Session persistence</Text>
+                    <Text fontSize="$3">🔄 Automatic token refresh</Text>
+                  </YStack>
+                </YStack>
+              </Card>
+            </YStack>
+          )}
+        </YStack>
+      </Sheet.Frame>
+    </Sheet>
   );
 }
