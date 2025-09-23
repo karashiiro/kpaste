@@ -14,12 +14,15 @@
     "@atcute/atproto": "^3.1.4",
     "@atcute/client": "^4.0.3",
     "@atcute/lexicons": "^1.1.1",
+    "prismjs": "^1.30.0",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-simple-code-editor": "^0.14.1"
   },
   "devDependencies": {
     "@atcute/lex-cli": "^2.2.0",
     "@eslint/js": "^9.35.0",
+    "@types/prismjs": "^1.26.5",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react-swc": "^4.0.1",

@@ -2,255 +2,6 @@ import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../auth/useAuth";
 import type { Main as PasteRecord } from "../lexicons/types/moe/karashiiro/kpaste/paste";
 
-// Hook for paste CRUD operations
-function usePasteOperations() {
-  const { getClient, isAuthenticated, session } = useAuth();
-  const [pastes, setPastes] = useState<PasteListItem[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const loadPastes = useCallback(async () => {
-    const client = getClient();
-    if (!client || !isAuthenticated || !session?.did) {
-      setError("Not authenticated or missing DID");
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Use com.atproto.repo.listRecords to get our pastes (it's a query, so use get())
-      const response = await client.get("com.atproto.repo.listRecords", {
-        params: {
-          repo: session.did,
-          collection: "moe.karashiiro.kpaste.paste",
-          limit: 50,
-        },
-      });
-
-      if (response.ok) {
-        // The response records need to be cast more carefully
-        setPastes(response.data.records as unknown as PasteListItem[]);
-      } else {
-        console.error("API error:", response.data);
-        setError(`API error: ${response.status}`);
-      }
-    } catch (err) {
-      console.error("Failed to load pastes:", err);
-      setError(err instanceof Error ? err.message : "Failed to load pastes");
-    } finally {
-      setLoading(false);
-    }
-  }, [getClient, isAuthenticated, session?.did]);
-
-  const createPaste = useCallback(
-    async (form: CreatePasteForm) => {
-      const client = getClient();
-      if (!client || !isAuthenticated || !session?.did) {
-        setError("Not authenticated");
-        return false;
-      }
-
-      if (!form.content.trim()) {
-        setError("Content is required!");
-        return false;
-      }
-
-      setLoading(true);
-      setError(null);
-
-      try {
-        // Create a blob for the content
-        const contentBlob = new Blob([form.content], {
-          type: "text/plain",
-        });
-
-        // Upload the blob first
-        const blobResponse = await client.post("com.atproto.repo.uploadBlob", {
-          input: contentBlob,
-        });
-
-        if (!blobResponse.ok) {
-          throw new Error(`Failed to upload content: ${blobResponse.status}`);
-        }
-
-        // Create the paste record
-        const record = {
-          $type: "moe.karashiiro.kpaste.paste",
-          content: blobResponse.data.blob,
-          title: form.title || undefined,
-          language: form.language || "text",
-          createdAt: new Date().toISOString(),
-          expiresAt: form.expiresAt
-            ? new Date(form.expiresAt).toISOString()
-            : undefined,
-        };
-
-        const createResponse = await client.post(
-          "com.atproto.repo.createRecord",
-          {
-            input: {
-              repo: session.did,
-              collection: "moe.karashiiro.kpaste.paste",
-              record,
-            },
-          },
-        );
-
-        if (createResponse.ok) {
-          await loadPastes();
-          return true;
-        } else {
-          console.error("Create error:", createResponse.data);
-          setError(`Failed to create paste: ${createResponse.status}`);
-          return false;
-        }
-      } catch (err) {
-        console.error("Failed to create paste:", err);
-        setError(err instanceof Error ? err.message : "Failed to create paste");
-        return false;
-      } finally {
-        setLoading(false);
-      }
-    },
-    [getClient, isAuthenticated, session?.did, loadPastes],
-  );
-
-  const updatePaste = useCallback(
-    async (form: EditPasteForm) => {
-      const client = getClient();
-      if (!client || !isAuthenticated || !session?.did) {
-        setError("Not authenticated");
-        return false;
-      }
-
-      if (!form.content.trim()) {
-        setError("Content is required!");
-        return false;
-      }
-
-      setLoading(true);
-      setError(null);
-
-      try {
-        // Create a blob for the updated content
-        const contentBlob = new Blob([form.content], { type: "text/plain" });
-
-        // Upload the blob first
-        const blobResponse = await client.post("com.atproto.repo.uploadBlob", {
-          input: contentBlob,
-        });
-
-        if (!blobResponse.ok) {
-          throw new Error(`Failed to upload content: ${blobResponse.status}`);
-        }
-
-        // Extract the record key from the URI
-        const rkey = form.uri.split("/").pop();
-        if (!rkey) {
-          throw new Error("Invalid paste URI");
-        }
-
-        // Create the updated record
-        const updatedRecord = {
-          $type: "moe.karashiiro.kpaste.paste",
-          content: blobResponse.data.blob,
-          title: form.title || undefined,
-          language: form.language || "text",
-          createdAt: form.originalRecord.createdAt, // Keep original creation date
-          expiresAt: form.expiresAt
-            ? new Date(form.expiresAt).toISOString()
-            : undefined,
-        };
-
-        // Use putRecord to update the existing record
-        const updateResponse = await client.post("com.atproto.repo.putRecord", {
-          input: {
-            repo: session.did,
-            collection: "moe.karashiiro.kpaste.paste",
-            rkey: rkey,
-            record: updatedRecord,
-          },
-        });
-
-        if (updateResponse.ok) {
-          await loadPastes();
-          return true;
-        } else {
-          console.error("Update error:", updateResponse.data);
-          setError(`Failed to update paste: ${updateResponse.status}`);
-          return false;
-        }
-      } catch (err) {
-        console.error("Failed to update paste:", err);
-        setError(err instanceof Error ? err.message : "Failed to update paste");
-        return false;
-      } finally {
-        setLoading(false);
-      }
-    },
-    [getClient, isAuthenticated, session?.did, loadPastes],
-  );
-
-  const deletePaste = useCallback(
-    async (uri: string) => {
-      const client = getClient();
-      if (!client || !isAuthenticated || !session?.did) {
-        setError("Not authenticated");
-        return;
-      }
-
-      if (!confirm("Are you sure you want to delete this paste?")) {
-        return;
-      }
-
-      setLoading(true);
-      setError(null);
-
-      try {
-        // Extract the record key from the URI
-        const rkey = uri.split("/").pop();
-        if (!rkey) {
-          throw new Error("Invalid paste URI");
-        }
-
-        const response = await client.post("com.atproto.repo.deleteRecord", {
-          input: {
-            repo: session.did,
-            collection: "moe.karashiiro.kpaste.paste",
-            rkey,
-          },
-        });
-
-        if (response.ok) {
-          await loadPastes();
-        } else {
-          console.error("Delete error:", response.data);
-          setError(`Failed to delete paste: ${response.status}`);
-        }
-      } catch (err) {
-        console.error("Failed to delete paste:", err);
-        setError(err instanceof Error ? err.message : "Failed to delete paste");
-      } finally {
-        setLoading(false);
-      }
-    },
-    [getClient, isAuthenticated, session?.did, loadPastes],
-  );
-
-  return {
-    pastes,
-    setPastes,
-    loading,
-    error,
-    loadPastes,
-    createPaste,
-    updatePaste,
-    deletePaste,
-  };
-}
-
 // Hook for form state management
 function usePasteForm() {
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -419,12 +170,247 @@ const defaultCreateForm: CreatePasteForm = {
 };
 
 export function usePasteManager(): UsePasteManagerReturn {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, getClient, session } = useAuth();
 
-  // Use the smaller hooks to compose functionality
-  const operations = usePasteOperations();
+  // CRUD operations state - moved back from usePasteOperations
+  const [pastes, setPastes] = useState<PasteListItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Use the smaller hooks for form and blob handling
   const forms = usePasteForm();
-  const blobContent = useBlobContent(operations.pastes, operations.setPastes);
+  const blobContent = useBlobContent(pastes, setPastes);
+
+  // CRUD operations - moved back from usePasteOperations
+  const loadPastes = useCallback(async () => {
+    const client = getClient();
+    if (!client || !isAuthenticated || !session?.did) {
+      setError("Not authenticated or missing DID");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Use com.atproto.repo.listRecords to get our pastes (it's a query, so use get())
+      const response = await client.get("com.atproto.repo.listRecords", {
+        params: {
+          repo: session.did,
+          collection: "moe.karashiiro.kpaste.paste",
+          limit: 50,
+        },
+      });
+
+      if (response.ok) {
+        // The response records need to be cast more carefully
+        setPastes(response.data.records as unknown as PasteListItem[]);
+      } else {
+        console.error("API error:", response.data);
+        setError(`API error: ${response.status}`);
+      }
+    } catch (err) {
+      console.error("Failed to load pastes:", err);
+      setError(err instanceof Error ? err.message : "Failed to load pastes");
+    } finally {
+      setLoading(false);
+    }
+  }, [getClient, isAuthenticated, session?.did]);
+
+  const createPasteOperation = useCallback(
+    async (form: CreatePasteForm) => {
+      const client = getClient();
+      if (!client || !isAuthenticated || !session?.did) {
+        setError("Not authenticated");
+        return false;
+      }
+
+      if (!form.content.trim()) {
+        setError("Content is required!");
+        return false;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        // Create a blob for the content
+        const contentBlob = new Blob([form.content], {
+          type: "text/plain",
+        });
+
+        // Upload the blob first
+        const blobResponse = await client.post("com.atproto.repo.uploadBlob", {
+          input: contentBlob,
+        });
+
+        if (!blobResponse.ok) {
+          throw new Error(`Failed to upload content: ${blobResponse.status}`);
+        }
+
+        // Create the paste record
+        const record = {
+          $type: "moe.karashiiro.kpaste.paste",
+          content: blobResponse.data.blob,
+          title: form.title || undefined,
+          language: form.language || "text",
+          createdAt: new Date().toISOString(),
+          expiresAt: form.expiresAt
+            ? new Date(form.expiresAt).toISOString()
+            : undefined,
+        };
+
+        const createResponse = await client.post(
+          "com.atproto.repo.createRecord",
+          {
+            input: {
+              repo: session.did,
+              collection: "moe.karashiiro.kpaste.paste",
+              record,
+            },
+          },
+        );
+
+        if (createResponse.ok) {
+          await loadPastes();
+          return true;
+        } else {
+          console.error("Create error:", createResponse.data);
+          setError(`Failed to create paste: ${createResponse.status}`);
+          return false;
+        }
+      } catch (err) {
+        console.error("Failed to create paste:", err);
+        setError(err instanceof Error ? err.message : "Failed to create paste");
+        return false;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [getClient, isAuthenticated, session?.did, loadPastes],
+  );
+
+  const updatePasteOperation = useCallback(
+    async (form: EditPasteForm) => {
+      const client = getClient();
+      if (!client || !isAuthenticated || !session?.did) {
+        setError("Not authenticated");
+        return false;
+      }
+
+      if (!form.content.trim()) {
+        setError("Content is required!");
+        return false;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        // Create a blob for the updated content
+        const contentBlob = new Blob([form.content], { type: "text/plain" });
+
+        // Upload the blob first
+        const blobResponse = await client.post("com.atproto.repo.uploadBlob", {
+          input: contentBlob,
+        });
+
+        if (!blobResponse.ok) {
+          throw new Error(`Failed to upload content: ${blobResponse.status}`);
+        }
+
+        // Extract the record key from the URI
+        const rkey = form.uri.split("/").pop();
+        if (!rkey) {
+          throw new Error("Invalid paste URI");
+        }
+
+        // Create the updated record
+        const updatedRecord = {
+          $type: "moe.karashiiro.kpaste.paste",
+          content: blobResponse.data.blob,
+          title: form.title || undefined,
+          language: form.language || "text",
+          createdAt: form.originalRecord.createdAt, // Keep original creation date
+          expiresAt: form.expiresAt
+            ? new Date(form.expiresAt).toISOString()
+            : undefined,
+        };
+
+        // Use putRecord to update the existing record
+        const updateResponse = await client.post("com.atproto.repo.putRecord", {
+          input: {
+            repo: session.did,
+            collection: "moe.karashiiro.kpaste.paste",
+            rkey: rkey,
+            record: updatedRecord,
+          },
+        });
+
+        if (updateResponse.ok) {
+          await loadPastes();
+          return true;
+        } else {
+          console.error("Update error:", updateResponse.data);
+          setError(`Failed to update paste: ${updateResponse.status}`);
+          return false;
+        }
+      } catch (err) {
+        console.error("Failed to update paste:", err);
+        setError(err instanceof Error ? err.message : "Failed to update paste");
+        return false;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [getClient, isAuthenticated, session?.did, loadPastes],
+  );
+
+  const deletePaste = useCallback(
+    async (uri: string) => {
+      const client = getClient();
+      if (!client || !isAuthenticated || !session?.did) {
+        setError("Not authenticated");
+        return;
+      }
+
+      if (!confirm("Are you sure you want to delete this paste?")) {
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        // Extract the record key from the URI
+        const rkey = uri.split("/").pop();
+        if (!rkey) {
+          throw new Error("Invalid paste URI");
+        }
+
+        const response = await client.post("com.atproto.repo.deleteRecord", {
+          input: {
+            repo: session.did,
+            collection: "moe.karashiiro.kpaste.paste",
+            rkey,
+          },
+        });
+
+        if (response.ok) {
+          await loadPastes();
+        } else {
+          console.error("Delete error:", response.data);
+          setError(`Failed to delete paste: ${response.status}`);
+        }
+      } catch (err) {
+        console.error("Failed to delete paste:", err);
+        setError(err instanceof Error ? err.message : "Failed to delete paste");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [getClient, isAuthenticated, session?.did, loadPastes],
+  );
 
   // Edit functionality using form and operations
   const startEdit = useCallback(
@@ -432,9 +418,7 @@ export function usePasteManager(): UsePasteManagerReturn {
       if (!paste.content) {
         // Need to fetch content first before editing
         blobContent.fetchBlobContent(paste.uri).then(() => {
-          const updatedPaste = operations.pastes.find(
-            (p) => p.uri === paste.uri,
-          );
+          const updatedPaste = pastes.find((p) => p.uri === paste.uri);
           if (updatedPaste?.content) {
             forms.setEditForm({
               uri: paste.uri,
@@ -461,49 +445,49 @@ export function usePasteManager(): UsePasteManagerReturn {
         });
       }
     },
-    [blobContent, operations.pastes, forms],
+    [blobContent, pastes, forms],
   );
 
   // Wrapper functions for CRUD operations that handle form state
   const createPaste = useCallback(async () => {
-    const success = await operations.createPaste(forms.createForm);
+    const success = await createPasteOperation(forms.createForm);
     if (success) {
       forms.resetForm();
       forms.setShowCreateForm(false);
     }
-  }, [operations, forms]);
+  }, [createPasteOperation, forms]);
 
   const updatePaste = useCallback(async () => {
     if (!forms.editForm) return;
-    const success = await operations.updatePaste(forms.editForm);
+    const success = await updatePasteOperation(forms.editForm);
     if (success) {
       forms.cancelEdit();
     }
-  }, [operations, forms]);
+  }, [updatePasteOperation, forms]);
 
-  // Load pastes when authentication changes
+  // Load pastes when authentication changes - use stable dependencies
   useEffect(() => {
-    if (isAuthenticated) {
-      operations.loadPastes();
+    if (isAuthenticated && session?.did) {
+      loadPastes();
     }
-  }, [isAuthenticated, operations]);
+  }, [isAuthenticated, getClient, session?.did, loadPastes]);
 
   return {
-    // State from operations
-    pastes: operations.pastes,
-    loading: operations.loading,
-    error: operations.error,
+    // State - now local to this hook
+    pastes,
+    loading,
+    error,
 
     // Form state
     showCreateForm: forms.showCreateForm,
     createForm: forms.createForm,
     editForm: forms.editForm,
 
-    // Actions - mix of operations and form handling
-    loadPastes: operations.loadPastes,
+    // Actions - mix of local and form handling
+    loadPastes,
     createPaste,
     updatePaste,
-    deletePaste: operations.deletePaste,
+    deletePaste,
     fetchBlobContent: blobContent.fetchBlobContent,
     startEdit,
     cancelEdit: forms.cancelEdit,
