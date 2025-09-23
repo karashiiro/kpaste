@@ -40,8 +40,6 @@ jobs:
         with:
           node-version: lts/*
           cache: "pnpm"
-      - name: Enable corepack
-        run: corepack enable
       - name: Install dependencies
         run: pnpm install
       - name: Build
