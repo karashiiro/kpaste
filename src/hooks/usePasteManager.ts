@@ -5,6 +5,8 @@ import type { Main as PasteRecord } from "../lexicons/types/moe/karashiiro/kpast
 export interface PasteListItem {
   uri: string;
   value: PasteRecord;
+  content?: string; // Fetched blob content
+  contentLoading?: boolean; // Loading state for blob fetch
 }
 
 export interface CreatePasteForm {
@@ -28,6 +30,7 @@ export interface UsePasteManagerReturn {
   loadPastes: () => Promise<void>;
   createPaste: () => Promise<void>;
   deletePaste: (uri: string) => Promise<void>;
+  fetchBlobContent: (pasteUri: string) => Promise<void>;
   setShowCreateForm: (show: boolean) => void;
   setCreateForm: React.Dispatch<React.SetStateAction<CreatePasteForm>>;
   resetForm: () => void;
@@ -200,6 +203,84 @@ export function usePasteManager(): UsePasteManagerReturn {
     [getClient, isAuthenticated, session?.did, loadPastes],
   );
 
+  const fetchBlobContent = useCallback(
+    async (pasteUri: string) => {
+      const client = getClient();
+      if (!client || !isAuthenticated || !session?.did) {
+        return;
+      }
+
+      // Find the paste and its blob reference
+      const paste = pastes.find((p) => p.uri === pasteUri);
+      if (!paste || paste.content !== undefined) {
+        return; // Already fetched or not found
+      }
+
+      // Set loading state for this specific paste
+      setPastes((prev) =>
+        prev.map((p) =>
+          p.uri === pasteUri ? { ...p, contentLoading: true } : p,
+        ),
+      );
+
+      try {
+        // Extract the CID from the blob reference
+        // AT Protocol blob structure should be: { $type: "blob", ref: { $link: "cid..." }, mimeType: "...", size: number }
+        let cid: string;
+        const content = paste.value.content;
+
+        if (content && "ref" in content) {
+          const ref = content.ref;
+          cid = ref.$link;
+        } else {
+          throw new Error("Could not extract CID from blob reference");
+        }
+
+        // Get the blob using com.atproto.sync.getBlob
+        const response = await client.get("com.atproto.sync.getBlob", {
+          params: {
+            did: session.did,
+            cid: cid,
+          },
+          as: "blob",
+        });
+
+        if (response.ok) {
+          // Response data is a web Blob, use .text() to get string content
+          const blob = response.data as Blob;
+          const text = await blob.text();
+
+          // Update the paste with the fetched content
+          setPastes((prev) =>
+            prev.map((p) =>
+              p.uri === pasteUri
+                ? { ...p, content: text, contentLoading: false }
+                : p,
+            ),
+          );
+        } else {
+          console.error("Failed to fetch blob:", response.data);
+          setError(`Failed to fetch content: ${response.status}`);
+          // Set loading to false on error
+          setPastes((prev) =>
+            prev.map((p) =>
+              p.uri === pasteUri ? { ...p, contentLoading: false } : p,
+            ),
+          );
+        }
+      } catch (err) {
+        console.error("Failed to fetch blob content:", err);
+        // Set loading to false on error
+        setPastes((prev) =>
+          prev.map((p) =>
+            p.uri === pasteUri ? { ...p, contentLoading: false } : p,
+          ),
+        );
+      }
+    },
+    [getClient, isAuthenticated, session?.did, pastes],
+  );
+
   const resetForm = useCallback(() => {
     setCreateForm(defaultCreateForm);
   }, []);
@@ -225,6 +306,7 @@ export function usePasteManager(): UsePasteManagerReturn {
     loadPastes,
     createPaste,
     deletePaste,
+    fetchBlobContent,
     setShowCreateForm,
     setCreateForm,
     resetForm,

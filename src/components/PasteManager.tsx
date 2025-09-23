@@ -13,6 +13,7 @@ export function PasteManager() {
     loadPastes,
     createPaste,
     deletePaste,
+    fetchBlobContent,
     setShowCreateForm,
     setCreateForm,
   } = usePasteManager();
@@ -164,10 +165,27 @@ export function PasteManager() {
                 <strong>URI:</strong>{" "}
                 <code className={styles.pasteUri}>{paste.uri}</code>
               </p>
-              <p className={styles.pasteMetadata}>
-                <strong>Content:</strong> Blob reference (
-                {paste.value.content?.mimeType || "unknown type"})
-              </p>
+              <div className={styles.pasteMetadata}>
+                <strong>Content:</strong>
+                {paste.content ? (
+                  <div className={styles.contentDisplay}>
+                    <pre className={styles.contentText}>{paste.content}</pre>
+                  </div>
+                ) : paste.contentLoading ? (
+                  <span className={styles.loadingText}>
+                    {" "}
+                    Loading content...
+                  </span>
+                ) : (
+                  <button
+                    onClick={() => fetchBlobContent(paste.uri)}
+                    className={styles.loadContentButton}
+                    disabled={loading}
+                  >
+                    📄 Load Content
+                  </button>
+                )}
+              </div>
 
               <div className={styles.pasteActions}>
                 <button
