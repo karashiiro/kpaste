@@ -1,0 +1,192 @@
+.pasteManager {
+  padding: 20px;
+}
+
+.buttonGroup {
+  margin-bottom: 20px;
+}
+
+.button {
+  margin-right: 10px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.primaryButton {
+  composes: button;
+  background-color: #007bff;
+  color: white;
+}
+
+.primaryButton:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.successButton {
+  composes: button;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+}
+
+.successButton:hover:not(:disabled) {
+  background-color: #1e7e34;
+}
+
+.dangerButton {
+  composes: button;
+  background-color: #dc3545;
+  color: white;
+  padding: 6px 12px;
+}
+
+.dangerButton:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.disabledButton {
+  composes: button;
+  background-color: #6c757d;
+  color: white;
+  padding: 6px 12px;
+  cursor: not-allowed;
+}
+
+.createForm {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.formGroup {
+  margin-bottom: 10px;
+}
+
+.formLabel {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+.formInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.formTextarea {
+  composes: formInput;
+  height: 200px;
+  font-family: "Courier New", monospace;
+  resize: vertical;
+}
+
+.formRow {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.formColumn {
+  flex: 1;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.checkbox {
+  margin-right: 8px;
+}
+
+.errorMessage {
+  color: #dc3545;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+}
+
+.emptyState {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  margin: 20px 0;
+}
+
+.pasteList {
+  margin-top: 20px;
+}
+
+.pasteItem {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.pasteItem:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-color: #007bff;
+}
+
+.pasteTitle {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.pasteMetadata {
+  margin: 5px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.pasteMetadata strong {
+  color: #333;
+}
+
+.pasteUri {
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  background-color: #f8f9fa;
+  padding: 2px 4px;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+.pasteActions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.loadingText {
+  color: #6c757d;
+  font-style: italic;
+}
