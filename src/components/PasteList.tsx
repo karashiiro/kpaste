@@ -44,12 +44,6 @@ export function PasteList({
             <strong>Created:</strong>{" "}
             {new Date(paste.value.createdAt).toLocaleString()}
           </p>
-          {paste.value.expiresAt && (
-            <p className={styles.pasteMetadata}>
-              <strong>Expires:</strong>{" "}
-              {new Date(paste.value.expiresAt).toLocaleString()}
-            </p>
-          )}
           <p className={styles.pasteMetadata}>
             <strong>URI:</strong>{" "}
             <code className={styles.pasteUri}>{paste.uri}</code>

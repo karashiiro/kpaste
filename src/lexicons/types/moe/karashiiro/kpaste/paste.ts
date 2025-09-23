@@ -8,7 +8,6 @@ const _mainSchema = /*#__PURE__*/ v.record(
     $type: /*#__PURE__*/ v.literal("moe.karashiiro.kpaste.paste"),
     content: /*#__PURE__*/ v.blob(),
     createdAt: /*#__PURE__*/ v.datetimeString(),
-    expiresAt: /*#__PURE__*/ v.optional(/*#__PURE__*/ v.datetimeString()),
     language: /*#__PURE__*/ v.optional(
       /*#__PURE__*/ v.constrain(/*#__PURE__*/ v.string(), [
         /*#__PURE__*/ v.stringLength(0, 50),

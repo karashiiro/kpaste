@@ -129,7 +129,6 @@ export interface CreatePasteForm {
   title: string;
   content: string;
   language: string;
-  expiresAt: string;
 }
 
 export interface EditPasteForm extends CreatePasteForm {
@@ -166,7 +165,6 @@ const defaultCreateForm: CreatePasteForm = {
   title: "",
   content: "",
   language: "text",
-  expiresAt: "",
 };
 
 export function usePasteManager(): UsePasteManagerReturn {
@@ -255,9 +253,6 @@ export function usePasteManager(): UsePasteManagerReturn {
           title: form.title || undefined,
           language: form.language || "text",
           createdAt: new Date().toISOString(),
-          expiresAt: form.expiresAt
-            ? new Date(form.expiresAt).toISOString()
-            : undefined,
         };
 
         const createResponse = await client.post(
@@ -332,9 +327,6 @@ export function usePasteManager(): UsePasteManagerReturn {
           title: form.title || undefined,
           language: form.language || "text",
           createdAt: form.originalRecord.createdAt, // Keep original creation date
-          expiresAt: form.expiresAt
-            ? new Date(form.expiresAt).toISOString()
-            : undefined,
         };
 
         // Use putRecord to update the existing record
@@ -426,9 +418,6 @@ export function usePasteManager(): UsePasteManagerReturn {
               title: paste.value.title || "",
               content: updatedPaste.content,
               language: paste.value.language || "text",
-              expiresAt: paste.value.expiresAt
-                ? new Date(paste.value.expiresAt).toISOString().slice(0, 16)
-                : "",
             });
           }
         });
@@ -439,9 +428,6 @@ export function usePasteManager(): UsePasteManagerReturn {
           title: paste.value.title || "",
           content: paste.content,
           language: paste.value.language || "text",
-          expiresAt: paste.value.expiresAt
-            ? new Date(paste.value.expiresAt).toISOString().slice(0, 16)
-            : "",
         });
       }
     },

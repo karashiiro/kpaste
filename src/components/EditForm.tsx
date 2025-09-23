@@ -86,18 +86,6 @@ export function EditForm({
             <option value="markdown">Markdown</option>
           </select>
         </div>
-
-        <div className={styles.formColumn}>
-          <label className={styles.formLabel}>Expires At (optional):</label>
-          <input
-            type="datetime-local"
-            value={editForm.expiresAt}
-            onChange={(e) =>
-              onFormChange({ ...editForm, expiresAt: e.target.value })
-            }
-            className={styles.formInput}
-          />
-        </div>
       </div>
 
       <div className={styles.infoNote}>

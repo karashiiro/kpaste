@@ -87,18 +87,6 @@ export function CreateForm({
             <option value="markdown">Markdown</option>
           </select>
         </div>
-
-        <div className={styles.formColumn}>
-          <label className={styles.formLabel}>Expires At (optional):</label>
-          <input
-            type="datetime-local"
-            value={createForm.expiresAt}
-            onChange={(e) =>
-              onFormChange({ ...createForm, expiresAt: e.target.value })
-            }
-            className={styles.formInput}
-          />
-        </div>
       </div>
 
       <button

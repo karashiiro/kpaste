@@ -28,11 +28,6 @@
             "maxLength": 50,
             "default": "text"
           },
-          "expiresAt": {
-            "type": "string",
-            "format": "datetime",
-            "description": "When the paste expires (optional)"
-          },
           "createdAt": {
             "type": "string",
             "format": "datetime",

@@ -25,14 +25,6 @@ export function PasteView() {
               <span>{paste.value.language || "text"}</span>
               <span>•</span>
               <span>{new Date(paste.value.createdAt).toLocaleString()}</span>
-              {paste.value.expiresAt && (
-                <>
-                  <span>•</span>
-                  <span>
-                    expires {new Date(paste.value.expiresAt).toLocaleString()}
-                  </span>
-                </>
-              )}
             </div>
           </div>
         </div>
