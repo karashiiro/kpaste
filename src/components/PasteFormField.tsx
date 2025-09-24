@@ -18,7 +18,7 @@ export function PasteFormField({
   size = "$4",
 }: PasteFormFieldProps) {
   return (
-    <YStack space="$2">
+    <YStack gap="$2">
       <Label fontSize="$4" fontWeight="500">
         {label}
         {required && " *"}

@@ -57,7 +57,7 @@ export function PasteList({
   if (pastes.length === 0) {
     return (
       <Card padding="$6" marginTop="$4" alignItems="center">
-        <XStack alignItems="center" space="$2">
+        <XStack alignItems="center" gap="$2">
           <DocumentTextIcon width={24} height={24} />
           <Text fontSize="$5" textAlign="center">
             No pastes found. Create your first paste!
@@ -72,9 +72,9 @@ export function PasteList({
   }
 
   return (
-    <YStack space="$5">
+    <YStack gap="$5">
       {pastes.map((paste) => (
-        <Card key={paste.uri} padding="$5" space="$4" bordered>
+        <Card key={paste.uri} padding="$5" gap="$4" bordered>
           {userHandle ? (
             (() => {
               // Extract rkey from URI for view link
@@ -88,7 +88,7 @@ export function PasteList({
                 >
                   <XStack
                     alignItems="center"
-                    space="$2"
+                    gap="$2"
                     pressStyle={{ opacity: 0.7 }}
                   >
                     <DocumentTextIcon width={24} height={24} />
@@ -100,7 +100,7 @@ export function PasteList({
               );
             })()
           ) : (
-            <XStack alignItems="center" space="$2">
+            <XStack alignItems="center" gap="$2">
               <DocumentTextIcon width={24} height={24} />
               <Text fontSize="$7" fontWeight="600" color="$color">
                 {paste.value.title || "Untitled Paste"}
@@ -108,9 +108,9 @@ export function PasteList({
             </XStack>
           )}
 
-          <YStack space="$3">
-            <XStack alignItems="center" space="$3" flexWrap="wrap">
-              <XStack alignItems="center" space="$2">
+          <YStack gap="$3">
+            <XStack alignItems="center" gap="$3" flexWrap="wrap">
+              <XStack alignItems="center" gap="$2">
                 <Text fontSize="$4" fontWeight="500">
                   Language:
                 </Text>
@@ -121,7 +121,7 @@ export function PasteList({
 
               <Text fontSize="$4">•</Text>
 
-              <XStack alignItems="center" space="$2">
+              <XStack alignItems="center" gap="$2">
                 <Text fontSize="$4" fontWeight="500">
                   Created:
                 </Text>
@@ -132,7 +132,7 @@ export function PasteList({
 
               {paste.value.updatedAt &&
                 paste.value.updatedAt !== paste.value.createdAt && (
-                  <XStack alignItems="center" space="$2">
+                  <XStack alignItems="center" gap="$2">
                     <Text fontSize="$4" fontWeight="500">
                       Updated:
                     </Text>
@@ -143,7 +143,7 @@ export function PasteList({
                 )}
             </XStack>
 
-            <YStack space="$2">
+            <YStack gap="$2">
               <Text fontSize="$4" fontWeight="500">
                 URI:
               </Text>
@@ -151,7 +151,7 @@ export function PasteList({
             </YStack>
           </YStack>
 
-          <YStack space="$2">
+          <YStack gap="$2">
             <Text fontSize="$3" fontWeight="500">
               Content:
             </Text>
@@ -179,7 +179,7 @@ export function PasteList({
                 </ScrollView>
               </Card>
             ) : paste.contentLoading ? (
-              <XStack alignItems="center" space="$2">
+              <XStack alignItems="center" gap="$2">
                 <ArrowPathIcon
                   width={16}
                   height={16}
@@ -188,7 +188,7 @@ export function PasteList({
                 <Text fontSize="$3">Loading content...</Text>
               </XStack>
             ) : (
-              <XStack alignItems="center" space="$2">
+              <XStack alignItems="center" gap="$2">
                 <ClockIcon width={16} height={16} />
                 <Text fontSize="$3">Content will load automatically...</Text>
               </XStack>
@@ -197,9 +197,9 @@ export function PasteList({
 
           {/* Only show edit/delete buttons if current user owns this paste */}
           {currentUserSession && userHandle === currentUserSession.handle && (
-            <XStack space="$3" marginTop="$4">
+            <XStack gap="$3" marginTop="$4">
               <Button onPress={() => startEdit(paste)} size="$4" flex={1}>
-                <XStack alignItems="center" space="$2">
+                <XStack alignItems="center" gap="$2">
                   <PencilIcon width={20} height={20} />
                   <Text>Edit</Text>
                 </XStack>
@@ -212,7 +212,7 @@ export function PasteList({
                 size="$4"
                 flex={1}
               >
-                <XStack alignItems="center" space="$2">
+                <XStack alignItems="center" gap="$2">
                   {deleteLoading ? (
                     <ArrowPathIcon
                       width={20}
@@ -230,7 +230,7 @@ export function PasteList({
 
           {deleteError && (
             <Card theme="red" padding="$3">
-              <XStack alignItems="center" space="$2">
+              <XStack alignItems="center" gap="$2">
                 <XMarkIcon width={20} height={20} />
                 <Text fontWeight="600">Error: {deleteError}</Text>
               </XStack>
@@ -239,7 +239,7 @@ export function PasteList({
 
           {updateError && (
             <Card theme="red" padding="$3">
-              <XStack alignItems="center" space="$2">
+              <XStack alignItems="center" gap="$2">
                 <XMarkIcon width={20} height={20} />
                 <Text fontWeight="600">Error: {updateError}</Text>
               </XStack>

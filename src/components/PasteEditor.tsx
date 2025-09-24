@@ -49,9 +49,9 @@ export function PasteEditor() {
         width="100%"
         flex={1}
       >
-        <YStack space="$6">
-          <YStack space="$2">
-            <XStack alignItems="center" space="$2">
+        <YStack gap="$6">
+          <YStack gap="$2">
+            <XStack alignItems="center" gap="$2">
               <SparklesIcon width={32} height={32} />
               <Text fontSize="$8" fontWeight="700">
                 Create New Paste
@@ -71,7 +71,7 @@ export function PasteEditor() {
 
           {error && (
             <Card theme="red" padding="$3">
-              <XStack alignItems="center" space="$2">
+              <XStack alignItems="center" gap="$2">
                 <XMarkIcon width={20} height={20} />
                 <Text fontWeight="600">Error: {error}</Text>
               </XStack>

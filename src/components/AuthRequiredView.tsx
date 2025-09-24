@@ -15,7 +15,7 @@ export function AuthRequiredView({
 }: AuthRequiredViewProps) {
   return (
     <View flex={1} justifyContent="center" alignItems="center" padding="$6">
-      <YStack space="$4" alignItems="center" maxWidth={400}>
+      <YStack gap="$4" alignItems="center" maxWidth={400}>
         <Text fontSize="$8" fontWeight="700" textAlign="center">
           {title}
         </Text>

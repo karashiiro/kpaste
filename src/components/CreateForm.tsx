@@ -23,15 +23,15 @@ export function CreateForm({
   onSubmit,
 }: CreateFormProps) {
   return (
-    <Card padding="$4" space="$4">
-      <XStack alignItems="center" space="$2">
+    <Card padding="$4" gap="$4">
+      <XStack alignItems="center" gap="$2">
         <SparklesIcon width={24} height={24} />
         <Text fontSize="$6" fontWeight="600" color="$color">
           Create New Paste
         </Text>
       </XStack>
 
-      <YStack space="$3">
+      <YStack gap="$3">
         <PasteFormField
           label="Title (optional):"
           value={createForm.title}
@@ -39,7 +39,7 @@ export function CreateForm({
           placeholder="Enter a title for your paste..."
         />
 
-        <YStack space="$2">
+        <YStack gap="$2">
           <Text fontSize="$4" fontWeight="500">
             Content:
           </Text>
@@ -50,7 +50,7 @@ export function CreateForm({
           />
         </YStack>
 
-        <YStack space="$2">
+        <YStack gap="$2">
           <Text fontSize="$4" fontWeight="500">
             Language:
           </Text>
@@ -63,7 +63,7 @@ export function CreateForm({
         </YStack>
 
         <Card theme="blue" padding="$3">
-          <XStack alignItems="center" space="$2">
+          <XStack alignItems="center" gap="$2">
             <DocumentTextIcon width={16} height={16} />
             <Text fontSize="$3">
               Note: All pastes are public in AT Protocol repos
@@ -78,7 +78,7 @@ export function CreateForm({
           size="$4"
           marginTop="$2"
         >
-          <XStack alignItems="center" space="$2">
+          <XStack alignItems="center" gap="$2">
             {loading ? (
               <ArrowPathIcon width={20} height={20} className="animate-spin" />
             ) : (

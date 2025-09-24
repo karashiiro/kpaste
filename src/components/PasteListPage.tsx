@@ -30,10 +30,10 @@ export function PasteListPage() {
         width="100%"
         flex={1}
       >
-        <YStack space="$6">
-          <YStack space="$4">
-            <YStack space="$2">
-              <XStack alignItems="center" space="$2">
+        <YStack gap="$6">
+          <YStack gap="$4">
+            <YStack gap="$2">
+              <XStack alignItems="center" gap="$2">
                 <BookOpenIcon width={32} height={32} />
                 <Text fontSize="$8" fontWeight="700">
                   {isViewingOwnPastes
@@ -54,14 +54,14 @@ export function PasteListPage() {
 
             {/* Only show create button when viewing your own pastes or when unauthenticated */}
             {(!isAuthenticated || isViewingOwnPastes) && (
-              <XStack space="$3" flexWrap="wrap">
+              <XStack gap="$3" flexWrap="wrap">
                 {isAuthenticated ? (
                   <Link
                     to="/"
                     style={{ textDecoration: "none", flex: 1, minWidth: 120 }}
                   >
                     <Button theme="green" size="$4" width="100%">
-                      <XStack alignItems="center" space="$2">
+                      <XStack alignItems="center" gap="$2">
                         <SparklesIcon width={20} height={20} />
                         <Text>Create New Paste</Text>
                       </XStack>
@@ -74,7 +74,7 @@ export function PasteListPage() {
                     width="100%"
                     onPress={() => setIsAuthModalOpen(true)}
                   >
-                    <XStack alignItems="center" space="$2">
+                    <XStack alignItems="center" gap="$2">
                       <SparklesIcon width={20} height={20} />
                       <Text>Login to Create Paste</Text>
                     </XStack>

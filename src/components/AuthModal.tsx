@@ -140,10 +140,10 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         padding="$4"
         justifyContent="center"
         alignItems="center"
-        space="$5"
+        gap="$5"
       >
-        <YStack space="$4" maxWidth={400} width="100%">
-          <XStack justifyContent="center" alignItems="center" space="$2">
+        <YStack gap="$4" maxWidth={400} width="100%">
+          <XStack justifyContent="center" alignItems="center" gap="$2">
             {requiresTwoFactor ? (
               <LockClosedIcon width={32} height={32} />
             ) : (
@@ -157,9 +157,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           </XStack>
 
           {requiresTwoFactor && twoFactorChallenge ? (
-            <YStack space="$4">
+            <YStack gap="$4">
               <Card backgroundColor="$blue2" padding="$4">
-                <YStack space="$2">
+                <YStack gap="$2">
                   <Text>
                     <Text fontWeight="bold">Method:</Text>{" "}
                     {twoFactorChallenge.method.toUpperCase()}
@@ -177,8 +177,8 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 </YStack>
               </Card>
 
-              <YStack space="$3">
-                <YStack space="$2">
+              <YStack gap="$3">
+                <YStack gap="$2">
                   <Label fontSize="$4" fontWeight="600">
                     Verification Code:
                   </Label>
@@ -195,7 +195,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
                 {hasError && error && (
                   <Card backgroundColor="$red2" padding="$3">
-                    <XStack alignItems="center" space="$2">
+                    <XStack alignItems="center" gap="$2">
                       <XMarkIcon width={20} height={20} color="red" />
                       <Text color="$red10">{error.message}</Text>
                     </XStack>
@@ -210,7 +210,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   size="$4"
                   fontWeight="600"
                 >
-                  <XStack alignItems="center" space="$2">
+                  <XStack alignItems="center" gap="$2">
                     {isLoading ? (
                       <ArrowPathIcon width={20} height={20} color="white" />
                     ) : (
@@ -224,15 +224,15 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               </YStack>
             </YStack>
           ) : (
-            <YStack space="$4">
+            <YStack gap="$4">
               <Text textAlign="center">Connect to any AT Protocol service</Text>
 
-              <YStack space="$3">
-                <YStack space="$2">
+              <YStack gap="$3">
+                <YStack gap="$2">
                   <Label fontSize="$4" fontWeight="600">
                     Service Endpoint:
                   </Label>
-                  <XStack space="$2">
+                  <XStack gap="$2">
                     <Input
                       flex={1}
                       value={loginForm.endpoint}
@@ -256,7 +256,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                     </Button>
                   </XStack>
                   {endpointValidation.isValid !== undefined && (
-                    <XStack alignItems="center" space="$1">
+                    <XStack alignItems="center" gap="$1">
                       {endpointValidation.isValid ? (
                         <CheckCircleIcon width={16} height={16} color="green" />
                       ) : (
@@ -280,7 +280,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   )}
                 </YStack>
 
-                <YStack space="$2">
+                <YStack gap="$2">
                   <Label fontSize="$4" fontWeight="600">
                     Handle or Email:
                   </Label>
@@ -293,7 +293,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   />
                 </YStack>
 
-                <YStack space="$2">
+                <YStack gap="$2">
                   <Label fontSize="$4" fontWeight="600">
                     Password:
                   </Label>
@@ -309,7 +309,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
                 {hasError && error && (
                   <Card backgroundColor="$red2" padding="$3">
-                    <XStack alignItems="center" space="$2">
+                    <XStack alignItems="center" gap="$2">
                       <XMarkIcon width={20} height={20} color="red" />
                       <Text color="$red10">{error.message}</Text>
                     </XStack>
@@ -324,7 +324,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   size="$4"
                   fontWeight="600"
                 >
-                  <XStack alignItems="center" space="$2">
+                  <XStack alignItems="center" gap="$2">
                     {isAuthenticating ? (
                       <ArrowPathIcon width={20} height={20} color="white" />
                     ) : (
@@ -340,24 +340,24 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               <Separator />
 
               <Card backgroundColor="$blue2" padding="$4">
-                <YStack space="$2">
+                <YStack gap="$2">
                   <Text fontWeight="600" fontSize="$4">
                     Features:
                   </Text>
-                  <YStack space="$2">
-                    <XStack alignItems="center" space="$2">
+                  <YStack gap="$2">
+                    <XStack alignItems="center" gap="$2">
                       <ServerIcon width={16} height={16} />
                       <Text fontSize="$3">Flexible endpoint configuration</Text>
                     </XStack>
-                    <XStack alignItems="center" space="$2">
+                    <XStack alignItems="center" gap="$2">
                       <ShieldCheckIcon width={16} height={16} />
                       <Text fontSize="$3">Two-factor authentication</Text>
                     </XStack>
-                    <XStack alignItems="center" space="$2">
+                    <XStack alignItems="center" gap="$2">
                       <CheckCircleIcon width={16} height={16} />
                       <Text fontSize="$3">Session persistence</Text>
                     </XStack>
-                    <XStack alignItems="center" space="$2">
+                    <XStack alignItems="center" gap="$2">
                       <ClockIcon width={16} height={16} />
                       <Text fontSize="$3">Automatic token refresh</Text>
                     </XStack>

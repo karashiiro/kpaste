@@ -38,11 +38,11 @@ export function PasteView() {
         maxWidth={1200}
         marginHorizontal="auto"
         width="100%"
-        space="$4"
+        gap="$4"
       >
-        <YStack space="$2">
-          <XStack alignItems="center" space="$3" justifyContent="space-between">
-            <XStack alignItems="center" space="$2">
+        <YStack gap="$2">
+          <XStack alignItems="center" gap="$3" justifyContent="space-between">
+            <XStack alignItems="center" gap="$2">
               <DocumentTextIcon width={32} height={32} />
               <Text fontSize="$8" fontWeight="700">
                 {paste.value.title || "Untitled Paste"}
@@ -52,14 +52,14 @@ export function PasteView() {
             {/* Edit button for paste owner */}
             {isOwner && (
               <Button onPress={startEdit} size="$3" theme="blue">
-                <XStack alignItems="center" space="$1">
+                <XStack alignItems="center" gap="$1">
                   <PencilIcon width={16} height={16} />
                   <Text>Edit</Text>
                 </XStack>
               </Button>
             )}
           </XStack>
-          <XStack alignItems="center" space="$2">
+          <XStack alignItems="center" gap="$2">
             <Text fontSize="$4">
               by{" "}
               <Text fontWeight="600">

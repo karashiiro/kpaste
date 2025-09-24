@@ -28,7 +28,7 @@ export function AtUriLink({
         cursor="pointer"
         onPress={handleClick}
       >
-        <XStack alignItems="center" space="$2" justifyContent="space-between">
+        <XStack alignItems="center" gap="$2" justifyContent="space-between">
           <Text
             fontSize={fontSize}
             fontFamily="$mono"
@@ -52,7 +52,7 @@ export function AtUriLink({
       cursor="pointer"
       onPress={handleClick}
     >
-      <XStack alignItems="center" space="$2" justifyContent="space-between">
+      <XStack alignItems="center" gap="$2" justifyContent="space-between">
         <Text fontSize={fontSize} fontFamily="$mono" flex={1}>
           {showLabel && (
             <>

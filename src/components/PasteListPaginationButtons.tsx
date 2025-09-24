@@ -20,7 +20,7 @@ export function PasteListPaginationButtons() {
   };
 
   return (
-    <XStack space="$3" justifyContent="center" alignItems="center">
+    <XStack gap="$3" justifyContent="center" alignItems="center">
       <Button onPress={handlePrevPage} size="$4" theme="blue">
         Previous
       </Button>

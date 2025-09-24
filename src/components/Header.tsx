@@ -21,7 +21,7 @@ export function Header({ onLoginClick }: HeaderProps) {
         textDecoration: "none",
       }}
     >
-      <XStack alignItems="center" space="$2">
+      <XStack alignItems="center" gap="$2">
         <SparklesIcon width={20} height={20} color="white" />
         <Text color="white" fontWeight="600">
           Create Paste
@@ -41,13 +41,13 @@ export function Header({ onLoginClick }: HeaderProps) {
       size="$4"
       borderRadius="$10"
     >
-      <XStack alignItems="center" space="$2">
+      <XStack alignItems="center" gap="$2">
         <RocketLaunchIcon width={20} height={20} color="white" />
         <Text color="white">Login</Text>
       </XStack>
     </Button>
   ) : (
-    <XStack alignItems="center" space="$3">
+    <XStack alignItems="center" gap="$3">
       <Link
         to={`/pastes/${session?.handle}`}
         style={{ textDecoration: "underline" }}
@@ -65,7 +65,7 @@ export function Header({ onLoginClick }: HeaderProps) {
         size="$3"
         borderRadius="$8"
       >
-        <XStack alignItems="center" space="$2">
+        <XStack alignItems="center" gap="$2">
           <HandRaisedIcon width={16} height={16} color="white" />
           <Text color="white">Logout</Text>
         </XStack>
@@ -114,7 +114,7 @@ export function Header({ onLoginClick }: HeaderProps) {
       {/* Mobile layout: stacked vertically */}
       <YStack
         alignItems="center"
-        space="$3"
+        gap="$3"
         display="flex"
         $sm={{
           display: "none",

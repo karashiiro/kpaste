@@ -26,15 +26,15 @@ export function EditForm({
   onCancel,
 }: EditFormProps) {
   return (
-    <Card padding="$4" space="$4">
-      <XStack alignItems="center" space="$2">
+    <Card padding="$4" gap="$4">
+      <XStack alignItems="center" gap="$2">
         <PencilIcon width={24} height={24} />
         <Text fontSize="$6" fontWeight="600" color="$color">
           Edit Paste
         </Text>
       </XStack>
 
-      <YStack space="$3">
+      <YStack gap="$3">
         <PasteFormField
           label="Title (optional):"
           value={editForm.title}
@@ -42,7 +42,7 @@ export function EditForm({
           placeholder="Enter a title for your paste..."
         />
 
-        <YStack space="$2">
+        <YStack gap="$2">
           <Text fontSize="$4" fontWeight="500">
             Content:
           </Text>
@@ -53,7 +53,7 @@ export function EditForm({
           />
         </YStack>
 
-        <YStack space="$2">
+        <YStack gap="$2">
           <Text fontSize="$4" fontWeight="500">
             Language:
           </Text>
@@ -66,7 +66,7 @@ export function EditForm({
         </YStack>
 
         <Card theme="blue" padding="$3">
-          <XStack alignItems="center" space="$2">
+          <XStack alignItems="center" gap="$2">
             <DocumentTextIcon width={16} height={16} />
             <Text fontSize="$3">
               Note: All pastes are public in AT Protocol repos
@@ -74,7 +74,7 @@ export function EditForm({
           </XStack>
         </Card>
 
-        <XStack space="$3" marginTop="$2">
+        <XStack gap="$3" marginTop="$2">
           <Button
             onPress={() => onSubmit()}
             disabled={loading || !editForm.content.trim()}
@@ -82,7 +82,7 @@ export function EditForm({
             size="$4"
             flex={1}
           >
-            <XStack alignItems="center" space="$2">
+            <XStack alignItems="center" gap="$2">
               {loading ? (
                 <ArrowPathIcon
                   width={20}

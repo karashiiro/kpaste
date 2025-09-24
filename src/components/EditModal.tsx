@@ -40,7 +40,7 @@ export function EditModal({
         padding="$4"
         justifyContent="flex-start"
         alignItems="center"
-        space="$2"
+        gap="$2"
       >
         <YStack maxWidth={600} width="100%">
           <EditForm
