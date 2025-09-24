@@ -93,7 +93,6 @@ async function publishLexicon() {
       id: lexicon.id,
       description: lexicon.description,
       defs: lexicon.defs,
-      createdAt: new Date().toISOString(),
     };
 
     const response = await client.post("com.atproto.repo.putRecord", {
