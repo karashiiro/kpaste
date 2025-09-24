@@ -1,4 +1,4 @@
-import { Sheet, YStack } from "tamagui";
+import { Sheet, ScrollView } from "tamagui";
 import type { EditPasteForm } from "../hooks/usePasteForm";
 import { EditForm } from "./EditForm";
 
@@ -23,11 +23,10 @@ export function EditModal({
 
   return (
     <Sheet
-      forceRemoveScrollEnabled={isOpen}
       modal={true}
       open={isOpen}
       onOpenChange={onClose}
-      snapPoints={[90, 50, 25]}
+      snapPoints={[90]}
       dismissOnSnapToBottom
     >
       <Sheet.Overlay
@@ -41,8 +40,16 @@ export function EditModal({
         justifyContent="flex-start"
         alignItems="center"
         gap="$2"
+        flex={1}
       >
-        <YStack maxWidth={600} width="100%">
+        <ScrollView
+          maxWidth={600}
+          width="100%"
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "flex-start",
+          }}
+        >
           <EditForm
             editForm={editForm}
             loading={loading}
@@ -50,7 +57,7 @@ export function EditModal({
             onSubmit={onSubmit}
             onCancel={onClose}
           />
-        </YStack>
+        </ScrollView>
       </Sheet.Frame>
     </Sheet>
   );
