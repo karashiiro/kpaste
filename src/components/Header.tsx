@@ -1,9 +1,10 @@
 import { XStack, YStack, Text, Button, View, Image } from "tamagui";
-import { Link } from "react-router";
+import { Link, useNavigation } from "react-router";
 import {
   SparklesIcon,
   RocketLaunchIcon,
   HandRaisedIcon,
+  ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 import { useAuth } from "../hooks/useAuth";
 
@@ -13,6 +14,10 @@ export interface HeaderProps {
 
 export function Header({ onLoginClick }: HeaderProps) {
   const { isAuthenticated, session, logout } = useAuth();
+  const navigation = useNavigation();
+
+  // Check if we're navigating to the home page
+  const isNavigatingToHome = navigation.location?.pathname === "/";
 
   const leftContent = (
     <Link
@@ -22,7 +27,16 @@ export function Header({ onLoginClick }: HeaderProps) {
       }}
     >
       <XStack alignItems="center" gap="$2">
-        <SparklesIcon width={20} height={20} color="white" />
+        {isNavigatingToHome ? (
+          <ArrowPathIcon
+            width={20}
+            height={20}
+            color="white"
+            className="animate-spin"
+          />
+        ) : (
+          <SparklesIcon width={20} height={20} color="white" />
+        )}
         <Text color="white" fontWeight="600">
           Create Paste
         </Text>
@@ -52,9 +66,19 @@ export function Header({ onLoginClick }: HeaderProps) {
         to={`/pastes/${session?.handle}`}
         style={{ textDecoration: "none" }}
       >
-        <Text fontSize="$4" color="white" fontWeight="600">
-          @{session?.handle}
-        </Text>
+        <XStack alignItems="center" gap="$2">
+          {navigation.location?.pathname === `/pastes/${session?.handle}` && (
+            <ArrowPathIcon
+              width={16}
+              height={16}
+              color="white"
+              className="animate-spin"
+            />
+          )}
+          <Text fontSize="$4" color="white" fontWeight="600">
+            @{session?.handle}
+          </Text>
+        </XStack>
       </Link>
       <Button
         onPress={logout}

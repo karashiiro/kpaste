@@ -3,7 +3,6 @@ import { BookOpenIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import { Link, useLoaderData, useParams } from "react-router";
 import { PasteList } from "./PasteList";
 import { AuthModal } from "./AuthModal";
-import { Header } from "./Header";
 import type { PasteListLoaderData } from "../loaders/pasteListLoader";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
@@ -20,8 +19,6 @@ export function PasteListPage() {
 
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
-      <Header onLoginClick={() => setIsAuthModalOpen(true)} />
-
       {/* Main Content */}
       <View
         padding="$6"

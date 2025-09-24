@@ -4,7 +4,6 @@ import { SparklesIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "../hooks/useAuth";
 import { CreateForm } from "./CreateForm";
 import { AuthModal } from "./AuthModal";
-import { Header } from "./Header";
 import { AuthRequiredView } from "./AuthRequiredView";
 import { usePasteForm } from "../hooks/usePasteForm";
 import { useCreatePaste } from "../hooks/useCreatePaste";
@@ -20,8 +19,6 @@ export function PasteEditor() {
   if (!isAuthenticated) {
     return (
       <YStack minHeight="100vh" backgroundColor="$background">
-        <Header onLoginClick={() => setIsAuthModalOpen(true)} />
-
         <AuthRequiredView
           title="Welcome to KPaste!"
           subtitle="Please log in to create and manage your pastes on the AT Protocol."
@@ -39,8 +36,6 @@ export function PasteEditor() {
 
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
-      <Header />
-
       {/* Main Editor */}
       <View
         padding="$6"

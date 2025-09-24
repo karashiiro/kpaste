@@ -1,7 +1,6 @@
 import { useLoaderData, Link } from "react-router";
 import { YStack, XStack, Text, Card, Button } from "tamagui";
 import { DocumentTextIcon, PencilIcon } from "@heroicons/react/24/outline";
-import { Header } from "./Header";
 import { AtUriLink } from "./AtUriLink";
 import { EditModal } from "./EditModal";
 import { safeHighlight } from "../prismUtils";
@@ -31,8 +30,6 @@ export function PasteView() {
 
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
-      <Header />
-
       <YStack
         padding="$4"
         maxWidth={1200}
