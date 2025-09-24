@@ -10,7 +10,7 @@ import { PasteListPage } from "./components/PasteListPage.tsx";
 import { PasteView } from "./components/PasteView.tsx";
 import { pasteLoader } from "./loaders/pasteLoader.ts";
 
-import "prismjs/themes/prism.css";
+import "prismjs/themes/prism-tomorrow.css";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-typescript";
