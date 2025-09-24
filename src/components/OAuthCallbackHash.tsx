@@ -1,0 +1,163 @@
+import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router";
+import { YStack, Text, Card } from "tamagui";
+import {
+  ArrowPathIcon,
+  CheckCircleIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { useAuth } from "../hooks/useAuth";
+
+export function OAuthCallbackHash() {
+  const navigate = useNavigate();
+  const { handleOAuthCallback, authState } = useAuth();
+  const processedRef = useRef(false);
+
+  useEffect(() => {
+    const processCallback = async () => {
+      if (processedRef.current) {
+        return;
+      }
+
+      try {
+        // Get OAuth data from localStorage
+        const oauthDataStr = localStorage.getItem("kpaste_oauth_callback");
+        if (!oauthDataStr) {
+          navigate("/", { replace: true });
+          return;
+        }
+
+        const oauthData = JSON.parse(oauthDataStr);
+
+        // Check if data is not too old (5 minutes max)
+        const maxAge = 5 * 60 * 1000; // 5 minutes
+        if (Date.now() - oauthData.timestamp > maxAge) {
+          localStorage.removeItem("kpaste_oauth_callback");
+          navigate("/", { replace: true });
+          return;
+        }
+
+        // Parse the OAuth parameters
+        const oauthParams = new URLSearchParams(oauthData.params);
+
+        // Check if we have valid OAuth parameters
+        if (
+          oauthParams.has("state") ||
+          oauthParams.has("code") ||
+          oauthParams.has("error")
+        ) {
+          processedRef.current = true;
+
+          // Clean up localStorage
+          localStorage.removeItem("kpaste_oauth_callback");
+
+          // Process the OAuth callback
+          await handleOAuthCallback(oauthParams);
+
+          // Small delay to ensure auth state is updated
+          setTimeout(() => {
+            navigate("/", { replace: true });
+          }, 100);
+        } else {
+          localStorage.removeItem("kpaste_oauth_callback");
+          navigate("/", { replace: true });
+        }
+      } catch {
+        // Clean up localStorage on error
+        localStorage.removeItem("kpaste_oauth_callback");
+
+        // Redirect to home after delay
+        setTimeout(() => {
+          navigate("/", { replace: true });
+        }, 3000);
+      }
+    };
+
+    processCallback();
+  }, [handleOAuthCallback, navigate]);
+
+  if (authState.state === "authenticated") {
+    return (
+      <YStack
+        flex={1}
+        justifyContent="center"
+        alignItems="center"
+        padding="$6"
+        gap="$4"
+      >
+        <Card padding="$4" theme="green">
+          <YStack alignItems="center" gap="$3">
+            <CheckCircleIcon width={48} height={48} color="green" />
+            <Text fontSize="$6" fontWeight="600" textAlign="center">
+              Login Successful!
+            </Text>
+            <Text fontSize="$4" textAlign="center">
+              Redirecting you now...
+            </Text>
+          </YStack>
+        </Card>
+      </YStack>
+    );
+  }
+
+  if (authState.state === "error") {
+    return (
+      <YStack
+        flex={1}
+        justifyContent="center"
+        alignItems="center"
+        padding="$6"
+        gap="$4"
+      >
+        <Card padding="$4" theme="red">
+          <YStack alignItems="center" gap="$3">
+            <XMarkIcon width={48} height={48} color="red" />
+            <Text fontSize="$6" fontWeight="600" textAlign="center">
+              Login Failed
+            </Text>
+            <Text fontSize="$4" textAlign="center">
+              {authState.error?.message || "An error occurred during login"}
+            </Text>
+            <Text
+              fontSize="$3"
+              color="$blue10"
+              textAlign="center"
+              textDecorationLine="underline"
+              cursor="pointer"
+              onPress={() => navigate("/", { replace: true })}
+            >
+              ← Back to KPaste
+            </Text>
+          </YStack>
+        </Card>
+      </YStack>
+    );
+  }
+
+  return (
+    <YStack
+      flex={1}
+      justifyContent="center"
+      alignItems="center"
+      padding="$6"
+      gap="$4"
+    >
+      <Card padding="$4" theme="blue">
+        <YStack alignItems="center" gap="$3">
+          <ArrowPathIcon
+            width={48}
+            height={48}
+            color="blue"
+            className="animate-spin"
+          />
+          <Text fontSize="$6" fontWeight="600" textAlign="center">
+            Completing Login...
+          </Text>
+          <Text fontSize="$4" textAlign="center">
+            Processing your authentication from storage.
+          </Text>
+        </YStack>
+      </Card>
+    </YStack>
+  );
+}

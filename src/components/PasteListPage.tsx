@@ -2,15 +2,12 @@ import { YStack, View, XStack, Text, Button } from "tamagui";
 import { BookOpenIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import { Link, useLoaderData, useParams } from "react-router";
 import { PasteList } from "./PasteList";
-import { AuthModal } from "./AuthModal";
 import type { PasteListLoaderData } from "../loaders/pasteListLoader";
 import { useAuth } from "../hooks/useAuth";
-import { useState } from "react";
 import { PasteListPaginationButtons } from "./PasteListPaginationButtons";
 
 export function PasteListPage() {
   const { isAuthenticated, session } = useAuth();
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { handle: userHandle } = useParams();
   const { pastes } = useLoaderData() as PasteListLoaderData;
 
@@ -69,7 +66,9 @@ export function PasteListPage() {
                     theme="green"
                     size="$4"
                     width="100%"
-                    onPress={() => setIsAuthModalOpen(true)}
+                    onPress={() => {
+                      /* OAuth modal is handled globally */
+                    }}
                   >
                     <XStack alignItems="center" gap="$2">
                       <SparklesIcon width={20} height={20} />
@@ -92,11 +91,6 @@ export function PasteListPage() {
           <PasteListPaginationButtons />
         </YStack>
       </View>
-
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-      />
     </YStack>
   );
 }

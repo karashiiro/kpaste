@@ -1,16 +1,13 @@
-import { useState } from "react";
 import { YStack, View, Text, Card, XStack } from "tamagui";
 import { SparklesIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "../hooks/useAuth";
 import { CreateForm } from "./CreateForm";
-import { AuthModal } from "./AuthModal";
 import { AuthRequiredView } from "./AuthRequiredView";
 import { usePasteForm } from "../hooks/usePasteForm";
 import { useCreatePaste } from "../hooks/useCreatePaste";
 
 export function PasteEditor() {
   const { isAuthenticated } = useAuth();
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   const { createPaste, loading, error } = useCreatePaste();
 
@@ -23,12 +20,9 @@ export function PasteEditor() {
           title="Welcome to KPaste!"
           subtitle="Please log in to create and manage your pastes."
           buttonText="Get Started"
-          onLoginClick={() => setIsAuthModalOpen(true)}
-        />
-
-        <AuthModal
-          isOpen={isAuthModalOpen}
-          onClose={() => setIsAuthModalOpen(false)}
+          onLoginClick={() => {
+            /* OAuth modal is handled globally */
+          }}
         />
       </YStack>
     );
@@ -72,11 +66,6 @@ export function PasteEditor() {
           )}
         </YStack>
       </View>
-
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-      />
     </YStack>
   );
 }

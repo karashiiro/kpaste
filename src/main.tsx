@@ -9,6 +9,7 @@ import { App } from "./App.tsx";
 import { PasteEditor } from "./components/PasteEditor.tsx";
 import { PasteListPage } from "./components/PasteListPage.tsx";
 import { PasteView } from "./components/PasteView.tsx";
+import { OAuthCallbackHash } from "./components/OAuthCallbackHash.tsx";
 import { pasteLoader } from "./loaders/pasteLoader.ts";
 
 import "prismjs/themes/prism-tomorrow.css";
@@ -36,6 +37,10 @@ const router = createHashRouter([
       {
         index: true,
         element: <PasteEditor />,
+      },
+      {
+        path: "oauth-callback",
+        element: <OAuthCallbackHash />,
       },
       {
         path: "pastes/:handle",

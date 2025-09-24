@@ -1,4 +1,4 @@
-import type { AtpSessionData, Client } from "@atcute/client";
+import type { AtpSessionData } from "@atcute/client";
 
 export type AuthState =
   | "unauthenticated"
@@ -61,9 +61,6 @@ export interface AuthStateData {
   twoFactorChallenge?: TwoFactorChallenge;
   isLoading: boolean;
 }
-
-// Use the real atcute Client type
-export type AtProtoClient = Client;
 
 export type AuthStateChangeListener = (authData: AuthStateData) => void;
 

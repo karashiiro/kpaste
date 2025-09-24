@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Outlet } from "react-router";
-import { AuthModal } from "./components/AuthModal";
+import { OAuthModal } from "./components/OAuthModal";
 import { RootLayout } from "./components/RootLayout";
 
 export function App() {
@@ -11,7 +11,7 @@ export function App() {
       <RootLayout onLoginClick={() => setShowAuthModal(true)}>
         <Outlet />
       </RootLayout>
-      <AuthModal
+      <OAuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
       />

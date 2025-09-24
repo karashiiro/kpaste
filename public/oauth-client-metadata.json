@@ -1,0 +1,18 @@
+{
+  "client_id": "https://kp.krs.moe/oauth-client-metadata.json",
+  "client_name": "KPaste",
+  "client_uri": "https://kp.krs.moe",
+  "logo_uri": "https://kp.krs.moe/kpaste.webp",
+  "tos_uri": "https://kp.krs.moe",
+  "policy_uri": "https://kp.krs.moe",
+  "redirect_uris": ["https://kp.krs.moe/oauth/callback.html"],
+  "scope": "atproto transition:generic",
+  "grant_types": ["authorization_code", "refresh_token"],
+  "response_types": ["code"],
+  "application_type": "web",
+  "token_endpoint_auth_method": "private_key_jwt",
+  "dpop_bound_access_tokens": true,
+  "jwks": {
+    "keys": []
+  }
+}

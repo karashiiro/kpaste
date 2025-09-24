@@ -1,25 +1,20 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { AtProtoAuthManager } from "../auth/AtProtoAuthManager";
-import type {
-  AuthStateData,
-  LoginCredentials,
-  TwoFactorVerification,
-  ServiceEndpoint,
-  AtProtoClient,
-  AuthManagerConfig,
-} from "../auth/types";
+import { OAuthAuthManager } from "../auth/OAuthAuthManager";
+import type { OAuthLoginRequest } from "../auth/OAuthAuthManager";
+import type { AuthStateData, AuthManagerConfig } from "../auth/types";
+import type { Client } from "@atcute/client";
 
-let globalAuthManager: AtProtoAuthManager | null = null;
+let globalAuthManager: OAuthAuthManager | null = null;
 
-export function initializeAuth(config?: AuthManagerConfig): AtProtoAuthManager {
+export function initializeAuth(config?: AuthManagerConfig): OAuthAuthManager {
   if (!globalAuthManager) {
-    globalAuthManager = new AtProtoAuthManager(config);
+    globalAuthManager = new OAuthAuthManager(config);
   }
   return globalAuthManager;
 }
 
 export function useAuth() {
-  const authManagerRef = useRef<AtProtoAuthManager | null>(null);
+  const authManagerRef = useRef<OAuthAuthManager | null>(null);
   const [authState, setAuthState] = useState<AuthStateData>(() => {
     if (!authManagerRef.current) {
       authManagerRef.current = globalAuthManager || initializeAuth();
@@ -39,34 +34,24 @@ export function useAuth() {
     return unsubscribe;
   }, []);
 
-  const login = useCallback(async (credentials: LoginCredentials) => {
-    return authManagerRef.current!.login(credentials);
+  const startLogin = useCallback(async (request: OAuthLoginRequest) => {
+    return authManagerRef.current!.startLogin(request);
   }, []);
 
-  const verifyTwoFactor = useCallback(
-    async (verification: TwoFactorVerification) => {
-      return authManagerRef.current!.verifyTwoFactor(verification);
-    },
-    [],
-  );
+  const handleOAuthCallback = useCallback(async (params: URLSearchParams) => {
+    return authManagerRef.current!.handleOAuthCallback(params);
+  }, []);
 
   const logout = useCallback(async () => {
     return authManagerRef.current!.logout();
   }, []);
 
-  const refreshSession = useCallback(async () => {
-    return authManagerRef.current!.refreshSession();
+  const getClient = useCallback((): Client | null => {
+    return authManagerRef.current!.getClient();
   }, []);
 
-  const validateServiceEndpoint = useCallback(
-    async (endpoint: ServiceEndpoint) => {
-      return authManagerRef.current!.validateServiceEndpoint(endpoint);
-    },
-    [],
-  );
-
-  const getClient = useCallback((): AtProtoClient | null => {
-    return authManagerRef.current!.getClient();
+  const getAgent = useCallback(() => {
+    return authManagerRef.current!.getAgent();
   }, []);
 
   return {
@@ -74,23 +59,20 @@ export function useAuth() {
     authState,
     isAuthenticated: authState.state === "authenticated",
     isAuthenticating: authState.state === "authenticating",
-    requiresTwoFactor: authState.state === "requires2fa",
     hasError: authState.state === "error",
     isLoading: authState.isLoading,
 
     // Data
     session: authState.session,
     error: authState.error,
-    twoFactorChallenge: authState.twoFactorChallenge,
     user: authState.session?.profile,
 
     // Actions
-    login,
-    verifyTwoFactor,
+    startLogin,
+    handleOAuthCallback,
     logout,
-    refreshSession,
-    validateServiceEndpoint,
     getClient,
+    getAgent,
 
     // Utilities
     isSessionExpired: authState.session?.expiresAt
