@@ -64,7 +64,7 @@ export function useUpdatePaste() {
         });
 
         if (updateResponse.ok) {
-          setError(null);
+          location.reload();
         } else {
           console.error("Update error:", updateResponse.data);
           setError(`Failed to update paste: ${updateResponse.status}`);
