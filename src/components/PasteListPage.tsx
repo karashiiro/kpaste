@@ -1,6 +1,6 @@
 import { YStack, View, XStack, Text, Button } from "tamagui";
 import { BookOpenIcon, SparklesIcon } from "@heroicons/react/24/outline";
-import { Link, useLoaderData, useSearchParams } from "react-router";
+import { Link, useLoaderData, useSearchParams, useParams } from "react-router";
 import { PasteList } from "./PasteList";
 import { AuthModal } from "./AuthModal";
 import { Header } from "./Header";
@@ -11,6 +11,7 @@ import { useState } from "react";
 export function PasteListPage() {
   const { isAuthenticated, session } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const { handle: userHandle } = useParams();
   const { pastes, nextCursor, cursor, prevCursor } =
     useLoaderData() as PasteListLoaderData;
 
@@ -26,6 +27,9 @@ export function PasteListPage() {
     // TODO: How do we get prev here?
     setSearchParams({ prev: "", cursor: prevCursor || "" });
   };
+
+  // Check if viewing current user's own pastes
+  const isViewingOwnPastes = isAuthenticated && session?.handle === userHandle;
 
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
@@ -45,45 +49,52 @@ export function PasteListPage() {
               <XStack alignItems="center" space="$2">
                 <BookOpenIcon width={32} height={32} />
                 <Text fontSize="$8" fontWeight="700">
-                  {isAuthenticated
+                  {isViewingOwnPastes
                     ? "Your Pastes"
-                    : "Browse AT Protocol Pastes"}
+                    : userHandle
+                      ? `${userHandle}'s Pastes`
+                      : "Browse AT Protocol Pastes"}
                 </Text>
               </XStack>
               <Text fontSize="$4">
-                {isAuthenticated
+                {isViewingOwnPastes
                   ? "Manage all your AT Protocol pastes"
-                  : "Discover and view pastes shared on the AT Protocol"}
+                  : userHandle
+                    ? `View pastes shared by @${userHandle}`
+                    : "Discover and view pastes shared on the AT Protocol"}
               </Text>
             </YStack>
 
-            <XStack space="$3" flexWrap="wrap">
-              {isAuthenticated ? (
-                <Link
-                  to="/"
-                  style={{ textDecoration: "none", flex: 1, minWidth: 120 }}
-                >
-                  <Button theme="green" size="$4" width="100%">
+            {/* Only show create button when viewing your own pastes or when unauthenticated */}
+            {(!isAuthenticated || isViewingOwnPastes) && (
+              <XStack space="$3" flexWrap="wrap">
+                {isAuthenticated ? (
+                  <Link
+                    to="/"
+                    style={{ textDecoration: "none", flex: 1, minWidth: 120 }}
+                  >
+                    <Button theme="green" size="$4" width="100%">
+                      <XStack alignItems="center" space="$2">
+                        <SparklesIcon width={20} height={20} />
+                        <Text>Create New Paste</Text>
+                      </XStack>
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button
+                    theme="green"
+                    size="$4"
+                    width="100%"
+                    onPress={() => setIsAuthModalOpen(true)}
+                  >
                     <XStack alignItems="center" space="$2">
                       <SparklesIcon width={20} height={20} />
-                      <Text>Create New Paste</Text>
+                      <Text>Login to Create Paste</Text>
                     </XStack>
                   </Button>
-                </Link>
-              ) : (
-                <Button
-                  theme="green"
-                  size="$4"
-                  width="100%"
-                  onPress={() => setIsAuthModalOpen(true)}
-                >
-                  <XStack alignItems="center" space="$2">
-                    <SparklesIcon width={20} height={20} />
-                    <Text>Login to Create Paste</Text>
-                  </XStack>
-                </Button>
-              )}
-            </XStack>
+                )}
+              </XStack>
+            )}
 
             {/* Pagination Controls */}
             <XStack space="$3" justifyContent="center" alignItems="center">
