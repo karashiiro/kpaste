@@ -10,7 +10,8 @@
     "format": "prettier . --write",
     "preview": "vite preview",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "publish-lexicon": "node scripts/publish-lexicon.js"
   },
   "dependencies": {
     "@atcute/atproto": "^3.1.4",
