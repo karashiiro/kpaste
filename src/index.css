@@ -1,6 +1,7 @@
 @import "reset-css";
 
-/* Kawaii loading animations */
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap");
+
 @keyframes spin {
   from {
     transform: rotate(0deg);

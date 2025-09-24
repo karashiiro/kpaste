@@ -28,7 +28,7 @@ export function CodeEditor({
   );
 
   const editorStyle = {
-    fontFamily: '"Courier New", "Monaco", "Menlo", monospace',
+    fontFamily: '"Inconsolata", monospace',
     fontSize: 14,
     lineHeight: 1.4,
     minHeight,

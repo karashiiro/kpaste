@@ -96,7 +96,7 @@ export function PasteView() {
         <Card padding="$0" bordered>
           <pre
             style={{
-              fontFamily: '"Courier New", "Monaco", "Menlo", monospace',
+              fontFamily: '"Inconsolata", monospace',
               fontSize: 14,
               lineHeight: 1.4,
               margin: 0,

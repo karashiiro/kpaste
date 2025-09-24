@@ -160,7 +160,7 @@ export function PasteList({
                 <ScrollView maxHeight={200}>
                   <pre
                     style={{
-                      fontFamily: '"Courier New", "Monaco", "Menlo", monospace',
+                      fontFamily: '"Inconsolata", monospace',
                       fontSize: 13,
                       lineHeight: 1.4,
                       margin: 0,
