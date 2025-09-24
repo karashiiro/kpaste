@@ -50,7 +50,7 @@ export function Header({ onLoginClick }: HeaderProps) {
     <XStack alignItems="center" gap="$3">
       <Link
         to={`/pastes/${session?.handle}`}
-        style={{ textDecoration: "underline" }}
+        style={{ textDecoration: "none" }}
       >
         <Text fontSize="$4" color="white" fontWeight="600">
           @{session?.handle}
@@ -79,7 +79,6 @@ export function Header({ onLoginClick }: HeaderProps) {
       paddingVertical="$4"
       paddingHorizontal="$6"
     >
-      {/* Desktop layout: horizontal with centered logo */}
       <XStack
         maxWidth={1200}
         marginHorizontal="auto"
@@ -94,7 +93,6 @@ export function Header({ onLoginClick }: HeaderProps) {
       >
         {leftContent}
 
-        {/* Absolutely centered logo */}
         <View
           position="absolute"
           top="50%"
@@ -105,7 +103,6 @@ export function Header({ onLoginClick }: HeaderProps) {
           <Image source={{ width: 125, height: 50, uri: "/kpaste.webp" }} />
         </View>
 
-        {/* Spacer to maintain layout balance */}
         <View width={125} />
 
         {rightContent}
@@ -120,10 +117,8 @@ export function Header({ onLoginClick }: HeaderProps) {
           display: "none",
         }}
       >
-        {/* Logo first */}
         <Image source={{ width: 125, height: 50, uri: "/kpaste.webp" }} />
 
-        {/* Navigation below logo */}
         <XStack
           justifyContent="space-between"
           alignItems="center"
