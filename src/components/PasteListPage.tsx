@@ -11,21 +11,20 @@ import { useState } from "react";
 export function PasteListPage() {
   const { isAuthenticated, session } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const { pastes, nextCursor, prevCursor } =
+  const { pastes, nextCursor, cursor, prevCursor } =
     useLoaderData() as PasteListLoaderData;
 
   const [, setSearchParams] = useSearchParams();
 
   const handleNextPage = () => {
     if (nextCursor) {
-      setSearchParams({ cursor: nextCursor });
+      setSearchParams({ prev: cursor || "", cursor: nextCursor });
     }
   };
 
   const handlePrevPage = () => {
-    if (prevCursor) {
-      setSearchParams({ cursor: prevCursor });
-    }
+    // TODO: How do we get prev here?
+    setSearchParams({ prev: "", cursor: prevCursor || "" });
   };
 
   return (
@@ -88,18 +87,13 @@ export function PasteListPage() {
 
             {/* Pagination Controls */}
             <XStack space="$3" justifyContent="center" alignItems="center">
-              <Button
-                onPress={handlePrevPage}
-                disabled={!prevCursor}
-                size="$4"
-                theme="blue"
-              >
+              <Button onPress={handlePrevPage} size="$4" theme="blue">
                 Previous
               </Button>
 
               <Button
                 onPress={handleNextPage}
-                disabled={!nextCursor}
+                disabled={pastes.length < 20}
                 size="$4"
                 theme="blue"
               >

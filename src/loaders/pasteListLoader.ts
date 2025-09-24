@@ -7,15 +7,25 @@ import { getTextBlobs, resolveUser } from "../pdsUtils";
 export interface PasteListLoaderData {
   pastes: PasteListItem[];
   prevCursor?: string;
+  cursor?: string;
   nextCursor?: string;
+}
+
+function getSearchString(url: string): string {
+  const parsedUrl = new URL(url);
+  return (
+    parsedUrl.search || parsedUrl.hash.slice(parsedUrl.hash.indexOf("?")) || ""
+  );
 }
 
 export async function pasteListLoader({
   params,
+  request,
 }: LoaderFunctionArgs): Promise<PasteListLoaderData> {
   const { handle } = params;
-  const query = new URLSearchParams(window.location.search);
-  const after = query.get("after");
+  const query = new URLSearchParams(getSearchString(request.url));
+  const prevCursor = query.get("prev");
+  const cursor = query.get("cursor");
 
   if (!handle) {
     throw new Response("Invalid URL parameters", { status: 400 });
@@ -36,7 +46,7 @@ export async function pasteListLoader({
           repo: did,
           collection: "moe.karashiiro.kpaste.paste",
           limit: 20,
-          cursor: after || undefined,
+          cursor: cursor || undefined,
         },
       },
     );
@@ -63,8 +73,9 @@ export async function pasteListLoader({
         value: rec.value as PasteRecord,
         content: contents[index],
       })),
-      prevCursor: after || undefined,
-      nextCursor: pastesData.cursor,
+      prevCursor: prevCursor || undefined,
+      cursor: cursor || undefined,
+      nextCursor: cursor === pastesData.cursor ? undefined : pastesData.cursor,
     };
   } catch (error) {
     if (error instanceof Response) {
