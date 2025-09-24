@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import type { ServiceEndpoint } from "../auth/types";
 import { resolveUser } from "../pdsUtils";
@@ -47,26 +47,48 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
   const [twoFactorCode, setTwoFactorCode] = useState("");
   const [isResolvingEndpoint, setIsResolvingEndpoint] = useState(false);
+  const [currentAbortController, setCurrentAbortController] =
+    useState<AbortController | null>(null);
 
   // Auto-resolve service endpoint from handle
   const resolveServiceEndpoint = async (handle: string) => {
+    // Cancel any existing resolution request
+    if (currentAbortController) {
+      currentAbortController.abort();
+    }
+
     if (!handle || !handle.includes(".")) {
       // Not a proper handle, use default
       setLoginForm((prev) => ({ ...prev, endpoint: "https://bsky.social" }));
+      setCurrentAbortController(null);
       return;
     }
 
+    // Create new AbortController for this request
+    const abortController = new AbortController();
+    setCurrentAbortController(abortController);
     setIsResolvingEndpoint(true);
 
     try {
       const { pdsUrl } = await resolveUser(handle);
-      setLoginForm((prev) => ({ ...prev, endpoint: pdsUrl }));
+
+      // Only update if this request wasn't aborted
+      if (!abortController.signal.aborted) {
+        setLoginForm((prev) => ({ ...prev, endpoint: pdsUrl }));
+      }
     } catch (error) {
-      console.warn("Failed to resolve endpoint for handle:", error);
-      // Fallback to default
-      setLoginForm((prev) => ({ ...prev, endpoint: "https://bsky.social" }));
+      // Only handle error if this request wasn't aborted
+      if (!abortController.signal.aborted) {
+        console.warn("Failed to resolve endpoint for handle:", error);
+        // Fallback to default
+        setLoginForm((prev) => ({ ...prev, endpoint: "https://bsky.social" }));
+      }
     } finally {
-      setIsResolvingEndpoint(false);
+      // Only update loading state if this request wasn't aborted
+      if (!abortController.signal.aborted) {
+        setIsResolvingEndpoint(false);
+        setCurrentAbortController(null);
+      }
     }
   };
 
@@ -111,23 +133,30 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   };
 
   // Close modal when authentication is successful
-  React.useEffect(() => {
+  useEffect(() => {
     if (isAuthenticated) {
       onClose();
     }
   }, [isAuthenticated, onClose]);
 
   // Reset form when modal closes
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isOpen) {
+      // Cancel any pending resolution
+      if (currentAbortController) {
+        currentAbortController.abort();
+        setCurrentAbortController(null);
+      }
+
       setLoginForm({
         identifier: "",
         password: "",
         endpoint: "https://bsky.social",
       });
       setTwoFactorCode("");
+      setIsResolvingEndpoint(false);
     }
-  }, [isOpen]);
+  }, [isOpen, currentAbortController]);
 
   return (
     <Sheet
@@ -148,9 +177,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         <YStack gap="$4" maxWidth={400} width="100%">
           <XStack justifyContent="center" alignItems="center" gap="$2">
             {requiresTwoFactor ? (
-              <LockClosedIcon width={32} height={32} />
+              <LockClosedIcon width={32} height={32} color="white" />
             ) : (
-              <RocketLaunchIcon width={32} height={32} />
+              <RocketLaunchIcon width={32} height={32} color="white" />
             )}
             <H2 textAlign="center">
               {requiresTwoFactor
@@ -253,8 +282,10 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                       flex={1}
                       value={loginForm.endpoint}
                       editable={false}
-                      backgroundColor="$gray2"
-                      color="$gray10"
+                      backgroundColor="$gray3"
+                      color="$gray11"
+                      borderColor="$gray4"
+                      opacity={0.8}
                     />
                     {isResolvingEndpoint && (
                       <ArrowPathIcon
@@ -295,7 +326,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
                 <Button
                   onPress={() => handleLogin()}
-                  disabled={isLoading}
+                  disabled={isResolvingEndpoint || isLoading}
                   backgroundColor="$blue9"
                   color="white"
                   size="$4"
