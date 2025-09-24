@@ -180,7 +180,7 @@ export class OAuthAuthManager {
 
     try {
       if (this.state.session?.did) {
-        await deleteStoredSession(this.state.session.did);
+        deleteStoredSession(this.state.session.did);
       }
 
       this.client = null;
