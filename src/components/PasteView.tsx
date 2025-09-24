@@ -50,8 +50,17 @@ export function PasteView() {
             </Text>
             <Text fontSize="$4">•</Text>
             <Text fontSize="$4">
-              {new Date(paste.value.createdAt).toLocaleString()}
+              Created: {new Date(paste.value.createdAt).toLocaleString()}
             </Text>
+            {paste.value.updatedAt &&
+              paste.value.updatedAt !== paste.value.createdAt && (
+                <>
+                  <Text fontSize="$4">•</Text>
+                  <Text fontSize="$4">
+                    Updated: {new Date(paste.value.updatedAt).toLocaleString()}
+                  </Text>
+                </>
+              )}
           </XStack>
         </YStack>
 

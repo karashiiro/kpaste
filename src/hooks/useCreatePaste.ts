@@ -43,12 +43,14 @@ export function useCreatePaste() {
         }
 
         // Create the paste record
+        const now = new Date().toISOString();
         const record = {
           $type: "moe.karashiiro.kpaste.paste",
           content: blobResponse.data.blob,
           title: form.title || undefined,
           language: form.language || "text",
-          createdAt: new Date().toISOString(),
+          createdAt: now,
+          updatedAt: now,
         };
 
         const createResponse = await client.post(

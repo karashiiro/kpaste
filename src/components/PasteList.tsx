@@ -124,6 +124,18 @@ export function PasteList({ pastes, userHandle }: PasteListProps) {
                   {new Date(paste.value.createdAt).toLocaleString()}
                 </Text>
               </XStack>
+
+              {paste.value.updatedAt &&
+                paste.value.updatedAt !== paste.value.createdAt && (
+                  <XStack alignItems="center" space="$2">
+                    <Text fontSize="$4" fontWeight="500">
+                      Updated:
+                    </Text>
+                    <Text fontSize="$4">
+                      {new Date(paste.value.updatedAt).toLocaleString()}
+                    </Text>
+                  </XStack>
+                )}
             </XStack>
 
             <YStack space="$2">

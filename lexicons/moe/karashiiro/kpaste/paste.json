@@ -32,6 +32,11 @@
             "type": "string",
             "format": "datetime",
             "description": "When the paste was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When the paste was last modified (optional, defaults to createdAt)"
           }
         }
       }

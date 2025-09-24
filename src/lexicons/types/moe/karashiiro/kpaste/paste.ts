@@ -19,6 +19,7 @@ const _mainSchema = /*#__PURE__*/ v.record(
         /*#__PURE__*/ v.stringLength(0, 200),
       ]),
     ),
+    updatedAt: /*#__PURE__*/ v.optional(/*#__PURE__*/ v.datetimeString()),
   }),
 );
 

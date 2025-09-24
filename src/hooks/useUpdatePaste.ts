@@ -50,6 +50,7 @@ export function useUpdatePaste() {
           title: form.title || undefined,
           language: form.language || "text",
           createdAt: form.originalRecord.createdAt, // Keep original creation date
+          updatedAt: new Date().toISOString(), // Set current timestamp for update
         };
 
         // Use putRecord to update the existing record
