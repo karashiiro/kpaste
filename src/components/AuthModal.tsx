@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import type { ServiceEndpoint } from "../auth/types";
+import { resolveUser } from "../pdsUtils";
 import {
   Sheet,
   XStack,
@@ -11,19 +12,13 @@ import {
   Input,
   Label,
   Card,
-  Separator,
 } from "tamagui";
 import {
   XMarkIcon,
   LockClosedIcon,
   RocketLaunchIcon,
-  CheckIcon,
   CheckCircleIcon,
-  ExclamationCircleIcon,
   ArrowPathIcon,
-  ShieldCheckIcon,
-  ServerIcon,
-  ClockIcon,
 } from "@heroicons/react/24/outline";
 
 interface AuthModalProps {
@@ -42,7 +37,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     twoFactorChallenge,
     login,
     verifyTwoFactor,
-    validateServiceEndpoint,
   } = useAuth();
 
   const [loginForm, setLoginForm] = useState({
@@ -52,10 +46,29 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   });
 
   const [twoFactorCode, setTwoFactorCode] = useState("");
-  const [endpointValidation, setEndpointValidation] = useState<{
-    isValidating: boolean;
-    isValid?: boolean;
-  }>({ isValidating: false });
+  const [isResolvingEndpoint, setIsResolvingEndpoint] = useState(false);
+
+  // Auto-resolve service endpoint from handle
+  const resolveServiceEndpoint = async (handle: string) => {
+    if (!handle || !handle.includes(".")) {
+      // Not a proper handle, use default
+      setLoginForm((prev) => ({ ...prev, endpoint: "https://bsky.social" }));
+      return;
+    }
+
+    setIsResolvingEndpoint(true);
+
+    try {
+      const { pdsUrl } = await resolveUser(handle);
+      setLoginForm((prev) => ({ ...prev, endpoint: pdsUrl }));
+    } catch (error) {
+      console.warn("Failed to resolve endpoint for handle:", error);
+      // Fallback to default
+      setLoginForm((prev) => ({ ...prev, endpoint: "https://bsky.social" }));
+    } finally {
+      setIsResolvingEndpoint(false);
+    }
+  };
 
   const handleLogin = async () => {
     const serviceEndpoint: ServiceEndpoint = {
@@ -88,16 +101,12 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     }
   };
 
-  const handleValidateEndpoint = async () => {
-    setEndpointValidation({ isValidating: true });
+  const handleIdentifierChange = (text: string) => {
+    setLoginForm({ ...loginForm, identifier: text });
 
-    try {
-      const isValid = await validateServiceEndpoint({
-        url: loginForm.endpoint,
-      });
-      setEndpointValidation({ isValidating: false, isValid });
-    } catch {
-      setEndpointValidation({ isValidating: false, isValid: false });
+    // Auto-resolve endpoint when identifier looks like a handle
+    if (text && text.includes(".") && !text.includes("@")) {
+      resolveServiceEndpoint(text);
     }
   };
 
@@ -117,7 +126,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         endpoint: "https://bsky.social",
       });
       setTwoFactorCode("");
-      setEndpointValidation({ isValidating: false });
     }
   }, [isOpen]);
 
@@ -136,12 +144,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         exitStyle={{ opacity: 0 }}
       />
       <Sheet.Handle />
-      <Sheet.Frame
-        padding="$4"
-        justifyContent="center"
-        alignItems="center"
-        gap="$5"
-      >
+      <Sheet.Frame padding="$4" alignItems="center" gap="$5">
         <YStack gap="$4" maxWidth={400} width="100%">
           <XStack justifyContent="center" alignItems="center" gap="$2">
             {requiresTwoFactor ? (
@@ -232,67 +235,39 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               <YStack gap="$3">
                 <YStack gap="$2">
                   <Label fontSize="$4" fontWeight="600">
-                    Service Endpoint:
-                  </Label>
-                  <XStack gap="$2">
-                    <Input
-                      flex={1}
-                      value={loginForm.endpoint}
-                      onChangeText={(text) =>
-                        setLoginForm({ ...loginForm, endpoint: text })
-                      }
-                      placeholder="https://bsky.social"
-                    />
-                    <Button
-                      onPress={handleValidateEndpoint}
-                      disabled={endpointValidation.isValidating}
-                      backgroundColor="$blue9"
-                      color="white"
-                      size="$3"
-                    >
-                      {endpointValidation.isValidating ? (
-                        <ArrowPathIcon width={16} height={16} color="white" />
-                      ) : (
-                        <CheckIcon width={16} height={16} color="white" />
-                      )}
-                    </Button>
-                  </XStack>
-                  {endpointValidation.isValid !== undefined && (
-                    <XStack alignItems="center" gap="$1">
-                      {endpointValidation.isValid ? (
-                        <CheckCircleIcon width={16} height={16} color="green" />
-                      ) : (
-                        <ExclamationCircleIcon
-                          width={16}
-                          height={16}
-                          color="red"
-                        />
-                      )}
-                      <Text
-                        fontSize="$2"
-                        color={
-                          endpointValidation.isValid ? "$green10" : "$red10"
-                        }
-                      >
-                        {endpointValidation.isValid
-                          ? "Valid endpoint"
-                          : "Invalid endpoint"}
-                      </Text>
-                    </XStack>
-                  )}
-                </YStack>
-
-                <YStack gap="$2">
-                  <Label fontSize="$4" fontWeight="600">
                     Handle or Email:
                   </Label>
                   <Input
                     value={loginForm.identifier}
-                    onChangeText={(text) =>
-                      setLoginForm({ ...loginForm, identifier: text })
-                    }
+                    onChangeText={handleIdentifierChange}
                     placeholder="your.handle or email@example.com"
                   />
+                </YStack>
+
+                <YStack gap="$2">
+                  <Label fontSize="$4" fontWeight="600">
+                    Service Endpoint:
+                  </Label>
+                  <XStack gap="$2" alignItems="center">
+                    <Input
+                      flex={1}
+                      value={loginForm.endpoint}
+                      editable={false}
+                      backgroundColor="$gray2"
+                      color="$gray10"
+                    />
+                    {isResolvingEndpoint && (
+                      <ArrowPathIcon
+                        width={16}
+                        height={16}
+                        color="gray"
+                        className="animate-spin"
+                      />
+                    )}
+                  </XStack>
+                  <Text fontSize="$2" color="$gray10">
+                    Auto-resolved from handle
+                  </Text>
                 </YStack>
 
                 <YStack gap="$2">
@@ -338,34 +313,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   </XStack>
                 </Button>
               </YStack>
-
-              <Separator />
-
-              <Card backgroundColor="$blue2" padding="$4">
-                <YStack gap="$2">
-                  <Text fontWeight="600" fontSize="$4">
-                    Features:
-                  </Text>
-                  <YStack gap="$2">
-                    <XStack alignItems="center" gap="$2">
-                      <ServerIcon width={16} height={16} />
-                      <Text fontSize="$3">Flexible endpoint configuration</Text>
-                    </XStack>
-                    <XStack alignItems="center" gap="$2">
-                      <ShieldCheckIcon width={16} height={16} />
-                      <Text fontSize="$3">Two-factor authentication</Text>
-                    </XStack>
-                    <XStack alignItems="center" gap="$2">
-                      <CheckCircleIcon width={16} height={16} />
-                      <Text fontSize="$3">Session persistence</Text>
-                    </XStack>
-                    <XStack alignItems="center" gap="$2">
-                      <ClockIcon width={16} height={16} />
-                      <Text fontSize="$3">Automatic token refresh</Text>
-                    </XStack>
-                  </YStack>
-                </YStack>
-              </Card>
             </YStack>
           )}
         </YStack>
