@@ -13,7 +13,7 @@ import { useDeletePaste } from "../hooks/useDeletePaste";
 import { useCallback } from "react";
 import { usePasteForm } from "../hooks/usePasteForm";
 import { useUpdatePaste } from "../hooks/useUpdatePaste";
-import { EditForm } from "./EditForm";
+import { EditModal } from "./EditModal";
 import { AtUriLink } from "./AtUriLink";
 import { safeHighlight } from "../prismUtils";
 import { parseAtUri } from "../pdsUtils";
@@ -21,9 +21,14 @@ import { parseAtUri } from "../pdsUtils";
 interface PasteListProps {
   pastes: PasteListItem[];
   userHandle?: string;
+  currentUserSession?: { handle: string; did: string } | null;
 }
 
-export function PasteList({ pastes, userHandle }: PasteListProps) {
+export function PasteList({
+  pastes,
+  userHandle,
+  currentUserSession,
+}: PasteListProps) {
   const {
     deletePaste,
     loading: deleteLoading,
@@ -190,44 +195,37 @@ export function PasteList({ pastes, userHandle }: PasteListProps) {
             )}
           </YStack>
 
-          <XStack space="$3" marginTop="$4">
-            <Button onPress={() => startEdit(paste)} size="$4" flex={1}>
-              <XStack alignItems="center" space="$2">
-                <PencilIcon width={20} height={20} />
-                <Text>Edit</Text>
-              </XStack>
-            </Button>
+          {/* Only show edit/delete buttons if current user owns this paste */}
+          {currentUserSession && userHandle === currentUserSession.handle && (
+            <XStack space="$3" marginTop="$4">
+              <Button onPress={() => startEdit(paste)} size="$4" flex={1}>
+                <XStack alignItems="center" space="$2">
+                  <PencilIcon width={20} height={20} />
+                  <Text>Edit</Text>
+                </XStack>
+              </Button>
 
-            <Button
-              onPress={() => deletePaste(paste.uri)}
-              disabled={deleteLoading}
-              theme="red"
-              size="$4"
-              flex={1}
-            >
-              <XStack alignItems="center" space="$2">
-                {deleteLoading ? (
-                  <ArrowPathIcon
-                    width={20}
-                    height={20}
-                    className="animate-spin"
-                  />
-                ) : (
-                  <TrashIcon width={20} height={20} />
-                )}
-                <Text>{deleteLoading ? "Deleting..." : "Delete"}</Text>
-              </XStack>
-            </Button>
-          </XStack>
-
-          {forms.editForm && (
-            <EditForm
-              editForm={forms.editForm}
-              loading={updateLoading}
-              onFormChange={forms.setEditForm}
-              onSubmit={() => updatePaste(forms.editForm!)}
-              onCancel={forms.cancelEdit}
-            />
+              <Button
+                onPress={() => deletePaste(paste.uri)}
+                disabled={deleteLoading}
+                theme="red"
+                size="$4"
+                flex={1}
+              >
+                <XStack alignItems="center" space="$2">
+                  {deleteLoading ? (
+                    <ArrowPathIcon
+                      width={20}
+                      height={20}
+                      className="animate-spin"
+                    />
+                  ) : (
+                    <TrashIcon width={20} height={20} />
+                  )}
+                  <Text>{deleteLoading ? "Deleting..." : "Delete"}</Text>
+                </XStack>
+              </Button>
+            </XStack>
           )}
 
           {deleteError && (
@@ -249,6 +247,16 @@ export function PasteList({ pastes, userHandle }: PasteListProps) {
           )}
         </Card>
       ))}
+
+      {/* Edit Modal */}
+      <EditModal
+        isOpen={!!forms.editForm}
+        onClose={forms.cancelEdit}
+        editForm={forms.editForm}
+        loading={updateLoading}
+        onFormChange={forms.setEditForm}
+        onSubmit={() => updatePaste(forms.editForm!)}
+      />
     </YStack>
   );
 }

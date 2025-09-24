@@ -4,7 +4,6 @@ import { Link, useLoaderData, useSearchParams } from "react-router";
 import { PasteList } from "./PasteList";
 import { AuthModal } from "./AuthModal";
 import { Header } from "./Header";
-import { AuthRequiredView } from "./AuthRequiredView";
 import type { PasteListLoaderData } from "../loaders/pasteListLoader";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
@@ -29,29 +28,9 @@ export function PasteListPage() {
     }
   };
 
-  if (!isAuthenticated) {
-    return (
-      <YStack minHeight="100vh" backgroundColor="$background">
-        <Header onLoginClick={() => setIsAuthModalOpen(true)} />
-
-        <AuthRequiredView
-          title="Browse AT Protocol Pastes"
-          subtitle="Please log in to view and manage your pastes."
-          buttonText="Login to Browse"
-          onLoginClick={() => setIsAuthModalOpen(true)}
-        />
-
-        <AuthModal
-          isOpen={isAuthModalOpen}
-          onClose={() => setIsAuthModalOpen(false)}
-        />
-      </YStack>
-    );
-  }
-
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
-      <Header />
+      <Header onLoginClick={() => setIsAuthModalOpen(true)} />
 
       {/* Main Content */}
       <View
@@ -67,24 +46,44 @@ export function PasteListPage() {
               <XStack alignItems="center" space="$2">
                 <BookOpenIcon width={32} height={32} />
                 <Text fontSize="$8" fontWeight="700">
-                  Your Pastes
+                  {isAuthenticated
+                    ? "Your Pastes"
+                    : "Browse AT Protocol Pastes"}
                 </Text>
               </XStack>
-              <Text fontSize="$4">Manage all your AT Protocol pastes</Text>
+              <Text fontSize="$4">
+                {isAuthenticated
+                  ? "Manage all your AT Protocol pastes"
+                  : "Discover and view pastes shared on the AT Protocol"}
+              </Text>
             </YStack>
 
             <XStack space="$3" flexWrap="wrap">
-              <Link
-                to="/"
-                style={{ textDecoration: "none", flex: 1, minWidth: 120 }}
-              >
-                <Button theme="green" size="$4" width="100%">
+              {isAuthenticated ? (
+                <Link
+                  to="/"
+                  style={{ textDecoration: "none", flex: 1, minWidth: 120 }}
+                >
+                  <Button theme="green" size="$4" width="100%">
+                    <XStack alignItems="center" space="$2">
+                      <SparklesIcon width={20} height={20} />
+                      <Text>Create New Paste</Text>
+                    </XStack>
+                  </Button>
+                </Link>
+              ) : (
+                <Button
+                  theme="green"
+                  size="$4"
+                  width="100%"
+                  onPress={() => setIsAuthModalOpen(true)}
+                >
                   <XStack alignItems="center" space="$2">
                     <SparklesIcon width={20} height={20} />
-                    <Text>Create New Paste</Text>
+                    <Text>Login to Create Paste</Text>
                   </XStack>
                 </Button>
-              </Link>
+              )}
             </XStack>
 
             {/* Pagination Controls */}
@@ -109,7 +108,11 @@ export function PasteListPage() {
             </XStack>
           </YStack>
 
-          <PasteList pastes={pastes} userHandle={session?.handle} />
+          <PasteList
+            pastes={pastes}
+            userHandle={session?.handle}
+            currentUserSession={session}
+          />
         </YStack>
       </View>
 
