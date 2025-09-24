@@ -1,32 +1,19 @@
 import { YStack, View, XStack, Text, Button } from "tamagui";
 import { BookOpenIcon, SparklesIcon } from "@heroicons/react/24/outline";
-import { Link, useLoaderData, useSearchParams, useParams } from "react-router";
+import { Link, useLoaderData, useParams } from "react-router";
 import { PasteList } from "./PasteList";
 import { AuthModal } from "./AuthModal";
 import { Header } from "./Header";
 import type { PasteListLoaderData } from "../loaders/pasteListLoader";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
+import { PasteListPaginationButtons } from "./PasteListPaginationButtons";
 
 export function PasteListPage() {
   const { isAuthenticated, session } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { handle: userHandle } = useParams();
-  const { pastes, nextCursor, cursor, prevCursor } =
-    useLoaderData() as PasteListLoaderData;
-
-  const [, setSearchParams] = useSearchParams();
-
-  const handleNextPage = () => {
-    if (nextCursor) {
-      setSearchParams({ prev: cursor || "", cursor: nextCursor });
-    }
-  };
-
-  const handlePrevPage = () => {
-    // TODO: How do we get prev here?
-    setSearchParams({ prev: "", cursor: prevCursor || "" });
-  };
+  const { pastes } = useLoaderData() as PasteListLoaderData;
 
   // Check if viewing current user's own pastes
   const isViewingOwnPastes = isAuthenticated && session?.handle === userHandle;
@@ -96,21 +83,7 @@ export function PasteListPage() {
               </XStack>
             )}
 
-            {/* Pagination Controls */}
-            <XStack space="$3" justifyContent="center" alignItems="center">
-              <Button onPress={handlePrevPage} size="$4" theme="blue">
-                Previous
-              </Button>
-
-              <Button
-                onPress={handleNextPage}
-                disabled={pastes.length < 20}
-                size="$4"
-                theme="blue"
-              >
-                Next
-              </Button>
-            </XStack>
+            <PasteListPaginationButtons />
           </YStack>
 
           <PasteList
@@ -118,6 +91,8 @@ export function PasteListPage() {
             userHandle={session?.handle}
             currentUserSession={session}
           />
+
+          <PasteListPaginationButtons />
         </YStack>
       </View>
 
