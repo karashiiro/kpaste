@@ -152,7 +152,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             <H2 textAlign="center">
               {requiresTwoFactor
                 ? "Two-Factor Authentication"
-                : "Login to AT Protocol"}
+                : "Login to Bluesky"}
             </H2>
           </XStack>
 
@@ -225,7 +225,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             </YStack>
           ) : (
             <YStack gap="$4">
-              <Text textAlign="center">Connect to any AT Protocol service</Text>
+              <Text textAlign="center">
+                Connect to Bluesky or any compatible service
+              </Text>
 
               <YStack gap="$3">
                 <YStack gap="$2">

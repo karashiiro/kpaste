@@ -37,15 +37,15 @@ export function PasteListPage() {
                     ? "Your Pastes"
                     : userHandle
                       ? `${userHandle}'s Pastes`
-                      : "Browse AT Protocol Pastes"}
+                      : "Browse Pastes"}
                 </Text>
               </XStack>
               <Text fontSize="$4">
                 {isViewingOwnPastes
-                  ? "Manage all your AT Protocol pastes"
+                  ? "Manage all your pastes"
                   : userHandle
                     ? `View pastes shared by @${userHandle}`
-                    : "Discover and view pastes shared on the AT Protocol"}
+                    : "Discover and view shared pastes"}
               </Text>
             </YStack>
 

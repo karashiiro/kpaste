@@ -65,9 +65,7 @@ export function CreateForm({
         <Card theme="blue" padding="$3">
           <XStack alignItems="center" gap="$2">
             <DocumentTextIcon width={16} height={16} />
-            <Text fontSize="$3">
-              Note: All pastes are public in AT Protocol repos
-            </Text>
+            <Text fontSize="$3">Note: All pastes are publicly accessible</Text>
           </XStack>
         </Card>
 

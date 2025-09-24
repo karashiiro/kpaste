@@ -21,7 +21,7 @@ export function PasteEditor() {
       <YStack minHeight="100vh" backgroundColor="$background">
         <AuthRequiredView
           title="Welcome to KPaste!"
-          subtitle="Please log in to create and manage your pastes on the AT Protocol."
+          subtitle="Please log in to create and manage your pastes."
           buttonText="Get Started"
           onLoginClick={() => setIsAuthModalOpen(true)}
         />
@@ -52,9 +52,7 @@ export function PasteEditor() {
                 Create New Paste
               </Text>
             </XStack>
-            <Text fontSize="$4">
-              Share your code or text on the AT Protocol
-            </Text>
+            <Text fontSize="$4">Share your code or text with the world</Text>
           </YStack>
 
           <CreateForm
