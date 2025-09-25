@@ -1,4 +1,12 @@
-import { YStack, Text, Button, Card, XStack, ScrollView } from "tamagui";
+import {
+  YStack,
+  Text,
+  Button,
+  Card,
+  XStack,
+  ScrollView,
+  Tooltip,
+} from "tamagui";
 import { Link } from "react-router";
 import {
   DocumentTextIcon,
@@ -74,7 +82,13 @@ export function PasteList({
   return (
     <YStack gap="$5">
       {pastes.map((paste) => (
-        <Card key={paste.uri} padding="$5" gap="$4" bordered>
+        <Card
+          key={paste.uri}
+          padding="$5"
+          gap="$4"
+          bordered
+          position="relative"
+        >
           {userHandle ? (
             (() => {
               // Extract rkey from URI for view link
@@ -197,35 +211,75 @@ export function PasteList({
 
           {/* Only show edit/delete buttons if current user owns this paste */}
           {currentUserSession && userHandle === currentUserSession.handle && (
-            <XStack gap="$3" marginTop="$4">
-              <Button onPress={() => startEdit(paste)} size="$4" flex={1}>
+            <>
+              {/* Delete button - subtle circle in corner */}
+              <Tooltip>
+                <Tooltip.Trigger asChild>
+                  <Button
+                    position="absolute"
+                    top="$3"
+                    right="$3"
+                    size="$3"
+                    circular
+                    backgroundColor="$red2"
+                    borderColor="$red6"
+                    borderWidth={1}
+                    hoverStyle={{
+                      backgroundColor: "$red4",
+                      borderColor: "$red8",
+                      scale: 1.05,
+                    }}
+                    pressStyle={{
+                      backgroundColor: "$red5",
+                      borderColor: "$red9",
+                      scale: 0.95,
+                    }}
+                    onPress={() => deletePaste(paste.uri)}
+                    disabled={deleteLoading}
+                    opacity={0.8}
+                    zIndex={1}
+                  >
+                    {deleteLoading ? (
+                      <ArrowPathIcon
+                        width={16}
+                        height={16}
+                        className="animate-spin"
+                        color="$red10"
+                      />
+                    ) : (
+                      <TrashIcon width={16} height={16} color="$red10" />
+                    )}
+                  </Button>
+                </Tooltip.Trigger>
+                <Tooltip.Content
+                  enterStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
+                  exitStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
+                  scale={1}
+                  x={0}
+                  y={0}
+                  opacity={1}
+                  animation={[
+                    "quick",
+                    {
+                      opacity: {
+                        overshootClamping: true,
+                      },
+                    },
+                  ]}
+                >
+                  <Tooltip.Arrow />
+                  <Text>Delete this paste</Text>
+                </Tooltip.Content>
+              </Tooltip>
+
+              {/* Edit button - full width */}
+              <Button onPress={() => startEdit(paste)} size="$4" marginTop="$4">
                 <XStack alignItems="center" gap="$2">
                   <PencilIcon width={20} height={20} />
                   <Text>Edit</Text>
                 </XStack>
               </Button>
-
-              <Button
-                onPress={() => deletePaste(paste.uri)}
-                disabled={deleteLoading}
-                theme="red"
-                size="$4"
-                flex={1}
-              >
-                <XStack alignItems="center" gap="$2">
-                  {deleteLoading ? (
-                    <ArrowPathIcon
-                      width={20}
-                      height={20}
-                      className="animate-spin"
-                    />
-                  ) : (
-                    <TrashIcon width={20} height={20} />
-                  )}
-                  <Text>{deleteLoading ? "Deleting..." : "Delete"}</Text>
-                </XStack>
-              </Button>
-            </XStack>
+            </>
           )}
 
           {deleteError && (
