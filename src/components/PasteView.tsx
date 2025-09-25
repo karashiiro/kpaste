@@ -1,6 +1,11 @@
 import { useLoaderData, Link } from "react-router";
 import { YStack, XStack, Text, Card, Button } from "tamagui";
-import { DocumentTextIcon, PencilIcon } from "@heroicons/react/24/outline";
+import {
+  DocumentTextIcon,
+  PencilIcon,
+  TrashIcon,
+  ArrowPathIcon,
+} from "@heroicons/react/24/outline";
 import { AtUriLink } from "./AtUriLink";
 import { EditModal } from "./EditModal";
 import { safeHighlight } from "../prismUtils";
@@ -8,12 +13,14 @@ import type { PasteLoaderData } from "../loaders/pasteLoader";
 import { useAuth } from "../hooks/useAuth";
 import { usePasteForm } from "../hooks/usePasteForm";
 import { useUpdatePaste } from "../hooks/useUpdatePaste";
+import { useDeletePaste } from "../hooks/useDeletePaste";
 
 export function PasteView() {
   const paste = useLoaderData() as PasteLoaderData;
   const { session } = useAuth();
   const forms = usePasteForm();
   const { updatePaste, loading: updateLoading } = useUpdatePaste();
+  const { deletePaste, loading: deleteLoading } = useDeletePaste();
 
   // Check if current user owns this paste
   const isOwner = session?.handle === paste.handle;
@@ -46,14 +53,36 @@ export function PasteView() {
               </Text>
             </XStack>
 
-            {/* Edit button for paste owner */}
+            {/* Edit and Delete buttons for paste owner */}
             {isOwner && (
-              <Button onPress={startEdit} size="$3" theme="blue">
-                <XStack alignItems="center" gap="$1">
-                  <PencilIcon width={16} height={16} />
-                  <Text>Edit</Text>
-                </XStack>
-              </Button>
+              <XStack gap="$3">
+                <Button onPress={startEdit} size="$3" theme="blue">
+                  <XStack alignItems="center" gap="$1">
+                    <PencilIcon width={16} height={16} />
+                    <Text>Edit</Text>
+                  </XStack>
+                </Button>
+
+                <Button
+                  onPress={() => deletePaste(paste.uri)}
+                  disabled={deleteLoading}
+                  size="$3"
+                  theme="red"
+                >
+                  <XStack alignItems="center" gap="$1">
+                    {deleteLoading ? (
+                      <ArrowPathIcon
+                        width={16}
+                        height={16}
+                        className="animate-spin"
+                      />
+                    ) : (
+                      <TrashIcon width={16} height={16} />
+                    )}
+                    <Text>{deleteLoading ? "Deleting..." : "Delete"}</Text>
+                  </XStack>
+                </Button>
+              </XStack>
             )}
           </XStack>
           <XStack alignItems="center" gap="$2">
