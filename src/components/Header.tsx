@@ -224,7 +224,7 @@ export function Header({ onLoginClick }: HeaderProps) {
             </Button>
           </View>
         ) : (
-          <YStack alignItems="center" gap="$2" width="100%" maxWidth={320}>
+          <XStack alignItems="center" gap="$3">
             <Link
               to={`/pastes/${session?.handle}`}
               style={{ textDecoration: "none" }}
@@ -252,14 +252,13 @@ export function Header({ onLoginClick }: HeaderProps) {
               color="white"
               size="$3"
               borderRadius="$8"
-              width="100%"
             >
               <XStack alignItems="center" gap="$2">
                 <HandRaisedIcon width={16} height={16} color="white" />
                 <Text color="white">Logout</Text>
               </XStack>
             </Button>
-          </YStack>
+          </XStack>
         )}
       </YStack>
     </View>
