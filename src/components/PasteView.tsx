@@ -1,4 +1,5 @@
 import { useLoaderData, Link } from "react-router";
+import { useMemo } from "react";
 import { YStack, XStack, Text, Card, Button } from "tamagui";
 import {
   DocumentTextIcon,
@@ -22,8 +23,11 @@ export function PasteView() {
   const { updatePaste, loading: updateLoading } = useUpdatePaste();
   const { deletePaste, loading: deleteLoading } = useDeletePaste();
 
-  // Check if current user owns this paste
-  const isOwner = session?.handle === paste.handle;
+  // Check if current user owns this paste (reactive to session changes)
+  const isOwner = useMemo(
+    () => session?.handle === paste.handle,
+    [session?.handle, paste.handle],
+  );
 
   const startEdit = () => {
     forms.setEditForm({
