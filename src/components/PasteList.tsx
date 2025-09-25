@@ -66,7 +66,7 @@ export function PasteList({
     return (
       <Card padding="$6" marginTop="$4" alignItems="center">
         <XStack alignItems="center" gap="$2">
-          <DocumentTextIcon width={24} height={24} />
+          <DocumentTextIcon width={24} height={24} color="white" />
           <Text fontSize="$5" textAlign="center">
             No pastes found. Create your first paste!
           </Text>
@@ -105,7 +105,7 @@ export function PasteList({
                     gap="$2"
                     pressStyle={{ opacity: 0.7 }}
                   >
-                    <DocumentTextIcon width={24} height={24} />
+                    <DocumentTextIcon width={24} height={24} color="white" />
                     <Text fontSize="$7" fontWeight="600" color="$blue10">
                       {paste.value.title || "Untitled Paste"}
                     </Text>
@@ -115,7 +115,7 @@ export function PasteList({
             })()
           ) : (
             <XStack alignItems="center" gap="$2">
-              <DocumentTextIcon width={24} height={24} />
+              <DocumentTextIcon width={24} height={24} color="white" />
               <Text fontSize="$7" fontWeight="600" color="$color">
                 {paste.value.title || "Untitled Paste"}
               </Text>
@@ -275,7 +275,7 @@ export function PasteList({
               {/* Edit button - full width */}
               <Button onPress={() => startEdit(paste)} size="$4" marginTop="$4">
                 <XStack alignItems="center" gap="$2">
-                  <PencilIcon width={20} height={20} />
+                  <PencilIcon width={20} height={20} color="white" />
                   <Text>Edit</Text>
                 </XStack>
               </Button>

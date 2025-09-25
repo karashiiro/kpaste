@@ -56,7 +56,7 @@ export function PasteListPage() {
                   >
                     <Button theme="green" size="$4" width="100%">
                       <XStack alignItems="center" gap="$2">
-                        <SparklesIcon width={20} height={20} />
+                        <SparklesIcon width={20} height={20} color="white" />
                         <Text>Create New Paste</Text>
                       </XStack>
                     </Button>
@@ -71,7 +71,7 @@ export function PasteListPage() {
                     }}
                   >
                     <XStack alignItems="center" gap="$2">
-                      <SparklesIcon width={20} height={20} />
+                      <SparklesIcon width={20} height={20} color="white" />
                       <Text>Login to Create Paste</Text>
                     </XStack>
                   </Button>

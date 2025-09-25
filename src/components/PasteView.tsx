@@ -62,7 +62,7 @@ export function PasteView() {
               <XStack gap="$3">
                 <Button onPress={startEdit} size="$3" theme="blue">
                   <XStack alignItems="center" gap="$1">
-                    <PencilIcon width={16} height={16} />
+                    <PencilIcon width={16} height={16} color="white" />
                     <Text>Edit</Text>
                   </XStack>
                 </Button>

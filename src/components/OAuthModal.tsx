@@ -74,7 +74,7 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
       <Sheet.Frame padding="$4" alignItems="center" gap="$5">
         <YStack gap="$4" maxWidth={400} width="100%">
           <XStack justifyContent="center" alignItems="center" gap="$2">
-            <RocketLaunchIcon width={32} height={32} />
+            <RocketLaunchIcon width={32} height={32} color="white" />
             <H2 textAlign="center">Login to Bluesky</H2>
           </XStack>
 
