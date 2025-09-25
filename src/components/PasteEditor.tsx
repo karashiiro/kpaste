@@ -1,10 +1,11 @@
-import { YStack, View, Text, Card, XStack } from "tamagui";
+import { YStack, Text, Card, XStack } from "tamagui";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "../hooks/useAuth";
-import { CreateForm } from "./CreateForm";
 import { AuthRequiredView } from "./AuthRequiredView";
 import { usePasteForm } from "../hooks/usePasteForm";
 import { useCreatePaste } from "../hooks/useCreatePaste";
+import { PageContainer } from "./PageContainer";
+import { PasteForm } from "./PasteForm";
 
 export function PasteEditor() {
   const { isAuthenticated } = useAuth();
@@ -30,15 +31,7 @@ export function PasteEditor() {
 
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
-      {/* Main Editor */}
-      <View
-        padding="$6"
-        maxWidth={1200}
-        marginHorizontal="auto"
-        width="100%"
-        flex={1}
-        $xs={{ padding: "$4" }}
-      >
+      <PageContainer flex={1}>
         <YStack gap="$6">
           <YStack gap="$2">
             <Text fontSize="$8" fontWeight="700">
@@ -47,11 +40,12 @@ export function PasteEditor() {
             <Text fontSize="$4">Share your code or text with the world</Text>
           </YStack>
 
-          <CreateForm
-            createForm={forms.createForm}
+          <PasteForm
+            form={forms.createForm}
             loading={loading}
             onFormChange={forms.setCreateForm}
             onSubmit={() => createPaste(forms.createForm)}
+            mode="create"
           />
 
           {error && (
@@ -63,7 +57,7 @@ export function PasteEditor() {
             </Card>
           )}
         </YStack>
-      </View>
+      </PageContainer>
     </YStack>
   );
 }

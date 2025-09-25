@@ -1,6 +1,6 @@
 import { Sheet, ScrollView } from "tamagui";
 import type { EditPasteForm } from "../hooks/usePasteForm";
-import { EditForm } from "./EditForm";
+import { PasteForm } from "./PasteForm";
 
 interface EditModalProps {
   isOpen: boolean;
@@ -46,12 +46,13 @@ export function EditModal({
             justifyContent: "flex-start",
           }}
         >
-          <EditForm
-            editForm={editForm}
+          <PasteForm
+            form={editForm}
             loading={loading}
-            onFormChange={onFormChange}
+            onFormChange={(form) => onFormChange(form as EditPasteForm)}
             onSubmit={onSubmit}
             onCancel={onClose}
+            mode="edit"
           />
         </ScrollView>
       </Sheet.Frame>
