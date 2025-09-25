@@ -1,10 +1,12 @@
-import { YStack, View, XStack, Text, Button } from "tamagui";
+import { YStack, XStack, Text } from "tamagui";
 import { BookOpenIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import { Link, useLoaderData, useParams } from "react-router";
 import { PasteList } from "./PasteList";
 import type { PasteListLoaderData } from "../loaders/pasteListLoader";
 import { useAuth } from "../hooks/useAuth";
 import { PasteListPaginationButtons } from "./PasteListPaginationButtons";
+import { PageContainer } from "./PageContainer";
+import { ActionButton } from "./ActionButton";
 
 export function PasteListPage() {
   const { isAuthenticated, session } = useAuth();
@@ -16,15 +18,7 @@ export function PasteListPage() {
 
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
-      {/* Main Content */}
-      <View
-        padding="$6"
-        maxWidth={1200}
-        marginHorizontal="auto"
-        width="100%"
-        flex={1}
-        $xs={{ padding: "$4" }}
-      >
+      <PageContainer flex={1}>
         <YStack gap="$6">
           <YStack gap="$4">
             <YStack gap="$2">
@@ -55,27 +49,29 @@ export function PasteListPage() {
                     to="/"
                     style={{ textDecoration: "none", flex: 1, minWidth: 120 }}
                   >
-                    <Button theme="green" size="$4" width="100%">
-                      <XStack alignItems="center" gap="$2">
+                    <ActionButton
+                      theme="green"
+                      size="$4"
+                      width="100%"
+                      icon={
                         <SparklesIcon width={20} height={20} color="white" />
-                        <Text>Create New Paste</Text>
-                      </XStack>
-                    </Button>
+                      }
+                    >
+                      Create New Paste
+                    </ActionButton>
                   </Link>
                 ) : (
-                  <Button
+                  <ActionButton
                     theme="green"
                     size="$4"
                     width="100%"
+                    icon={<SparklesIcon width={20} height={20} color="white" />}
                     onPress={() => {
                       /* OAuth modal is handled globally */
                     }}
                   >
-                    <XStack alignItems="center" gap="$2">
-                      <SparklesIcon width={20} height={20} color="white" />
-                      <Text>Login to Create Paste</Text>
-                    </XStack>
-                  </Button>
+                    Login to Create Paste
+                  </ActionButton>
                 )}
               </XStack>
             )}
@@ -91,7 +87,7 @@ export function PasteListPage() {
 
           <PasteListPaginationButtons />
         </YStack>
-      </View>
+      </PageContainer>
     </YStack>
   );
 }

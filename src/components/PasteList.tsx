@@ -1,12 +1,4 @@
-import {
-  YStack,
-  Text,
-  Button,
-  Card,
-  XStack,
-  ScrollView,
-  Tooltip,
-} from "tamagui";
+import { YStack, Text, Card, XStack, ScrollView, Tooltip } from "tamagui";
 import { Link } from "react-router";
 import {
   DocumentTextIcon,
@@ -24,6 +16,7 @@ import { useUpdatePaste } from "../hooks/useUpdatePaste";
 import { EditModal } from "./EditModal";
 import { safeHighlight } from "../prismUtils";
 import { parseAtUri } from "../pdsUtils";
+import { LoadingButton } from "./LoadingButton";
 
 interface PasteListProps {
   pastes: PasteListItem[];
@@ -212,7 +205,7 @@ export function PasteList({
               {/* Delete button - subtle circle in corner */}
               <Tooltip>
                 <Tooltip.Trigger asChild>
-                  <Button
+                  <LoadingButton
                     position="absolute"
                     top="$3"
                     right="$3"
@@ -232,21 +225,11 @@ export function PasteList({
                       scale: 0.95,
                     }}
                     onPress={() => deletePaste(paste.uri)}
-                    disabled={deleteLoading}
+                    loading={deleteLoading}
                     opacity={0.8}
                     zIndex={1}
-                  >
-                    {deleteLoading ? (
-                      <ArrowPathIcon
-                        width={16}
-                        height={16}
-                        className="animate-spin"
-                        color="$red10"
-                      />
-                    ) : (
-                      <TrashIcon width={16} height={16} color="$red10" />
-                    )}
-                  </Button>
+                    icon={<TrashIcon width={16} height={16} color="$red10" />}
+                  ></LoadingButton>
                 </Tooltip.Trigger>
                 <Tooltip.Content
                   enterStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
@@ -270,12 +253,14 @@ export function PasteList({
               </Tooltip>
 
               {/* Edit button - full width */}
-              <Button onPress={() => startEdit(paste)} size="$4" marginTop="$4">
-                <XStack alignItems="center" gap="$2">
-                  <PencilIcon width={20} height={20} color="white" />
-                  <Text>Edit</Text>
-                </XStack>
-              </Button>
+              <LoadingButton
+                onPress={() => startEdit(paste)}
+                size="$4"
+                marginTop="$4"
+                icon={<PencilIcon width={20} height={20} color="white" />}
+              >
+                Edit
+              </LoadingButton>
             </>
           )}
 
