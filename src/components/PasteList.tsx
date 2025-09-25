@@ -157,12 +157,17 @@ export function PasteList({
                 )}
             </XStack>
 
-            <YStack gap="$2">
+            <XStack alignItems="center" gap="$2">
               <Text fontSize="$4" fontWeight="500">
                 URI:
               </Text>
-              <AtUriLink uri={paste.uri} showLabel={false} />
-            </YStack>
+              <AtUriLink
+                uri={paste.uri}
+                showLabel={false}
+                variant="compact"
+                fontSize="$3"
+              />
+            </XStack>
           </YStack>
 
           <YStack gap="$2">
