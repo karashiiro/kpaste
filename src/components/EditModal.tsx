@@ -29,11 +29,7 @@ export function EditModal({
       snapPoints={[90]}
       dismissOnSnapToBottom
     >
-      <Sheet.Overlay
-        animation="lazy"
-        enterStyle={{ opacity: 0 }}
-        exitStyle={{ opacity: 0 }}
-      />
+      <Sheet.Overlay />
       <Sheet.Handle />
       <Sheet.Frame
         padding="$4"

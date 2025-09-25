@@ -69,11 +69,7 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
       snapPoints={[85, 50, 25]}
       dismissOnSnapToBottom
     >
-      <Sheet.Overlay
-        animation="lazy"
-        enterStyle={{ opacity: 0 }}
-        exitStyle={{ opacity: 0 }}
-      />
+      <Sheet.Overlay />
       <Sheet.Handle />
       <Sheet.Frame padding="$4" alignItems="center" gap="$5">
         <YStack gap="$4" maxWidth={400} width="100%">
