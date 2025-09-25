@@ -93,6 +93,8 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
                   onChangeText={setHandle}
                   placeholder="Your handle"
                   disabled={isAuthenticating}
+                  onSubmitEditing={handleLogin}
+                  returnKeyType="go"
                 />
               </YStack>
 
