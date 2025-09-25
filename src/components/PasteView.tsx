@@ -1,11 +1,10 @@
-import { useLoaderData, Link } from "react-router";
+import { useLoaderData } from "react-router";
 import { useMemo } from "react";
-import { YStack, XStack, Text, Card, Button } from "tamagui";
+import { YStack, XStack, Text, Card } from "tamagui";
 import {
   DocumentTextIcon,
   PencilIcon,
   TrashIcon,
-  ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 import { EditModal } from "./EditModal";
 import { safeHighlight } from "../prismUtils";
@@ -14,6 +13,9 @@ import { useAuth } from "../hooks/useAuth";
 import { usePasteForm } from "../hooks/usePasteForm";
 import { useUpdatePaste } from "../hooks/useUpdatePaste";
 import { useDeletePaste } from "../hooks/useDeletePaste";
+import { PageContainer } from "./PageContainer";
+import { PasteMetadata } from "./PasteMetadata";
+import { LoadingButton } from "./LoadingButton";
 
 export function PasteView() {
   const paste = useLoaderData() as PasteLoaderData;
@@ -40,14 +42,7 @@ export function PasteView() {
 
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
-      <YStack
-        padding="$4"
-        maxWidth={1200}
-        marginHorizontal="auto"
-        width="100%"
-        gap="$4"
-        $xs={{ padding: "$3" }}
-      >
+      <PageContainer gap="$4">
         <YStack gap="$2">
           <XStack alignItems="center" gap="$3" justifyContent="space-between">
             <XStack alignItems="center" gap="$2">
@@ -64,86 +59,35 @@ export function PasteView() {
                 flexDirection="column"
                 $xs={{ flexDirection: "row", gap: "$2" }}
               >
-                <Button onPress={startEdit} size="$3" theme="blue">
-                  <XStack alignItems="center" gap="$1">
-                    <PencilIcon width={16} height={16} color="white" />
-                    <Text>Edit</Text>
-                  </XStack>
-                </Button>
+                <LoadingButton
+                  onPress={startEdit}
+                  size="$3"
+                  theme="blue"
+                  icon={<PencilIcon width={16} height={16} color="white" />}
+                >
+                  Edit
+                </LoadingButton>
 
-                <Button
+                <LoadingButton
                   onPress={() => deletePaste(paste.uri)}
-                  disabled={deleteLoading}
+                  loading={deleteLoading}
+                  loadingText="Deleting..."
                   size="$3"
                   theme="red"
+                  icon={<TrashIcon width={16} height={16} />}
                 >
-                  <XStack alignItems="center" gap="$1">
-                    {deleteLoading ? (
-                      <ArrowPathIcon
-                        width={16}
-                        height={16}
-                        className="animate-spin"
-                      />
-                    ) : (
-                      <TrashIcon width={16} height={16} />
-                    )}
-                    <Text>{deleteLoading ? "Deleting..." : "Delete"}</Text>
-                  </XStack>
-                </Button>
+                  Delete
+                </LoadingButton>
               </XStack>
             )}
           </XStack>
-          <XStack
-            flexDirection="column"
-            alignItems="center"
-            gap="$2"
-            flexWrap="wrap"
-            $xs={{
-              flexDirection: "row",
-              alignItems: "flex-start",
-              gap: "$1",
-            }}
-          >
-            <Text fontSize="$4">
-              by{" "}
-              <Text fontWeight="600">
-                <Link
-                  to={`/pastes/${paste.handle}`}
-                  style={{ color: "white", textDecoration: "underline" }}
-                >
-                  @{paste.handle}
-                </Link>
-              </Text>
-            </Text>
-            <Text fontSize="$4" display="none" $sm={{ display: "flex" }}>
-              •
-            </Text>
-            <Text
-              fontSize="$4"
-              paddingHorizontal="$2"
-              paddingVertical="$1"
-              borderRadius="$3"
-            >
-              {paste.value.language || "text"}
-            </Text>
-            <Text fontSize="$4" display="none" $sm={{ display: "flex" }}>
-              •
-            </Text>
-            <Text fontSize="$4">
-              Created: {new Date(paste.value.createdAt).toLocaleString()}
-            </Text>
-            {paste.value.updatedAt &&
-              paste.value.updatedAt !== paste.value.createdAt && (
-                <>
-                  <Text fontSize="$4" display="none" $sm={{ display: "flex" }}>
-                    •
-                  </Text>
-                  <Text fontSize="$4">
-                    Updated: {new Date(paste.value.updatedAt).toLocaleString()}
-                  </Text>
-                </>
-              )}
-          </XStack>
+
+          <PasteMetadata
+            paste={paste.value}
+            handle={paste.handle}
+            responsive
+            variant="inline"
+          />
         </YStack>
 
         <Card padding="$0" bordered>
@@ -164,7 +108,7 @@ export function PasteView() {
             }}
           />
         </Card>
-      </YStack>
+      </PageContainer>
 
       {/* Edit Modal */}
       <EditModal
