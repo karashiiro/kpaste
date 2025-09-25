@@ -1,14 +1,24 @@
 import { useState } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import { OAuthModal } from "./components/OAuthModal";
 import { RootLayout } from "./components/RootLayout";
 
 export function App() {
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const location = useLocation();
+
+  const handleLoginClick = () => {
+    // Save current URL for post-login redirect
+    localStorage.setItem(
+      "kpaste_return_url",
+      location.pathname + location.search + location.hash,
+    );
+    setShowAuthModal(true);
+  };
 
   return (
     <>
-      <RootLayout onLoginClick={() => setShowAuthModal(true)}>
+      <RootLayout onLoginClick={handleLoginClick}>
         <Outlet />
       </RootLayout>
       <OAuthModal

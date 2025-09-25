@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router";
 import { YStack, Text, Card } from "tamagui";
 import {
@@ -13,6 +13,16 @@ export function OAuthCallbackHash() {
   const { handleOAuthCallback, authState } = useAuth();
   const processedRef = useRef(false);
 
+  // Helper function to handle navigation with return URL cleanup
+  const navigateWithReturnUrl = useCallback(
+    (defaultPath: string = "/") => {
+      const returnUrl = localStorage.getItem("kpaste_return_url");
+      localStorage.removeItem("kpaste_return_url");
+      navigate(returnUrl || defaultPath, { replace: true });
+    },
+    [navigate],
+  );
+
   useEffect(() => {
     const processCallback = async () => {
       if (processedRef.current) {
@@ -23,7 +33,7 @@ export function OAuthCallbackHash() {
         // Get OAuth data from localStorage
         const oauthDataStr = localStorage.getItem("kpaste_oauth_callback");
         if (!oauthDataStr) {
-          navigate("/", { replace: true });
+          navigateWithReturnUrl();
           return;
         }
 
@@ -33,7 +43,7 @@ export function OAuthCallbackHash() {
         const maxAge = 5 * 60 * 1000; // 5 minutes
         if (Date.now() - oauthData.timestamp > maxAge) {
           localStorage.removeItem("kpaste_oauth_callback");
-          navigate("/", { replace: true });
+          navigateWithReturnUrl();
           return;
         }
 
@@ -56,25 +66,25 @@ export function OAuthCallbackHash() {
 
           // Small delay to ensure auth state is updated
           setTimeout(() => {
-            navigate("/", { replace: true });
+            navigateWithReturnUrl();
           }, 100);
         } else {
           localStorage.removeItem("kpaste_oauth_callback");
-          navigate("/", { replace: true });
+          navigateWithReturnUrl();
         }
       } catch {
         // Clean up localStorage on error
         localStorage.removeItem("kpaste_oauth_callback");
 
-        // Redirect to home after delay
+        // Redirect to original page after delay
         setTimeout(() => {
-          navigate("/", { replace: true });
+          navigateWithReturnUrl();
         }, 3000);
       }
     };
 
     processCallback();
-  }, [handleOAuthCallback, navigate]);
+  }, [handleOAuthCallback, navigate, navigateWithReturnUrl]);
 
   if (authState.state === "authenticated") {
     return (
@@ -84,6 +94,7 @@ export function OAuthCallbackHash() {
         alignItems="center"
         padding="$6"
         gap="$4"
+        backgroundColor="#0a0a0a"
       >
         <Card padding="$4" theme="green">
           <YStack alignItems="center" gap="$3">
@@ -108,6 +119,7 @@ export function OAuthCallbackHash() {
         alignItems="center"
         padding="$6"
         gap="$4"
+        backgroundColor="#0a0a0a"
       >
         <Card padding="$4" theme="red">
           <YStack alignItems="center" gap="$3">
@@ -141,6 +153,7 @@ export function OAuthCallbackHash() {
       alignItems="center"
       padding="$6"
       gap="$4"
+      backgroundColor="#0a0a0a"
     >
       <Card padding="$4" theme="blue">
         <YStack alignItems="center" gap="$3">
