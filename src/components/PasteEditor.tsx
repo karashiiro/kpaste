@@ -37,6 +37,7 @@ export function PasteEditor() {
         marginHorizontal="auto"
         width="100%"
         flex={1}
+        $xs={{ padding: "$4" }}
       >
         <YStack gap="$6">
           <YStack gap="$2">

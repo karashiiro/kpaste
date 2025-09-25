@@ -46,6 +46,7 @@ export function PasteView() {
         marginHorizontal="auto"
         width="100%"
         gap="$4"
+        $xs={{ padding: "$3" }}
       >
         <YStack gap="$2">
           <XStack alignItems="center" gap="$3" justifyContent="space-between">
@@ -58,7 +59,11 @@ export function PasteView() {
 
             {/* Edit and Delete buttons for paste owner */}
             {isOwner && (
-              <XStack gap="$3">
+              <XStack
+                gap="$3"
+                flexDirection="column"
+                $xs={{ flexDirection: "row", gap: "$2" }}
+              >
                 <Button onPress={startEdit} size="$3" theme="blue">
                   <XStack alignItems="center" gap="$1">
                     <PencilIcon width={16} height={16} color="white" />
@@ -88,7 +93,17 @@ export function PasteView() {
               </XStack>
             )}
           </XStack>
-          <XStack alignItems="center" gap="$2">
+          <XStack
+            flexDirection="column"
+            alignItems="center"
+            gap="$2"
+            flexWrap="wrap"
+            $xs={{
+              flexDirection: "row",
+              alignItems: "flex-start",
+              gap: "$1",
+            }}
+          >
             <Text fontSize="$4">
               by{" "}
               <Text fontWeight="600">
@@ -100,7 +115,9 @@ export function PasteView() {
                 </Link>
               </Text>
             </Text>
-            <Text fontSize="$4">•</Text>
+            <Text fontSize="$4" display="none" $sm={{ display: "flex" }}>
+              •
+            </Text>
             <Text
               fontSize="$4"
               paddingHorizontal="$2"
@@ -109,14 +126,18 @@ export function PasteView() {
             >
               {paste.value.language || "text"}
             </Text>
-            <Text fontSize="$4">•</Text>
+            <Text fontSize="$4" display="none" $sm={{ display: "flex" }}>
+              •
+            </Text>
             <Text fontSize="$4">
               Created: {new Date(paste.value.createdAt).toLocaleString()}
             </Text>
             {paste.value.updatedAt &&
               paste.value.updatedAt !== paste.value.createdAt && (
                 <>
-                  <Text fontSize="$4">•</Text>
+                  <Text fontSize="$4" display="none" $sm={{ display: "flex" }}>
+                    •
+                  </Text>
                   <Text fontSize="$4">
                     Updated: {new Date(paste.value.updatedAt).toLocaleString()}
                   </Text>

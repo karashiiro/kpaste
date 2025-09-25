@@ -23,6 +23,7 @@ export function PasteListPage() {
         marginHorizontal="auto"
         width="100%"
         flex={1}
+        $xs={{ padding: "$4" }}
       >
         <YStack gap="$6">
           <YStack gap="$4">

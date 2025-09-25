@@ -122,7 +122,16 @@ export function PasteList({
           )}
 
           <YStack gap="$3">
-            <XStack alignItems="center" gap="$3" flexWrap="wrap">
+            <XStack
+              alignItems="center"
+              gap="$3"
+              flexWrap="wrap"
+              $xs={{
+                flexDirection: "column",
+                alignItems: "flex-start",
+                gap: "$2",
+              }}
+            >
               <XStack alignItems="center" gap="$2">
                 <Text fontSize="$4" fontWeight="500">
                   Language:
@@ -131,8 +140,6 @@ export function PasteList({
                   {paste.value.language || "text"}
                 </Text>
               </XStack>
-
-              <Text fontSize="$4">•</Text>
 
               <XStack alignItems="center" gap="$2">
                 <Text fontSize="$4" fontWeight="500">
@@ -155,12 +162,6 @@ export function PasteList({
                   </XStack>
                 )}
             </XStack>
-
-            <XStack alignItems="center" gap="$2">
-              <Text fontSize="$4" fontWeight="500">
-                URI:
-              </Text>
-            </XStack>
           </YStack>
 
           <YStack gap="$2">
@@ -178,8 +179,6 @@ export function PasteList({
                       margin: 0,
                       padding: 0,
                       overflow: "auto",
-                      whiteSpace: "pre-wrap",
-                      wordBreak: "break-word",
                     }}
                     dangerouslySetInnerHTML={{
                       __html: safeHighlight(
