@@ -22,7 +22,6 @@ import { useCallback } from "react";
 import { usePasteForm } from "../hooks/usePasteForm";
 import { useUpdatePaste } from "../hooks/useUpdatePaste";
 import { EditModal } from "./EditModal";
-import { AtUriLink } from "./AtUriLink";
 import { safeHighlight } from "../prismUtils";
 import { parseAtUri } from "../pdsUtils";
 
@@ -161,12 +160,6 @@ export function PasteList({
               <Text fontSize="$4" fontWeight="500">
                 URI:
               </Text>
-              <AtUriLink
-                uri={paste.uri}
-                showLabel={false}
-                variant="compact"
-                fontSize="$3"
-              />
             </XStack>
           </YStack>
 

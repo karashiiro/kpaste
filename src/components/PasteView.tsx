@@ -7,7 +7,6 @@ import {
   TrashIcon,
   ArrowPathIcon,
 } from "@heroicons/react/24/outline";
-import { AtUriLink } from "./AtUriLink";
 import { EditModal } from "./EditModal";
 import { safeHighlight } from "../prismUtils";
 import type { PasteLoaderData } from "../loaders/pasteLoader";
@@ -144,8 +143,6 @@ export function PasteView() {
             }}
           />
         </Card>
-
-        <AtUriLink uri={paste.uri} showLabel={true} />
       </YStack>
 
       {/* Edit Modal */}
