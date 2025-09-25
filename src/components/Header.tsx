@@ -26,21 +26,31 @@ export function Header({ onLoginClick }: HeaderProps) {
         textDecoration: "none",
       }}
     >
-      <XStack alignItems="center" gap="$2">
-        {isNavigatingToHome ? (
-          <ArrowPathIcon
-            width={20}
-            height={20}
-            color="white"
-            className="animate-spin"
-          />
-        ) : (
-          <SparklesIcon width={20} height={20} color="white" />
-        )}
-        <Text color="white" fontWeight="600">
-          Create Paste
-        </Text>
-      </XStack>
+      <Button
+        backgroundColor="$yellow9"
+        borderColor="rgba(165, 132, 49, 1)"
+        borderWidth={1}
+        size="$3"
+        borderRadius="$10"
+        fontWeight="700"
+        hoverStyle={{
+          backgroundColor: "$yellow10",
+        }}
+        pressStyle={{
+          backgroundColor: "$yellow8",
+        }}
+      >
+        <XStack alignItems="center" gap="$2">
+          <Text fontWeight="700" color="rgba(83, 65, 22, 1)">
+            Create Paste
+          </Text>
+          {isNavigatingToHome ? (
+            <ArrowPathIcon width={20} height={20} className="animate-spin" />
+          ) : (
+            <SparklesIcon width={20} height={20} color="rgba(83, 65, 22, 1)" />
+          )}
+        </XStack>
+      </Button>
     </Link>
   );
 
