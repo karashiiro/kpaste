@@ -31,7 +31,7 @@ export function AtUriLink({
         <Card
           padding="$2"
           borderRadius="$4"
-          hoverStyle={{ backgroundColor: "$gray3" }}
+          hoverStyle={{ opacity: 0.8 }}
           cursor="pointer"
         >
           <XStack alignItems="center" gap="$2" justifyContent="space-between">
@@ -65,7 +65,7 @@ export function AtUriLink({
       <Card
         padding="$3"
         borderRadius="$4"
-        hoverStyle={{ backgroundColor: "$gray3" }}
+        hoverStyle={{ opacity: 0.8 }}
         cursor="pointer"
       >
         <XStack alignItems="center" gap="$2" justifyContent="space-between">

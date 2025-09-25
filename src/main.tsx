@@ -10,6 +10,7 @@ import { PasteEditor } from "./components/PasteEditor.tsx";
 import { PasteListPage } from "./components/PasteListPage.tsx";
 import { PasteView } from "./components/PasteView.tsx";
 import { OAuthCallbackHash } from "./components/OAuthCallbackHash.tsx";
+import { LoadingFallback } from "./components/LoadingFallback.tsx";
 import { pasteLoader } from "./loaders/pasteLoader.ts";
 
 import "prismjs/themes/prism-tomorrow.css";
@@ -29,66 +30,76 @@ import { pasteListLoader } from "./loaders/pasteListLoader.ts";
 
 const tamaguiConfig = createTamagui(defaultConfig);
 
-const router = createHashRouter([
-  {
-    path: "/",
-    element: <App />,
-    children: [
-      {
-        index: true,
-        element: <PasteEditor />,
-      },
-      {
-        path: "oauth-callback",
-        element: <OAuthCallbackHash />,
-      },
-      {
-        path: "pastes/:handle",
-        element: <PasteListPage />,
-        loader: pasteListLoader,
-      },
-      {
-        path: "p/:handle/:rkey",
-        element: <PasteView />,
-        loader: pasteLoader,
-        errorElement: (
-          <div
-            style={{
-              minHeight: "100vh",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-              padding: "2rem",
-              textAlign: "center",
-            }}
-          >
-            <h1 style={{ color: "#dc3545", marginBottom: "1rem" }}>
-              Paste Not Found
-            </h1>
-            <p style={{ color: "#666", marginBottom: "2rem" }}>
-              The paste you're looking for doesn't exist or couldn't be loaded.
-            </p>
-            <a
-              href="/"
+const router = createHashRouter(
+  [
+    {
+      path: "/",
+      element: <App />,
+      HydrateFallback: LoadingFallback,
+      children: [
+        {
+          index: true,
+          element: <PasteEditor />,
+        },
+        {
+          path: "oauth-callback",
+          element: <OAuthCallbackHash />,
+        },
+        {
+          path: "pastes/:handle",
+          element: <PasteListPage />,
+          loader: pasteListLoader,
+        },
+        {
+          path: "p/:handle/:rkey",
+          element: <PasteView />,
+          loader: pasteLoader,
+          errorElement: (
+            <div
               style={{
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                color: "white",
-                padding: "12px 24px",
-                borderRadius: "25px",
-                textDecoration: "none",
-                fontWeight: "600",
+                minHeight: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+                padding: "2rem",
+                textAlign: "center",
               }}
             >
-              ← Back to KPaste
-            </a>
-          </div>
-        ),
-      },
-    ],
+              <h1 style={{ color: "#dc3545", marginBottom: "1rem" }}>
+                Paste Not Found
+              </h1>
+              <p style={{ color: "#666", marginBottom: "2rem" }}>
+                The paste you're looking for doesn't exist or couldn't be
+                loaded.
+              </p>
+              <a
+                href="/"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                  color: "white",
+                  padding: "12px 24px",
+                  borderRadius: "25px",
+                  textDecoration: "none",
+                  fontWeight: "600",
+                }}
+              >
+                ← Back to KPaste
+              </a>
+            </div>
+          ),
+        },
+      ],
+    },
+  ],
+  {
+    future: {
+      v7_partialHydration: true,
+    },
   },
-]);
+);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
