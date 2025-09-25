@@ -38,7 +38,6 @@ export function AtUriLink({
             <Text
               fontSize={fontSize}
               fontFamily={'"Inconsolata", monospace'}
-              fontWeight="600"
               color="$blue10"
               flex={1}
               numberOfLines={1}
