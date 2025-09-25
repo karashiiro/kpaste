@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import { StrictMode, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { createHashRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
@@ -6,26 +6,29 @@ import { TamaguiProvider, createTamagui, Theme } from "tamagui";
 import { defaultConfig } from "@tamagui/config/v4";
 import "./index.css";
 import { App } from "./App.tsx";
-import { PasteEditor } from "./components/PasteEditor.tsx";
-import { PasteListPage } from "./components/PasteListPage.tsx";
-import { PasteView } from "./components/PasteView.tsx";
-import { OAuthCallbackHash } from "./components/OAuthCallbackHash.tsx";
 import { LoadingFallback } from "./components/LoadingFallback.tsx";
 import { pasteLoader } from "./loaders/pasteLoader.ts";
 
+const PasteEditor = lazy(() =>
+  import("./components/PasteEditor.tsx").then((m) => ({
+    default: m.PasteEditor,
+  })),
+);
+const PasteListPage = lazy(() =>
+  import("./components/PasteListPage.tsx").then((m) => ({
+    default: m.PasteListPage,
+  })),
+);
+const PasteView = lazy(() =>
+  import("./components/PasteView.tsx").then((m) => ({ default: m.PasteView })),
+);
+const OAuthCallbackHash = lazy(() =>
+  import("./components/OAuthCallbackHash.tsx").then((m) => ({
+    default: m.OAuthCallbackHash,
+  })),
+);
+
 import "prismjs/themes/prism-tomorrow.css";
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-javascript";
-import "prismjs/components/prism-typescript";
-import "prismjs/components/prism-python";
-import "prismjs/components/prism-java";
-import "prismjs/components/prism-c";
-import "prismjs/components/prism-cpp";
-import "prismjs/components/prism-rust";
-import "prismjs/components/prism-go";
-import "prismjs/components/prism-css";
-import "prismjs/components/prism-json";
-import "prismjs/components/prism-markdown";
 import { pasteListLoader } from "./loaders/pasteListLoader.ts";
 
 const tamaguiConfig = createTamagui(defaultConfig);
@@ -39,20 +42,36 @@ const router = createHashRouter(
       children: [
         {
           index: true,
-          element: <PasteEditor />,
+          element: (
+            <Suspense fallback={<LoadingFallback />}>
+              <PasteEditor />
+            </Suspense>
+          ),
         },
         {
           path: "oauth-callback",
-          element: <OAuthCallbackHash />,
+          element: (
+            <Suspense fallback={<LoadingFallback />}>
+              <OAuthCallbackHash />
+            </Suspense>
+          ),
         },
         {
           path: "pastes/:handle",
-          element: <PasteListPage />,
+          element: (
+            <Suspense fallback={<LoadingFallback />}>
+              <PasteListPage />
+            </Suspense>
+          ),
           loader: pasteListLoader,
         },
         {
           path: "p/:handle/:rkey",
-          element: <PasteView />,
+          element: (
+            <Suspense fallback={<LoadingFallback />}>
+              <PasteView />
+            </Suspense>
+          ),
           loader: pasteLoader,
           errorElement: (
             <div

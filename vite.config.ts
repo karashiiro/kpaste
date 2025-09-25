@@ -35,6 +35,23 @@ export default defineConfig({
     global: "globalThis",
     "process.env": {},
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "tamagui-vendor": ["tamagui", "@tamagui/config"],
+          "atproto-vendor": [
+            "@atcute/client",
+            "@atcute/atproto",
+            "@atcute/oauth-browser-client",
+          ],
+          "react-vendor": ["react", "react-dom", "react-router"],
+          "prism-vendor": ["prismjs"],
+          "utils-vendor": ["react-simple-code-editor"],
+        },
+      },
+    },
+  },
   test: {
     environment: "jsdom",
     globals: true,
