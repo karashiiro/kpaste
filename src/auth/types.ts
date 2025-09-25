@@ -4,7 +4,6 @@ export type AuthState =
   | "unauthenticated"
   | "authenticating"
   | "authenticated"
-  | "requires2fa"
   | "error";
 
 export interface ServiceEndpoint {
@@ -29,36 +28,16 @@ export interface AuthSession extends AtpSessionData {
   profile?: UserProfile;
 }
 
-export interface TwoFactorChallenge {
-  challengeId: string;
-  method: "totp" | "sms" | "email";
-  destination?: string;
-  expiresAt: Date;
-}
-
 export interface AuthError {
   code: string;
   message: string;
   details?: unknown;
 }
 
-export interface LoginCredentials {
-  identifier: string;
-  password: string;
-  endpoint: ServiceEndpoint;
-  twoFactorCode?: string;
-}
-
-export interface TwoFactorVerification {
-  challengeId: string;
-  code: string;
-}
-
 export interface AuthStateData {
   state: AuthState;
   session?: AuthSession;
   error?: AuthError;
-  twoFactorChallenge?: TwoFactorChallenge;
   isLoading: boolean;
 }
 
