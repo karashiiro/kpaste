@@ -27,7 +27,6 @@
     "react-native-web": "^0.21.1",
     "react-router": "^7.9.1",
     "react-simple-code-editor": "^0.14.1",
-    "reset-css": "^5.0.2",
     "tamagui": "^1.133.1"
   },
   "devDependencies": {

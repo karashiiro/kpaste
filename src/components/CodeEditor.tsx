@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import Editor from "react-simple-code-editor";
 import { Card, useTheme } from "tamagui";
 import { safeHighlight } from "../prismUtils";
+import "prismjs/themes/prism-tomorrow.css";
 
 export interface CodeEditorProps {
   value: string;

@@ -4,7 +4,6 @@ import { createHashRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import { TamaguiProvider, createTamagui, Theme } from "tamagui";
 import { defaultConfig } from "@tamagui/config/v4";
-import "./index.css";
 import { App } from "./App.tsx";
 import { LoadingFallback } from "./components/LoadingFallback.tsx";
 import { pasteLoader } from "./loaders/pasteLoader.ts";
@@ -28,7 +27,6 @@ const OAuthCallbackHash = lazy(() =>
   })),
 );
 
-import "prismjs/themes/prism-tomorrow.css";
 import { pasteListLoader } from "./loaders/pasteListLoader.ts";
 
 const tamaguiConfig = createTamagui(defaultConfig);

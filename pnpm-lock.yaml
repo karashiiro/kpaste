@@ -47,9 +47,6 @@ importers:
       react-simple-code-editor:
         specifier: ^0.14.1
         version: 0.14.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      reset-css:
-        specifier: ^5.0.2
-        version: 5.0.2
       tamagui:
         specifier: ^1.133.1
         version: 1.133.1(react-dom@19.1.1(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
@@ -2942,9 +2939,6 @@ packages:
   require-from-string@2.0.2:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
-
-  reset-css@5.0.2:
-    resolution: {integrity: sha512-YtgUGSq5z5W0NPSjsBW7ys7rtWa8P8AiE7S6Fg3d1TQCPpAodgYyLuZYlU0AOsLtprk/fC9ormHN/0pAavVIDw==}
 
   resolve-from@3.0.0:
     resolution: {integrity: sha512-GnlH6vxLymXJNMBo7XP1fJIzBFbdYt49CuTwmB/6N53t+kMPRMFKz783LlQ4tv28XoQfMWinAJX6WCGf2IlaIw==}
@@ -7097,8 +7091,6 @@ snapshots:
   require-directory@2.1.1: {}
 
   require-from-string@2.0.2: {}
-
-  reset-css@5.0.2: {}
 
   resolve-from@3.0.0: {}
 
