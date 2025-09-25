@@ -1,5 +1,5 @@
 import { YStack, View, Text, Card, XStack } from "tamagui";
-import { SparklesIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "../hooks/useAuth";
 import { CreateForm } from "./CreateForm";
 import { AuthRequiredView } from "./AuthRequiredView";
@@ -40,12 +40,9 @@ export function PasteEditor() {
       >
         <YStack gap="$6">
           <YStack gap="$2">
-            <XStack alignItems="center" gap="$2">
-              <SparklesIcon width={32} height={32} />
-              <Text fontSize="$8" fontWeight="700">
-                Create New Paste
-              </Text>
-            </XStack>
+            <Text fontSize="$8" fontWeight="700">
+              Create New Paste
+            </Text>
             <Text fontSize="$4">Share your code or text with the world</Text>
           </YStack>
 

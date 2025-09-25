@@ -24,12 +24,9 @@ export function CreateForm({
 }: CreateFormProps) {
   return (
     <Card padding="$4" gap="$4">
-      <XStack alignItems="center" gap="$2">
-        <SparklesIcon width={24} height={24} />
-        <Text fontSize="$6" fontWeight="600" color="$color">
-          Create New Paste
-        </Text>
-      </XStack>
+      <Text fontSize="$6" fontWeight="600" color="$color">
+        Create New Paste
+      </Text>
 
       <YStack gap="$3">
         <PasteFormField
