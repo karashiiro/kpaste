@@ -1,4 +1,5 @@
-import { YStack, XStack, Text } from "tamagui";
+import { YStack, XStack } from "@tamagui/stacks";
+import { Paragraph } from "@tamagui/text";
 import { BookOpenIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import { Link, useLoaderData, useParams } from "react-router";
 import { PasteList } from "./PasteList";
@@ -24,21 +25,21 @@ export function PasteListPage() {
             <YStack gap="$2">
               <XStack alignItems="center" gap="$2">
                 <BookOpenIcon width={32} height={32} />
-                <Text fontSize="$8" fontWeight="700">
+                <Paragraph fontSize="$8" fontWeight="700">
                   {isViewingOwnPastes
                     ? "Your Pastes"
                     : userHandle
                       ? `${userHandle}'s Pastes`
                       : "Browse Pastes"}
-                </Text>
+                </Paragraph>
               </XStack>
-              <Text fontSize="$4">
+              <Paragraph fontSize="$4">
                 {isViewingOwnPastes
                   ? "Manage all your pastes"
                   : userHandle
                     ? `View pastes shared by @${userHandle}`
                     : "Discover and view shared pastes"}
-              </Text>
+              </Paragraph>
             </YStack>
 
             {/* Only show create button when viewing your own pastes or when unauthenticated */}

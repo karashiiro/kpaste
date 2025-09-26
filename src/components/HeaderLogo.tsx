@@ -1,4 +1,4 @@
-import { Image } from "tamagui";
+import { Image } from "@tamagui/image";
 import { Link } from "react-router";
 
 export function HeaderLogo() {

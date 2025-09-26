@@ -1,4 +1,6 @@
-import { YStack, Text, Card, XStack } from "tamagui";
+import { YStack, XStack } from "@tamagui/stacks";
+import { Card } from "@tamagui/card";
+import { Paragraph } from "@tamagui/text";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "../hooks/useAuth";
 import { AuthRequiredView } from "./AuthRequiredView";
@@ -34,10 +36,12 @@ export function PasteEditor() {
       <PageContainer flex={1}>
         <YStack gap="$6">
           <YStack gap="$2">
-            <Text fontSize="$8" fontWeight="700">
+            <Paragraph fontSize="$8" fontWeight="700">
               Create New Paste
-            </Text>
-            <Text fontSize="$4">Share your code or text with the world</Text>
+            </Paragraph>
+            <Paragraph fontSize="$4">
+              Share your code or text with the world
+            </Paragraph>
           </YStack>
 
           <PasteForm
@@ -52,7 +56,7 @@ export function PasteEditor() {
             <Card theme="red" padding="$3">
               <XStack alignItems="center" gap="$2">
                 <XMarkIcon width={20} height={20} />
-                <Text fontWeight="600">Error: {error}</Text>
+                <Paragraph fontWeight="600">Error: {error}</Paragraph>
               </XStack>
             </Card>
           )}

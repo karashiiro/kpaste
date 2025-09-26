@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import {
-  Sheet,
-  XStack,
-  YStack,
-  Text,
-  H2,
-  Button,
-  Input,
-  Label,
-  Card,
-} from "tamagui";
+import { Sheet } from "@tamagui/sheet";
+import { XStack, YStack } from "@tamagui/stacks";
+import { Paragraph, H2 } from "@tamagui/text";
+import { Button } from "@tamagui/button";
+import { Input } from "@tamagui/input";
+import { Label } from "@tamagui/label";
+import { Card } from "@tamagui/card";
 import {
   XMarkIcon,
   RocketLaunchIcon,
@@ -79,9 +75,9 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
           </XStack>
 
           <YStack gap="$4">
-            <Text textAlign="center">
+            <Paragraph textAlign="center">
               Connect to Bluesky or any compatible service
-            </Text>
+            </Paragraph>
 
             <YStack gap="$3">
               <YStack gap="$2">
@@ -90,7 +86,7 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
                 </Label>
                 <Input
                   value={handle}
-                  onChangeText={setHandle}
+                  onChangeText={(e) => setHandle(e.nativeEvent.text)}
                   placeholder="Your handle"
                   disabled={isAuthenticating}
                   onSubmitEditing={handleLogin}
@@ -102,7 +98,7 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
                 <Card backgroundColor="$red2" padding="$3">
                   <XStack alignItems="center" gap="$2">
                     <XMarkIcon width={20} height={20} color="red" />
-                    <Text color="$red10">{error.message}</Text>
+                    <Paragraph color="$red10">{error.message}</Paragraph>
                   </XStack>
                 </Card>
               )}
@@ -126,11 +122,11 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
                   ) : (
                     <RocketLaunchIcon width={20} height={20} color="white" />
                   )}
-                  <Text color="white">
+                  <Paragraph color="white">
                     {isAuthenticating
                       ? "Redirecting..."
                       : "Continue with OAuth"}
-                  </Text>
+                  </Paragraph>
                 </XStack>
               </Button>
             </YStack>

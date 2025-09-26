@@ -1,5 +1,7 @@
 import { useNavigation } from "react-router";
-import { View, YStack, Text } from "tamagui";
+import { View } from "@tamagui/core";
+import { YStack } from "@tamagui/stacks";
+import { Paragraph } from "@tamagui/text";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { Header } from "./Header";
 import type { ReactNode } from "react";
@@ -41,9 +43,9 @@ export function RootLayout({ onLoginClick, children }: RootLayoutProps) {
               color="white"
               className="animate-spin"
             />
-            <Text color="white" fontSize="$3" fontWeight="500">
+            <Paragraph color="white" fontSize="$3" fontWeight="500">
               Loading...
-            </Text>
+            </Paragraph>
           </View>
         </View>
       )}

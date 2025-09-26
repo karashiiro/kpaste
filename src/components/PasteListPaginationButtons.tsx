@@ -1,5 +1,6 @@
 import { useLoaderData, useSearchParams } from "react-router";
-import { XStack, Button } from "tamagui";
+import { XStack } from "@tamagui/stacks";
+import { Button } from "@tamagui/button";
 import type { PasteListLoaderData } from "../loaders/pasteListLoader";
 
 export function PasteListPaginationButtons() {

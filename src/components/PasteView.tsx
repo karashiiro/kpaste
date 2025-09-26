@@ -1,6 +1,8 @@
 import { useLoaderData } from "react-router";
 import { useMemo } from "react";
-import { YStack, XStack, Text, Card } from "tamagui";
+import { YStack, XStack } from "@tamagui/stacks";
+import { Card } from "@tamagui/card";
+import { Paragraph } from "@tamagui/text";
 import {
   DocumentTextIcon,
   PencilIcon,
@@ -47,9 +49,9 @@ export function PasteView() {
           <XStack alignItems="center" gap="$3" justifyContent="space-between">
             <XStack alignItems="center" gap="$2">
               <DocumentTextIcon width={32} height={32} />
-              <Text fontSize="$8" fontWeight="700">
+              <Paragraph fontSize="$8" fontWeight="700">
                 {paste.value.title || "Untitled Paste"}
-              </Text>
+              </Paragraph>
             </XStack>
 
             {/* Edit and Delete buttons for paste owner */}

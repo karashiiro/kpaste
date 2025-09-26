@@ -1,4 +1,6 @@
-import { XStack, Text, Button } from "tamagui";
+import { XStack } from "@tamagui/stacks";
+import { Button } from "@tamagui/button";
+import { Paragraph } from "@tamagui/text";
 import { Link, useNavigation } from "react-router";
 import {
   RocketLaunchIcon,
@@ -39,7 +41,7 @@ export function AuthSection({
       >
         <XStack alignItems="center" gap="$2">
           <RocketLaunchIcon width={20} height={20} color="white" />
-          <Text color="white">Login</Text>
+          <Paragraph color="white">Login</Paragraph>
         </XStack>
       </Button>
     );
@@ -65,9 +67,9 @@ export function AuthSection({
               className="animate-spin"
             />
           )}
-          <Text fontSize="$4" color="white" fontWeight="600">
+          <Paragraph fontSize="$4" color="white" fontWeight="600">
             @{session?.handle}
-          </Text>
+          </Paragraph>
         </XStack>
       </Link>
       <Button
@@ -81,7 +83,7 @@ export function AuthSection({
       >
         <XStack alignItems="center" gap="$2">
           <HandRaisedIcon width={16} height={16} color="white" />
-          <Text color="white">Logout</Text>
+          <Paragraph color="white">Logout</Paragraph>
         </XStack>
       </Button>
     </XStack>

@@ -1,4 +1,8 @@
-import { YStack, Text, Card, XStack, ScrollView, Tooltip } from "tamagui";
+import { YStack, XStack } from "@tamagui/stacks";
+import { Card } from "@tamagui/card";
+import { ScrollView } from "@tamagui/scroll-view";
+import { Tooltip } from "@tamagui/tooltip";
+import { Paragraph } from "@tamagui/text";
 import { Link } from "react-router";
 import {
   DocumentTextIcon,
@@ -59,9 +63,9 @@ export function PasteList({
       <Card padding="$6" marginTop="$4" alignItems="center">
         <XStack alignItems="center" gap="$2">
           <DocumentTextIcon width={24} height={24} color="white" />
-          <Text fontSize="$5" textAlign="center">
+          <Paragraph fontSize="$5" textAlign="center">
             No pastes found. Create your first paste!
-          </Text>
+          </Paragraph>
         </XStack>
       </Card>
     );
@@ -98,9 +102,9 @@ export function PasteList({
                     pressStyle={{ opacity: 0.7 }}
                   >
                     <DocumentTextIcon width={24} height={24} color="white" />
-                    <Text fontSize="$7" fontWeight="600" color="$blue10">
+                    <Paragraph fontSize="$7" fontWeight="600" color="$blue10">
                       {paste.value.title || "Untitled Paste"}
-                    </Text>
+                    </Paragraph>
                   </XStack>
                 </Link>
               );
@@ -108,9 +112,9 @@ export function PasteList({
           ) : (
             <XStack alignItems="center" gap="$2">
               <DocumentTextIcon width={24} height={24} color="white" />
-              <Text fontSize="$7" fontWeight="600" color="$color">
+              <Paragraph fontSize="$7" fontWeight="600" color="$color">
                 {paste.value.title || "Untitled Paste"}
-              </Text>
+              </Paragraph>
             </XStack>
           )}
 
@@ -126,41 +130,41 @@ export function PasteList({
               }}
             >
               <XStack alignItems="center" gap="$2">
-                <Text fontSize="$4" fontWeight="500">
+                <Paragraph fontSize="$4" fontWeight="500">
                   Language:
-                </Text>
-                <Text fontSize="$4" fontWeight="600">
+                </Paragraph>
+                <Paragraph fontSize="$4" fontWeight="600">
                   {paste.value.language || "text"}
-                </Text>
+                </Paragraph>
               </XStack>
 
               <XStack alignItems="center" gap="$2">
-                <Text fontSize="$4" fontWeight="500">
+                <Paragraph fontSize="$4" fontWeight="500">
                   Created:
-                </Text>
-                <Text fontSize="$4">
+                </Paragraph>
+                <Paragraph fontSize="$4">
                   {new Date(paste.value.createdAt).toLocaleString()}
-                </Text>
+                </Paragraph>
               </XStack>
 
               {paste.value.updatedAt &&
                 paste.value.updatedAt !== paste.value.createdAt && (
                   <XStack alignItems="center" gap="$2">
-                    <Text fontSize="$4" fontWeight="500">
+                    <Paragraph fontSize="$4" fontWeight="500">
                       Updated:
-                    </Text>
-                    <Text fontSize="$4">
+                    </Paragraph>
+                    <Paragraph fontSize="$4">
                       {new Date(paste.value.updatedAt).toLocaleString()}
-                    </Text>
+                    </Paragraph>
                   </XStack>
                 )}
             </XStack>
           </YStack>
 
           <YStack gap="$2">
-            <Text fontSize="$3" fontWeight="500">
+            <Paragraph fontSize="$3" fontWeight="500">
               Content:
-            </Text>
+            </Paragraph>
             {paste.content ? (
               <Card padding="$3" borderRadius="$4" bordered>
                 <ScrollView maxHeight={200}>
@@ -189,12 +193,14 @@ export function PasteList({
                   height={16}
                   className="animate-spin"
                 />
-                <Text fontSize="$3">Loading content...</Text>
+                <Paragraph fontSize="$3">Loading content...</Paragraph>
               </XStack>
             ) : (
               <XStack alignItems="center" gap="$2">
                 <ClockIcon width={16} height={16} />
-                <Text fontSize="$3">Content will load automatically...</Text>
+                <Paragraph fontSize="$3">
+                  Content will load automatically...
+                </Paragraph>
               </XStack>
             )}
           </YStack>
@@ -248,7 +254,7 @@ export function PasteList({
                   ]}
                 >
                   <Tooltip.Arrow />
-                  <Text>Delete this paste</Text>
+                  <Paragraph>Delete this paste</Paragraph>
                 </Tooltip.Content>
               </Tooltip>
 
@@ -268,7 +274,7 @@ export function PasteList({
             <Card theme="red" padding="$3">
               <XStack alignItems="center" gap="$2">
                 <XMarkIcon width={20} height={20} />
-                <Text fontWeight="600">Error: {deleteError}</Text>
+                <Paragraph fontWeight="600">Error: {deleteError}</Paragraph>
               </XStack>
             </Card>
           )}
@@ -277,7 +283,7 @@ export function PasteList({
             <Card theme="red" padding="$3">
               <XStack alignItems="center" gap="$2">
                 <XMarkIcon width={20} height={20} />
-                <Text fontWeight="600">Error: {updateError}</Text>
+                <Paragraph fontWeight="600">Error: {updateError}</Paragraph>
               </XStack>
             </Card>
           )}

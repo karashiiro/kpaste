@@ -1,4 +1,5 @@
-import { Select, Text } from "tamagui";
+import { Select } from "@tamagui/select";
+import { Paragraph } from "@tamagui/text";
 
 export interface LanguageSelectProps {
   value: string;
@@ -13,7 +14,7 @@ export function LanguageSelect({
 }: LanguageSelectProps) {
   return (
     <Select value={value} onValueChange={onValueChange} size={size}>
-      <Select.Trigger iconAfter={<Text>▼</Text>}>
+      <Select.Trigger iconAfter={<Paragraph>▼</Paragraph>}>
         <Select.Value placeholder="Select language..." />
       </Select.Trigger>
 
@@ -25,7 +26,7 @@ export function LanguageSelect({
           width="100%"
           height="$3"
         >
-          <Text>▲</Text>
+          <Paragraph>▲</Paragraph>
         </Select.ScrollUpButton>
 
         <Select.Viewport minHeight={200}>
@@ -76,7 +77,7 @@ export function LanguageSelect({
           width="100%"
           height="$3"
         >
-          <Text>▼</Text>
+          <Paragraph>▼</Paragraph>
         </Select.ScrollDownButton>
       </Select.Content>
     </Select>

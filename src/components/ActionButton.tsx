@@ -1,4 +1,6 @@
-import { Button, XStack, Text, type ButtonProps } from "tamagui";
+import { XStack } from "@tamagui/stacks";
+import { Paragraph } from "@tamagui/text";
+import { Button, type ButtonProps } from "@tamagui/button";
 import type { ReactNode } from "react";
 
 interface ActionButtonProps extends Omit<ButtonProps, "icon"> {
@@ -11,7 +13,7 @@ export function ActionButton({ icon, children, ...props }: ActionButtonProps) {
     <Button {...props}>
       <XStack alignItems="center" gap="$2">
         {icon}
-        <Text>{children}</Text>
+        <Paragraph>{children}</Paragraph>
       </XStack>
     </Button>
   );

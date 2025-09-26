@@ -2,12 +2,16 @@ import { StrictMode, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { createHashRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
-import { TamaguiProvider, createTamagui, Theme } from "tamagui";
+import { TamaguiProvider, createTamagui, Theme } from "@tamagui/core";
 import { defaultConfig } from "@tamagui/config/v4";
-import { App } from "./App.tsx";
 import { LoadingFallback } from "./components/LoadingFallback.tsx";
 import { pasteLoader } from "./loaders/pasteLoader.ts";
 
+const App = lazy(() =>
+  import("./App.tsx").then((m) => ({
+    default: m.App,
+  })),
+);
 const PasteEditor = lazy(() =>
   import("./components/PasteEditor.tsx").then((m) => ({
     default: m.PasteEditor,
@@ -35,7 +39,11 @@ const router = createHashRouter(
   [
     {
       path: "/",
-      element: <App />,
+      element: (
+        <Suspense fallback={<LoadingFallback />}>
+          <App />
+        </Suspense>
+      ),
       HydrateFallback: LoadingFallback,
       children: [
         {

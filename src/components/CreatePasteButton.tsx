@@ -1,4 +1,6 @@
-import { Button, XStack, Text } from "tamagui";
+import { XStack } from "@tamagui/stacks";
+import { Button } from "@tamagui/button";
+import { Paragraph } from "@tamagui/text";
 import { Link, useNavigation } from "react-router";
 import { SparklesIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
 
@@ -38,9 +40,9 @@ export function CreatePasteButton({
     >
       <Button {...buttonProps}>
         <XStack alignItems="center" gap="$2">
-          <Text fontWeight="700" color="rgba(83, 65, 22, 1)">
+          <Paragraph fontWeight="700" color="rgba(83, 65, 22, 1)">
             Create Paste
-          </Text>
+          </Paragraph>
           {isNavigatingToHome ? (
             <ArrowPathIcon width={20} height={20} className="animate-spin" />
           ) : (

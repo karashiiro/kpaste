@@ -1,4 +1,6 @@
-import { Button, XStack, Text, type ButtonProps } from "tamagui";
+import { XStack } from "@tamagui/stacks";
+import { Button, type ButtonProps } from "@tamagui/button";
+import { Paragraph } from "@tamagui/text";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import type { ReactNode } from "react";
 
@@ -26,7 +28,9 @@ export function LoadingButton({
           icon
         )}
         {children && (
-          <Text>{loading ? loadingText || "Loading..." : children}</Text>
+          <Paragraph>
+            {loading ? loadingText || "Loading..." : children}
+          </Paragraph>
         )}
       </XStack>
     </Button>

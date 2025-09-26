@@ -1,6 +1,8 @@
 import { useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router";
-import { YStack, Text, Card } from "tamagui";
+import { YStack } from "@tamagui/stacks";
+import { Card } from "@tamagui/card";
+import { Paragraph } from "@tamagui/text";
 import {
   ArrowPathIcon,
   CheckCircleIcon,
@@ -99,12 +101,12 @@ export function OAuthCallbackHash() {
         <Card padding="$4" theme="green">
           <YStack alignItems="center" gap="$3">
             <CheckCircleIcon width={48} height={48} color="green" />
-            <Text fontSize="$6" fontWeight="600" textAlign="center">
+            <Paragraph fontSize="$6" fontWeight="600" textAlign="center">
               Login Successful!
-            </Text>
-            <Text fontSize="$4" textAlign="center">
+            </Paragraph>
+            <Paragraph fontSize="$4" textAlign="center">
               Redirecting you now...
-            </Text>
+            </Paragraph>
           </YStack>
         </Card>
       </YStack>
@@ -124,13 +126,13 @@ export function OAuthCallbackHash() {
         <Card padding="$4" theme="red">
           <YStack alignItems="center" gap="$3">
             <XMarkIcon width={48} height={48} color="red" />
-            <Text fontSize="$6" fontWeight="600" textAlign="center">
+            <Paragraph fontSize="$6" fontWeight="600" textAlign="center">
               Login Failed
-            </Text>
-            <Text fontSize="$4" textAlign="center">
+            </Paragraph>
+            <Paragraph fontSize="$4" textAlign="center">
               {authState.error?.message || "An error occurred during login"}
-            </Text>
-            <Text
+            </Paragraph>
+            <Paragraph
               fontSize="$3"
               color="$blue10"
               textAlign="center"
@@ -139,7 +141,7 @@ export function OAuthCallbackHash() {
               onPress={() => navigate("/", { replace: true })}
             >
               ← Back to KPaste
-            </Text>
+            </Paragraph>
           </YStack>
         </Card>
       </YStack>
@@ -163,12 +165,12 @@ export function OAuthCallbackHash() {
             color="blue"
             className="animate-spin"
           />
-          <Text fontSize="$6" fontWeight="600" textAlign="center">
+          <Paragraph fontSize="$6" fontWeight="600" textAlign="center">
             Completing Login...
-          </Text>
-          <Text fontSize="$4" textAlign="center">
+          </Paragraph>
+          <Paragraph fontSize="$4" textAlign="center">
             Processing your authentication from storage.
-          </Text>
+          </Paragraph>
         </YStack>
       </Card>
     </YStack>

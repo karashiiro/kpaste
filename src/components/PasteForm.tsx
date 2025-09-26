@@ -1,4 +1,6 @@
-import { YStack, Text, Card, XStack } from "tamagui";
+import { YStack, XStack } from "@tamagui/stacks";
+import { Card } from "@tamagui/card";
+import { Paragraph } from "@tamagui/text";
 import {
   SparklesIcon,
   PencilIcon,
@@ -50,14 +52,14 @@ export function PasteForm({
       {isEdit ? (
         <XStack alignItems="center" gap="$2">
           {icon}
-          <Text fontSize="$6" fontWeight="600" color="$color">
+          <Paragraph fontSize="$6" fontWeight="600" color="$color">
             {title}
-          </Text>
+          </Paragraph>
         </XStack>
       ) : (
-        <Text fontSize="$6" fontWeight="600" color="$color">
+        <Paragraph fontSize="$6" fontWeight="600" color="$color">
           {title}
-        </Text>
+        </Paragraph>
       )}
 
       <YStack gap="$3">
@@ -69,9 +71,9 @@ export function PasteForm({
         />
 
         <YStack gap="$2">
-          <Text fontSize="$4" fontWeight="500">
+          <Paragraph fontSize="$4" fontWeight="500">
             Content:
-          </Text>
+          </Paragraph>
           <CodeEditor
             value={form.content}
             onChange={(content) => onFormChange({ ...form, content })}
@@ -80,9 +82,9 @@ export function PasteForm({
         </YStack>
 
         <YStack gap="$2">
-          <Text fontSize="$4" fontWeight="500">
+          <Paragraph fontSize="$4" fontWeight="500">
             Language:
-          </Text>
+          </Paragraph>
           <LanguageSelect
             value={form.language}
             onValueChange={(value) =>
@@ -94,7 +96,9 @@ export function PasteForm({
         <Card theme="blue" padding="$3">
           <XStack alignItems="center" gap="$2">
             <DocumentTextIcon width={16} height={16} />
-            <Text fontSize="$3">Note: All pastes are publicly accessible</Text>
+            <Paragraph fontSize="$3">
+              Note: All pastes are publicly accessible
+            </Paragraph>
           </XStack>
         </Card>
 

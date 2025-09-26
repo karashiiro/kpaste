@@ -1,4 +1,4 @@
-import { YStack } from "tamagui";
+import { YStack } from "@tamagui/stacks";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 
 export function LoadingFallback() {

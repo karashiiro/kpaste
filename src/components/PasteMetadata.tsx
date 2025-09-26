@@ -1,4 +1,5 @@
-import { XStack, Text } from "tamagui";
+import { XStack } from "@tamagui/stacks";
+import { Paragraph } from "@tamagui/text";
 import { Link } from "react-router";
 import type { PasteRecord } from "../types";
 
@@ -19,9 +20,9 @@ export function PasteMetadata({
 }: PasteMetadataProps) {
   const Separator = () =>
     showSeparators ? (
-      <Text fontSize="$4" display="none" $sm={{ display: "flex" }}>
+      <Paragraph fontSize="$4" display="none" $sm={{ display: "flex" }}>
         •
-      </Text>
+      </Paragraph>
     ) : null;
 
   const containerProps =
@@ -44,29 +45,33 @@ export function PasteMetadata({
         };
 
   const MetadataItem = ({ children }: { children: React.ReactNode }) => (
-    <Text fontSize="$4">{children}</Text>
+    <Paragraph fontSize="$4">{children}</Paragraph>
   );
 
   return (
     <XStack {...containerProps}>
       <MetadataItem>
         by{" "}
-        <Text fontWeight="600">
+        <Paragraph fontWeight="600">
           <Link
             to={`/pastes/${handle}`}
             style={{ color: "white", textDecoration: "underline" }}
           >
             @{handle}
           </Link>
-        </Text>
+        </Paragraph>
       </MetadataItem>
 
       <Separator />
 
       <MetadataItem>
-        <Text paddingHorizontal="$2" paddingVertical="$1" borderRadius="$3">
+        <Paragraph
+          paddingHorizontal="$2"
+          paddingVertical="$1"
+          borderRadius="$3"
+        >
           {paste.language || "text"}
-        </Text>
+        </Paragraph>
       </MetadataItem>
 
       <Separator />

@@ -1,4 +1,4 @@
-import { View, type ViewProps } from "tamagui";
+import { View, type ViewProps } from "@tamagui/core";
 import type { ReactNode } from "react";
 
 interface PageContainerProps extends Omit<ViewProps, "children"> {

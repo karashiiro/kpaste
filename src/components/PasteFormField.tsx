@@ -1,4 +1,6 @@
-import { YStack, Label, Input } from "tamagui";
+import { YStack } from "@tamagui/stacks";
+import { Label } from "@tamagui/label";
+import { Input } from "@tamagui/input";
 
 export interface PasteFormFieldProps {
   label: string;
@@ -25,7 +27,7 @@ export function PasteFormField({
       </Label>
       <Input
         value={value}
-        onChangeText={onChangeText}
+        onChangeText={(e) => onChangeText(e.nativeEvent.text)}
         placeholder={placeholder}
         size={size}
       />
