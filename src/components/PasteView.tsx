@@ -76,7 +76,7 @@ export function PasteView() {
                   loadingText="Deleting..."
                   size="$3"
                   theme="red"
-                  icon={<TrashIcon width={16} height={16} />}
+                  icon={<TrashIcon width={16} height={16} color="white" />}
                 >
                   Delete
                 </LoadingButton>
