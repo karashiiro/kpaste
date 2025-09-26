@@ -20,7 +20,12 @@ export function PasteMetadata({
 }: PasteMetadataProps) {
   const Separator = () =>
     showSeparators ? (
-      <Paragraph fontSize="$4" display="none" $sm={{ display: "flex" }}>
+      <Paragraph
+        fontSize="$4"
+        display="none"
+        paddingRight="$2"
+        $sm={{ display: "flex" }}
+      >
         •
       </Paragraph>
     ) : null;
@@ -47,7 +52,7 @@ export function PasteMetadata({
   return (
     <XStack {...containerProps}>
       <Paragraph fontSize="$4">by </Paragraph>
-      <Paragraph fontWeight="600">
+      <Paragraph fontWeight="600" paddingRight="$2">
         <Link
           to={`/pastes/${handle}`}
           style={{ color: "white", textDecoration: "underline" }}
@@ -58,18 +63,13 @@ export function PasteMetadata({
 
       <Separator />
 
-      <Paragraph
-        fontSize="$4"
-        paddingHorizontal="$2"
-        paddingVertical="$1"
-        borderRadius="$3"
-      >
+      <Paragraph fontSize="$4" paddingRight="$2">
         {paste.language || "text"}
       </Paragraph>
 
       <Separator />
 
-      <Paragraph fontSize="$4">
+      <Paragraph fontSize="$4" paddingRight="$2">
         Created: {new Date(paste.createdAt).toLocaleString()}
       </Paragraph>
 
