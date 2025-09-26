@@ -44,48 +44,41 @@ export function PasteMetadata({
           flexWrap: "wrap" as const,
         };
 
-  const MetadataItem = ({ children }: { children: React.ReactNode }) => (
-    <Paragraph fontSize="$4">{children}</Paragraph>
-  );
-
   return (
     <XStack {...containerProps}>
-      <MetadataItem>
-        by{" "}
-        <Paragraph fontWeight="600">
-          <Link
-            to={`/pastes/${handle}`}
-            style={{ color: "white", textDecoration: "underline" }}
-          >
-            @{handle}
-          </Link>
-        </Paragraph>
-      </MetadataItem>
-
-      <Separator />
-
-      <MetadataItem>
-        <Paragraph
-          paddingHorizontal="$2"
-          paddingVertical="$1"
-          borderRadius="$3"
+      <Paragraph fontSize="$4">by </Paragraph>
+      <Paragraph fontWeight="600">
+        <Link
+          to={`/pastes/${handle}`}
+          style={{ color: "white", textDecoration: "underline" }}
         >
-          {paste.language || "text"}
-        </Paragraph>
-      </MetadataItem>
+          @{handle}
+        </Link>
+      </Paragraph>
 
       <Separator />
 
-      <MetadataItem>
+      <Paragraph
+        fontSize="$4"
+        paddingHorizontal="$2"
+        paddingVertical="$1"
+        borderRadius="$3"
+      >
+        {paste.language || "text"}
+      </Paragraph>
+
+      <Separator />
+
+      <Paragraph fontSize="$4">
         Created: {new Date(paste.createdAt).toLocaleString()}
-      </MetadataItem>
+      </Paragraph>
 
       {paste.updatedAt && paste.updatedAt !== paste.createdAt && (
         <>
           <Separator />
-          <MetadataItem>
+          <Paragraph fontSize="$4">
             Updated: {new Date(paste.updatedAt).toLocaleString()}
-          </MetadataItem>
+          </Paragraph>
         </>
       )}
     </XStack>
