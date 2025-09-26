@@ -13,11 +13,7 @@ export function Header({ onLoginClick }: HeaderProps) {
   const { isAuthenticated, session, logout } = useAuth();
 
   return (
-    <View
-      background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-      paddingVertical="$4"
-      paddingHorizontal="$6"
-    >
+    <View background="#667eea" paddingVertical="$4" paddingHorizontal="$6">
       {/* Desktop layout: horizontal */}
       <XStack
         maxWidth={1200}
