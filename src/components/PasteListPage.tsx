@@ -5,12 +5,14 @@ import { Link, useLoaderData, useParams } from "react-router";
 import { PasteList } from "./PasteList";
 import type { PasteListLoaderData } from "../loaders/pasteListLoader";
 import { useAuth } from "../hooks/useAuth";
+import { useAuthModal } from "../contexts/AuthModalContext";
 import { PasteListPaginationButtons } from "./PasteListPaginationButtons";
 import { PageContainer } from "./PageContainer";
 import { ActionButton } from "./ActionButton";
 
 export function PasteListPage() {
   const { isAuthenticated, session } = useAuth();
+  const { openAuthModal } = useAuthModal();
   const { handle: userHandle } = useParams();
   const { pastes } = useLoaderData() as PasteListLoaderData;
 
@@ -67,9 +69,7 @@ export function PasteListPage() {
                     size="$4"
                     width="100%"
                     icon={<SparklesIcon width={20} height={20} color="white" />}
-                    onPress={() => {
-                      /* OAuth modal is handled globally */
-                    }}
+                    onPress={openAuthModal}
                   >
                     Login to Create Paste
                   </ActionButton>

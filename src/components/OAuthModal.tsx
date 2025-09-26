@@ -86,11 +86,16 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
                 </Label>
                 <Input
                   value={handle}
-                  onChangeText={(e) => setHandle(e.nativeEvent.text)}
+                  onChange={(e) =>
+                    setHandle((e.target as HTMLInputElement).value)
+                  }
                   placeholder="Your handle"
                   disabled={isAuthenticating}
-                  onSubmitEditing={handleLogin}
-                  returnKeyType="go"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleLogin();
+                    }
+                  }}
                 />
               </YStack>
 
