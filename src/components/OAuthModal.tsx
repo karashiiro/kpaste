@@ -108,32 +108,48 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
                 </Card>
               )}
 
-              <Button
-                onPress={handleLogin}
-                disabled={isLoading || !handle.trim() || isAuthenticating}
-                backgroundColor="$blue9"
-                color="white"
-                size="$4"
-                fontWeight="600"
-              >
-                <XStack alignItems="center" gap="$2">
-                  {isAuthenticating ? (
-                    <ArrowPathIcon
-                      width={20}
-                      height={20}
-                      color="white"
-                      className="animate-spin"
-                    />
-                  ) : (
-                    <RocketLaunchIcon width={20} height={20} color="white" />
-                  )}
-                  <Paragraph color="white">
-                    {isAuthenticating
-                      ? "Redirecting..."
-                      : "Continue with OAuth"}
-                  </Paragraph>
-                </XStack>
-              </Button>
+              <XStack gap="$3" width="100%">
+                <Button
+                  onPress={onClose}
+                  disabled={isAuthenticating}
+                  size="$4"
+                  fontWeight="600"
+                  flex={1}
+                >
+                  <XStack alignItems="center" gap="$2">
+                    <XMarkIcon width={20} height={20} color="white" />
+                    <Paragraph>Cancel</Paragraph>
+                  </XStack>
+                </Button>
+
+                <Button
+                  onPress={handleLogin}
+                  disabled={isLoading || !handle.trim() || isAuthenticating}
+                  backgroundColor="$blue9"
+                  color="white"
+                  size="$4"
+                  fontWeight="600"
+                  flex={1}
+                >
+                  <XStack alignItems="center" gap="$2">
+                    {isAuthenticating ? (
+                      <ArrowPathIcon
+                        width={20}
+                        height={20}
+                        color="white"
+                        className="animate-spin"
+                      />
+                    ) : (
+                      <RocketLaunchIcon width={20} height={20} color="white" />
+                    )}
+                    <Paragraph color="white">
+                      {isAuthenticating
+                        ? "Redirecting..."
+                        : "Continue with OAuth"}
+                    </Paragraph>
+                  </XStack>
+                </Button>
+              </XStack>
             </YStack>
           </YStack>
         </YStack>
