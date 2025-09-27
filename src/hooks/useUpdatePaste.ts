@@ -21,6 +21,21 @@ export function useUpdatePaste() {
         return;
       }
 
+      // Validate URI format and extract the record key
+      if (
+        !form.uri.startsWith("at://") ||
+        !form.uri.includes("moe.karashiiro.kpaste.paste")
+      ) {
+        setError("Invalid paste URI");
+        return;
+      }
+
+      const rkey = form.uri.split("/").pop();
+      if (!rkey || rkey === "moe.karashiiro.kpaste.paste") {
+        setError("Invalid paste URI");
+        return;
+      }
+
       setLoading(true);
       setError(null);
 
@@ -35,12 +50,6 @@ export function useUpdatePaste() {
 
         if (!blobResponse.ok) {
           throw new Error(`Failed to upload content: ${blobResponse.status}`);
-        }
-
-        // Extract the record key from the URI
-        const rkey = form.uri.split("/").pop();
-        if (!rkey) {
-          throw new Error("Invalid paste URI");
         }
 
         // Create the updated record

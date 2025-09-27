@@ -43,6 +43,7 @@
   "devDependencies": {
     "@atcute/lex-cli": "^2.2.0",
     "@eslint/js": "^9.35.0",
+    "@testing-library/react": "^16.3.0",
     "@types/prismjs": "^1.26.5",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",

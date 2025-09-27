@@ -19,16 +19,25 @@ export function useDeletePaste() {
         return;
       }
 
+      // Validate URI format and extract the record key
+      if (
+        !uri.startsWith("at://") ||
+        !uri.includes("moe.karashiiro.kpaste.paste")
+      ) {
+        setError("Invalid paste URI");
+        return;
+      }
+
+      const rkey = uri.split("/").pop();
+      if (!rkey || rkey === "moe.karashiiro.kpaste.paste") {
+        setError("Invalid paste URI");
+        return;
+      }
+
       setLoading(true);
       setError(null);
 
       try {
-        // Extract the record key from the URI
-        const rkey = uri.split("/").pop();
-        if (!rkey) {
-          throw new Error("Invalid paste URI");
-        }
-
         const response = await client.post("com.atproto.repo.deleteRecord", {
           input: {
             repo: session.did,
