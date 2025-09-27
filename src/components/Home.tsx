@@ -10,7 +10,7 @@ import { useCreatePaste } from "../hooks/useCreatePaste";
 import { PageContainer } from "./PageContainer";
 import { PasteForm } from "./PasteForm";
 
-export function PasteEditor() {
+export function Home() {
   const { isAuthenticated } = useAuth();
   const { openAuthModal } = useAuthModal();
 

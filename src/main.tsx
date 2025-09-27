@@ -12,9 +12,9 @@ const App = lazy(() =>
     default: m.App,
   })),
 );
-const PasteEditor = lazy(() =>
-  import("./components/PasteEditor.tsx").then((m) => ({
-    default: m.PasteEditor,
+const Home = lazy(() =>
+  import("./components/Home.tsx").then((m) => ({
+    default: m.Home,
   })),
 );
 const PasteListPage = lazy(() =>
@@ -50,7 +50,7 @@ const router = createHashRouter(
           index: true,
           element: (
             <Suspense fallback={<LoadingFallback />}>
-              <PasteEditor />
+              <Home />
             </Suspense>
           ),
         },
