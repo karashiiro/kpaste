@@ -51,15 +51,17 @@ export function PasteMetadata({
 
   return (
     <XStack {...containerProps}>
-      <Paragraph fontSize="$4">by </Paragraph>
-      <Paragraph fontWeight="600" paddingRight="$2">
-        <Link
-          to={`/pastes/${handle}`}
-          style={{ color: "white", textDecoration: "underline" }}
-        >
-          @{handle}
-        </Link>
-      </Paragraph>
+      <XStack>
+        <Paragraph fontSize="$4">by&nbsp;</Paragraph>
+        <Paragraph fontWeight="600" paddingRight="$2">
+          <Link
+            to={`/pastes/${handle}`}
+            style={{ color: "white", textDecoration: "underline" }}
+          >
+            @{handle}
+          </Link>
+        </Paragraph>
+      </XStack>
 
       <Separator />
 
