@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { Sheet } from "@tamagui/sheet";
 import { XStack, YStack } from "@tamagui/stacks";
@@ -43,14 +43,14 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
   };
 
   // Close modal when authentication is successful
-  React.useEffect(() => {
+  useEffect(() => {
     if (isAuthenticated) {
       onClose();
     }
   }, [isAuthenticated, onClose]);
 
   // Reset form when modal closes
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isOpen) {
       setHandle("");
     }
