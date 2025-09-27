@@ -1,6 +1,6 @@
 import { Sheet } from "@tamagui/sheet";
 import { ScrollView } from "@tamagui/scroll-view";
-import type { EditPasteForm } from "../hooks/usePasteForm";
+import type { EditPasteForm } from "../../hooks/usePasteForm";
 import { PasteForm } from "./PasteForm";
 
 interface EditModalProps {

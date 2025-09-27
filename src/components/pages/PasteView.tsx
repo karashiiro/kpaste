@@ -8,16 +8,16 @@ import {
   PencilIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { EditModal } from "./EditModal";
-import { safeHighlight } from "../prismUtils";
-import type { PasteLoaderData } from "../loaders/pasteLoader";
-import { useAuth } from "../hooks/useAuth";
-import { usePasteForm } from "../hooks/usePasteForm";
-import { useUpdatePaste } from "../hooks/useUpdatePaste";
-import { useDeletePaste } from "../hooks/useDeletePaste";
-import { PageContainer } from "./PageContainer";
-import { PasteMetadata } from "./PasteMetadata";
-import { LoadingButton } from "./LoadingButton";
+import { EditModal } from "../paste/EditModal";
+import { safeHighlight } from "../../prismUtils";
+import type { PasteLoaderData } from "../../loaders/pasteLoader";
+import { useAuth } from "../../hooks/useAuth";
+import { usePasteForm } from "../../hooks/usePasteForm";
+import { useUpdatePaste } from "../../hooks/useUpdatePaste";
+import { useDeletePaste } from "../../hooks/useDeletePaste";
+import { PageContainer } from "../layout/PageContainer";
+import { PasteMetadata } from "../paste/PasteMetadata";
+import { LoadingButton } from "../ui/LoadingButton";
 
 export function PasteView() {
   const paste = useLoaderData() as PasteLoaderData;

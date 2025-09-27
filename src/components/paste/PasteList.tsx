@@ -12,15 +12,15 @@ import {
   TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import type { PasteListItem } from "../types";
-import { useDeletePaste } from "../hooks/useDeletePaste";
+import type { PasteListItem } from "../../types";
+import { useDeletePaste } from "../../hooks/useDeletePaste";
 import { useCallback } from "react";
-import { usePasteForm } from "../hooks/usePasteForm";
-import { useUpdatePaste } from "../hooks/useUpdatePaste";
+import { usePasteForm } from "../../hooks/usePasteForm";
+import { useUpdatePaste } from "../../hooks/useUpdatePaste";
 import { EditModal } from "./EditModal";
-import { safeHighlight } from "../prismUtils";
-import { parseAtUri } from "../pdsUtils";
-import { LoadingButton } from "./LoadingButton";
+import { safeHighlight } from "../../prismUtils";
+import { parseAtUri } from "../../pdsUtils";
+import { LoadingButton } from "../ui/LoadingButton";
 
 interface PasteListProps {
   pastes: PasteListItem[];

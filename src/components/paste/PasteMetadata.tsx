@@ -1,7 +1,7 @@
 import { XStack } from "@tamagui/stacks";
 import { Paragraph } from "@tamagui/text";
 import { Link } from "react-router";
-import type { PasteRecord } from "../types";
+import type { PasteRecord } from "../../types";
 
 interface PasteMetadataProps {
   paste: PasteRecord;

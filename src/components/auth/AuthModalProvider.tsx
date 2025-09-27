@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { AuthModalContext } from "../contexts/AuthModalContext";
+import { AuthModalContext } from "../../contexts/AuthModalContext";
 
 interface AuthModalProviderProps {
   children: ReactNode;

@@ -7,11 +7,11 @@ import {
   DocumentTextIcon,
   CheckIcon,
 } from "@heroicons/react/24/outline";
-import type { CreatePasteForm, EditPasteForm } from "../hooks/usePasteForm";
+import type { CreatePasteForm, EditPasteForm } from "../../hooks/usePasteForm";
 import { PasteFormField } from "./PasteFormField";
-import { CodeEditor } from "./CodeEditor";
-import { LanguageSelect } from "./LanguageSelect";
-import { LoadingButton } from "./LoadingButton";
+import { CodeEditor } from "../ui/CodeEditor";
+import { LanguageSelect } from "../ui/LanguageSelect";
+import { LoadingButton } from "../ui/LoadingButton";
 
 type PasteFormData = CreatePasteForm | EditPasteForm;
 

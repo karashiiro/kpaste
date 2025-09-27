@@ -4,7 +4,7 @@ import { createHashRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import { TamaguiProvider, createTamagui, Theme } from "@tamagui/core";
 import { defaultConfig } from "@tamagui/config/v4";
-import { LoadingFallback } from "./components/LoadingFallback.tsx";
+import { LoadingFallback } from "./components/ui/LoadingFallback.tsx";
 import { pasteLoader } from "./loaders/pasteLoader.ts";
 
 const App = lazy(() =>
@@ -13,25 +13,27 @@ const App = lazy(() =>
   })),
 );
 const Home = lazy(() =>
-  import("./components/Home.tsx").then((m) => ({
+  import("./components/pages/Home.tsx").then((m) => ({
     default: m.Home,
   })),
 );
 const PasteListPage = lazy(() =>
-  import("./components/PasteListPage.tsx").then((m) => ({
+  import("./components/pages/PasteListPage.tsx").then((m) => ({
     default: m.PasteListPage,
   })),
 );
 const PasteView = lazy(() =>
-  import("./components/PasteView.tsx").then((m) => ({ default: m.PasteView })),
+  import("./components/pages/PasteView.tsx").then((m) => ({
+    default: m.PasteView,
+  })),
 );
 const OAuthCallbackHash = lazy(() =>
-  import("./components/OAuthCallbackHash.tsx").then((m) => ({
+  import("./components/pages/OAuthCallbackHash.tsx").then((m) => ({
     default: m.OAuthCallbackHash,
   })),
 );
 const ErrorPage = lazy(() =>
-  import("./components/ErrorPage.tsx").then((m) => ({
+  import("./components/pages/ErrorPage.tsx").then((m) => ({
     default: m.ErrorPage,
   })),
 );

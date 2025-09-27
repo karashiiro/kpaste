@@ -1,9 +1,9 @@
 import { XStack, YStack } from "@tamagui/stacks";
 import { View } from "@tamagui/core";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { HeaderLogo } from "./HeaderLogo";
-import { CreatePasteButton } from "./CreatePasteButton";
-import { AuthSection } from "./AuthSection";
+import { CreatePasteButton } from "../ui/CreatePasteButton";
+import { AuthSection } from "../auth/AuthSection";
 
 export interface HeaderProps {
   onLoginClick?: () => void;

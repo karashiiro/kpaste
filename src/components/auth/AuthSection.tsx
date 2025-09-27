@@ -7,7 +7,7 @@ import {
   HandRaisedIcon,
   ArrowPathIcon,
 } from "@heroicons/react/24/outline";
-import type { AuthSession } from "../auth/types";
+import type { AuthSession } from "../../auth/types";
 
 interface AuthSectionProps {
   isAuthenticated: boolean;

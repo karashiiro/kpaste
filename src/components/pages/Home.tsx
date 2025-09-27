@@ -3,13 +3,13 @@ import { YStack, XStack } from "@tamagui/stacks";
 import { Card } from "@tamagui/card";
 import { Paragraph } from "@tamagui/text";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useAuth } from "../hooks/useAuth";
-import { usePasteForm } from "../hooks/usePasteForm";
-import { useCreatePaste } from "../hooks/useCreatePaste";
-import { PageContainer } from "./PageContainer";
-import { PasteForm } from "./PasteForm";
-import type { CreatePasteForm } from "../hooks/usePasteForm";
-import { useAuthModal } from "../hooks/useAuthContext";
+import { useAuth } from "../../hooks/useAuth";
+import { usePasteForm } from "../../hooks/usePasteForm";
+import { useCreatePaste } from "../../hooks/useCreatePaste";
+import { PageContainer } from "../layout/PageContainer";
+import { PasteForm } from "../paste/PasteForm";
+import type { CreatePasteForm } from "../../hooks/usePasteForm";
+import { useAuthModal } from "../../hooks/useAuthContext";
 
 export function Home() {
   const { isAuthenticated } = useAuth();

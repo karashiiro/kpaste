@@ -2,7 +2,7 @@ import { YStack } from "@tamagui/stacks";
 import { Button } from "@tamagui/button";
 import { Paragraph, H1 } from "@tamagui/text";
 import { HomeIcon } from "@heroicons/react/24/outline";
-import { PageContainer } from "./PageContainer";
+import { PageContainer } from "../layout/PageContainer";
 
 export function ErrorPage() {
   return (

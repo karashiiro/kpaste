@@ -2,13 +2,13 @@ import { YStack, XStack } from "@tamagui/stacks";
 import { Paragraph } from "@tamagui/text";
 import { BookOpenIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import { Link, useLoaderData, useParams } from "react-router";
-import { PasteList } from "./PasteList";
-import type { PasteListLoaderData } from "../loaders/pasteListLoader";
-import { useAuth } from "../hooks/useAuth";
-import { PasteListPaginationButtons } from "./PasteListPaginationButtons";
-import { PageContainer } from "./PageContainer";
-import { ActionButton } from "./ActionButton";
-import { useAuthModal } from "../hooks/useAuthContext";
+import { PasteList } from "../paste/PasteList";
+import type { PasteListLoaderData } from "../../loaders/pasteListLoader";
+import { useAuth } from "../../hooks/useAuth";
+import { PasteListPaginationButtons } from "../paste/PasteListPaginationButtons";
+import { PageContainer } from "../layout/PageContainer";
+import { ActionButton } from "../ui/ActionButton";
+import { useAuthModal } from "../../hooks/useAuthContext";
 
 export function PasteListPage() {
   const { isAuthenticated, session } = useAuth();
