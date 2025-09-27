@@ -18,7 +18,7 @@ export function LanguageSelect({
         <Select.Value placeholder="Select language..." />
       </Select.Trigger>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content zIndex={999999}>
         <Select.ScrollUpButton
           alignItems="center"
           justifyContent="center"
