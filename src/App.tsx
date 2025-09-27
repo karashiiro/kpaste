@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Outlet, useLocation } from "react-router";
 import { OAuthModal } from "./components/OAuthModal";
 import { RootLayout } from "./components/RootLayout";
-import { AuthModalProvider } from "./contexts/AuthModalContext";
+import { AuthModalProvider } from "./components/AuthModalProvider";
 
 export function App() {
   const [showAuthModal, setShowAuthModal] = useState(false);

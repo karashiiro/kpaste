@@ -5,10 +5,10 @@ import { Link, useLoaderData, useParams } from "react-router";
 import { PasteList } from "./PasteList";
 import type { PasteListLoaderData } from "../loaders/pasteListLoader";
 import { useAuth } from "../hooks/useAuth";
-import { useAuthModal } from "../contexts/AuthModalContext";
 import { PasteListPaginationButtons } from "./PasteListPaginationButtons";
 import { PageContainer } from "./PageContainer";
 import { ActionButton } from "./ActionButton";
+import { useAuthModal } from "../hooks/useAuthContext";
 
 export function PasteListPage() {
   const { isAuthenticated, session } = useAuth();

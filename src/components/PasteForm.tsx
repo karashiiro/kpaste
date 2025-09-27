@@ -22,6 +22,7 @@ interface PasteFormProps {
   onSubmit: () => Promise<void>;
   onCancel?: () => void;
   mode: "create" | "edit";
+  submitButtonText?: string;
 }
 
 export function PasteForm({
@@ -31,10 +32,12 @@ export function PasteForm({
   onSubmit,
   onCancel,
   mode,
+  submitButtonText,
 }: PasteFormProps) {
   const isEdit = mode === "edit";
   const title = isEdit ? "Edit Paste" : "Create New Paste";
-  const submitText = isEdit ? "Update Paste" : "Create Paste";
+  const submitText =
+    submitButtonText || (isEdit ? "Update Paste" : "Create Paste");
   const loadingText = isEdit ? "Updating..." : "Creating...";
   const icon = isEdit ? (
     <PencilIcon width={24} height={24} />

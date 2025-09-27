@@ -1,14 +1,15 @@
+import { useEffect } from "react";
 import { YStack, XStack } from "@tamagui/stacks";
 import { Card } from "@tamagui/card";
 import { Paragraph } from "@tamagui/text";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "../hooks/useAuth";
-import { useAuthModal } from "../contexts/AuthModalContext";
-import { AuthRequiredView } from "./AuthRequiredView";
 import { usePasteForm } from "../hooks/usePasteForm";
 import { useCreatePaste } from "../hooks/useCreatePaste";
 import { PageContainer } from "./PageContainer";
 import { PasteForm } from "./PasteForm";
+import type { CreatePasteForm } from "../hooks/usePasteForm";
+import { useAuthModal } from "../hooks/useAuthContext";
 
 export function Home() {
   const { isAuthenticated } = useAuth();
@@ -18,18 +19,38 @@ export function Home() {
 
   const forms = usePasteForm();
 
-  if (!isAuthenticated) {
-    return (
-      <YStack minHeight="100vh" backgroundColor="$background">
-        <AuthRequiredView
-          title="Welcome to KPaste!"
-          subtitle="Please log in to create and manage your pastes."
-          buttonText="Get Started"
-          onLoginClick={openAuthModal}
-        />
-      </YStack>
-    );
-  }
+  // Restore form state from localStorage when user logs in
+  useEffect(() => {
+    if (isAuthenticated) {
+      const savedDraft = localStorage.getItem("kpaste-draft");
+      if (savedDraft) {
+        try {
+          const parsedDraft: CreatePasteForm = JSON.parse(savedDraft);
+          // Only restore if there's actual content
+          if (parsedDraft.content?.trim()) {
+            forms.setCreateForm(parsedDraft);
+          }
+          // Clean up the saved draft
+          localStorage.removeItem("kpaste-draft");
+        } catch (error: unknown) {
+          console.error("Failed to parse saved draft:", error);
+
+          // Invalid JSON, just remove it
+          localStorage.removeItem("kpaste-draft");
+        }
+      }
+    }
+  }, [isAuthenticated, forms.setCreateForm, forms]);
+
+  const handleCreateOrLogin = async () => {
+    if (!isAuthenticated) {
+      // Save form state to localStorage before opening login modal
+      localStorage.setItem("kpaste-draft", JSON.stringify(forms.createForm));
+      openAuthModal();
+    } else {
+      createPaste(forms.createForm);
+    }
+  };
 
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
@@ -48,8 +69,11 @@ export function Home() {
             form={forms.createForm}
             loading={loading}
             onFormChange={forms.setCreateForm}
-            onSubmit={() => createPaste(forms.createForm)}
+            onSubmit={handleCreateOrLogin}
             mode="create"
+            submitButtonText={
+              isAuthenticated ? "Create Paste" : "Log in to create paste"
+            }
           />
 
           {error && (
