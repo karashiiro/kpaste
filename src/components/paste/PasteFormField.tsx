@@ -7,8 +7,6 @@ export interface PasteFormFieldProps {
   value: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
-  required?: boolean;
-  size?: "$3" | "$4" | "$5";
 }
 
 export function PasteFormField({
@@ -16,20 +14,17 @@ export function PasteFormField({
   value,
   onChangeText,
   placeholder,
-  required = false,
-  size = "$4",
 }: PasteFormFieldProps) {
   return (
     <YStack gap="$2">
       <Label fontSize="$4" fontWeight="500">
         {label}
-        {required && " *"}
       </Label>
       <Input
         value={value}
         onChange={(e) => onChangeText((e.target as HTMLInputElement).value)}
         placeholder={placeholder}
-        size={size}
+        size="$4"
       />
     </YStack>
   );
