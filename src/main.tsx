@@ -30,6 +30,11 @@ const OAuthCallbackHash = lazy(() =>
     default: m.OAuthCallbackHash,
   })),
 );
+const ErrorPage = lazy(() =>
+  import("./components/ErrorPage.tsx").then((m) => ({
+    default: m.ErrorPage,
+  })),
+);
 
 import { pasteListLoader } from "./loaders/pasteListLoader.ts";
 
@@ -80,40 +85,9 @@ const router = createHashRouter(
           ),
           loader: pasteLoader,
           errorElement: (
-            <div
-              style={{
-                minHeight: "100vh",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-                padding: "2rem",
-                textAlign: "center",
-              }}
-            >
-              <h1 style={{ color: "#dc3545", marginBottom: "1rem" }}>
-                Paste Not Found
-              </h1>
-              <p style={{ color: "#666", marginBottom: "2rem" }}>
-                The paste you're looking for doesn't exist or couldn't be
-                loaded.
-              </p>
-              <a
-                href="/"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                  color: "white",
-                  padding: "12px 24px",
-                  borderRadius: "25px",
-                  textDecoration: "none",
-                  fontWeight: "600",
-                }}
-              >
-                ← Back to KPaste
-              </a>
-            </div>
+            <Suspense fallback={<LoadingFallback />}>
+              <ErrorPage />
+            </Suspense>
           ),
         },
       ],
