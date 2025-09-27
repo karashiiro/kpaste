@@ -27,7 +27,7 @@ export function PasteFormField({
       </Label>
       <Input
         value={value}
-        onChangeText={(e) => onChangeText(e.nativeEvent.text)}
+        onChange={(e) => onChangeText((e.target as HTMLInputElement).value)}
         placeholder={placeholder}
         size={size}
       />
