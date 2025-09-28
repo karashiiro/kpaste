@@ -6,7 +6,7 @@ import { Paragraph, H2 } from "@tamagui/text";
 import { Button } from "@tamagui/button";
 import { Input } from "@tamagui/input";
 import { Label } from "@tamagui/label";
-import { Card } from "@tamagui/card";
+import { InsetCard } from "../ui/InsetCard";
 import {
   XMarkIcon,
   RocketLaunchIcon,
@@ -100,12 +100,12 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
               </YStack>
 
               {hasError && error && (
-                <Card backgroundColor="$red2" padding="$3">
+                <InsetCard backgroundColor="$red2" theme="red" padding="$3">
                   <XStack alignItems="center" gap="$2">
                     <XMarkIcon width={20} height={20} color="red" />
                     <Paragraph color="$red10">{error.message}</Paragraph>
                   </XStack>
-                </Card>
+                </InsetCard>
               )}
 
               <XStack gap="$3" width="100%">

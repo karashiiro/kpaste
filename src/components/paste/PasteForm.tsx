@@ -1,6 +1,6 @@
 import { YStack, XStack } from "@tamagui/stacks";
-import { Card } from "@tamagui/card";
 import { Paragraph } from "@tamagui/text";
+import { InsetCard } from "../ui/InsetCard";
 import {
   SparklesIcon,
   PencilIcon,
@@ -51,7 +51,7 @@ export function PasteForm({
   );
 
   return (
-    <Card padding="$4" gap="$4">
+    <InsetCard padding="$4" gap="$4" insetPadding="12px">
       {isEdit ? (
         <XStack alignItems="center" gap="$2">
           {icon}
@@ -96,14 +96,14 @@ export function PasteForm({
           />
         </YStack>
 
-        <Card theme="blue" padding="$3">
+        <InsetCard theme="blue" padding="$3">
           <XStack alignItems="center" gap="$2">
             <DocumentTextIcon width={16} height={16} />
             <Paragraph fontSize="$3">
               Note: All pastes are publicly accessible
             </Paragraph>
           </XStack>
-        </Card>
+        </InsetCard>
 
         {isEdit ? (
           <XStack gap="$3" marginTop="$2">
@@ -143,6 +143,6 @@ export function PasteForm({
           </LoadingButton>
         )}
       </YStack>
-    </Card>
+    </InsetCard>
   );
 }

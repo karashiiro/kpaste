@@ -1,8 +1,8 @@
 import { useLoaderData } from "react-router";
 import { useMemo } from "react";
 import { YStack, XStack } from "@tamagui/stacks";
-import { Card } from "@tamagui/card";
 import { Paragraph } from "@tamagui/text";
+import { InsetCard } from "../ui/InsetCard";
 import {
   DocumentTextIcon,
   PencilIcon,
@@ -92,7 +92,7 @@ export function PasteView() {
           />
         </YStack>
 
-        <Card padding="$0" bordered>
+        <InsetCard padding="$0" insetPadding="12px">
           <pre
             style={{
               fontFamily: '"Inconsolata", monospace',
@@ -109,7 +109,7 @@ export function PasteView() {
               ),
             }}
           />
-        </Card>
+        </InsetCard>
       </PageContainer>
 
       {/* Edit Modal */}

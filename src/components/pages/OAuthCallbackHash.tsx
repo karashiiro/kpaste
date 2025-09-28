@@ -1,8 +1,8 @@
 import { useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router";
 import { YStack } from "@tamagui/stacks";
-import { Card } from "@tamagui/card";
 import { Paragraph } from "@tamagui/text";
+import { InsetCard } from "../ui/InsetCard";
 import {
   ArrowPathIcon,
   CheckCircleIcon,
@@ -98,7 +98,7 @@ export function OAuthCallbackHash() {
         gap="$4"
         backgroundColor="#0a0a0a"
       >
-        <Card padding="$4" theme="green">
+        <InsetCard padding="$4" theme="green" insetPadding="12px">
           <YStack alignItems="center" gap="$3">
             <CheckCircleIcon width={48} height={48} color="green" />
             <Paragraph fontSize="$6" fontWeight="600" textAlign="center">
@@ -108,7 +108,7 @@ export function OAuthCallbackHash() {
               Redirecting you now...
             </Paragraph>
           </YStack>
-        </Card>
+        </InsetCard>
       </YStack>
     );
   }
@@ -123,7 +123,7 @@ export function OAuthCallbackHash() {
         gap="$4"
         backgroundColor="#0a0a0a"
       >
-        <Card padding="$4" theme="red">
+        <InsetCard padding="$4" theme="red" insetPadding="12px">
           <YStack alignItems="center" gap="$3">
             <XMarkIcon width={48} height={48} color="red" />
             <Paragraph fontSize="$6" fontWeight="600" textAlign="center">
@@ -143,7 +143,7 @@ export function OAuthCallbackHash() {
               ← Back to KPaste
             </Paragraph>
           </YStack>
-        </Card>
+        </InsetCard>
       </YStack>
     );
   }
@@ -157,7 +157,7 @@ export function OAuthCallbackHash() {
       gap="$4"
       backgroundColor="#0a0a0a"
     >
-      <Card padding="$4" theme="blue">
+      <InsetCard padding="$4" theme="blue" insetPadding="12px">
         <YStack alignItems="center" gap="$3">
           <ArrowPathIcon
             width={48}
@@ -172,7 +172,7 @@ export function OAuthCallbackHash() {
             Processing your authentication from storage.
           </Paragraph>
         </YStack>
-      </Card>
+      </InsetCard>
     </YStack>
   );
 }

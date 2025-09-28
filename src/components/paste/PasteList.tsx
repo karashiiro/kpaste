@@ -1,6 +1,6 @@
 import { YStack, XStack } from "@tamagui/stacks";
-import { Card } from "@tamagui/card";
 import { ScrollView } from "@tamagui/scroll-view";
+import { InsetCard } from "../ui/InsetCard";
 import { Tooltip } from "@tamagui/tooltip";
 import { Paragraph } from "@tamagui/text";
 import { Link } from "react-router";
@@ -60,14 +60,19 @@ export function PasteList({
 
   if (pastes.length === 0) {
     return (
-      <Card padding="$6" marginTop="$4" alignItems="center">
+      <InsetCard
+        padding="$6"
+        marginTop="$4"
+        alignItems="center"
+        insetPadding="12px"
+      >
         <XStack alignItems="center" gap="$2">
           <DocumentTextIcon width={24} height={24} color="white" />
           <Paragraph fontSize="$5" textAlign="center">
             No pastes found. Create your first paste!
           </Paragraph>
         </XStack>
-      </Card>
+      </InsetCard>
     );
   }
 
@@ -78,12 +83,12 @@ export function PasteList({
   return (
     <YStack gap="$5">
       {pastes.map((paste) => (
-        <Card
+        <InsetCard
           key={paste.uri}
           padding="$5"
           gap="$4"
-          bordered
           position="relative"
+          insetPadding="12px"
         >
           {userHandle ? (
             (() => {
@@ -166,7 +171,7 @@ export function PasteList({
               Content:
             </Paragraph>
             {paste.content ? (
-              <Card padding="$3" borderRadius="$4" bordered>
+              <InsetCard padding="$3" borderRadius="$4">
                 <ScrollView maxHeight={200}>
                   <pre
                     style={{
@@ -185,7 +190,7 @@ export function PasteList({
                     }}
                   />
                 </ScrollView>
-              </Card>
+              </InsetCard>
             ) : paste.contentLoading ? (
               <XStack alignItems="center" gap="$2">
                 <ArrowPathIcon
@@ -271,23 +276,23 @@ export function PasteList({
           )}
 
           {deleteError && (
-            <Card theme="red" padding="$3">
+            <InsetCard theme="red" padding="$3">
               <XStack alignItems="center" gap="$2">
                 <XMarkIcon width={20} height={20} />
                 <Paragraph fontWeight="600">Error: {deleteError}</Paragraph>
               </XStack>
-            </Card>
+            </InsetCard>
           )}
 
           {updateError && (
-            <Card theme="red" padding="$3">
+            <InsetCard theme="red" padding="$3">
               <XStack alignItems="center" gap="$2">
                 <XMarkIcon width={20} height={20} />
                 <Paragraph fontWeight="600">Error: {updateError}</Paragraph>
               </XStack>
-            </Card>
+            </InsetCard>
           )}
-        </Card>
+        </InsetCard>
       ))}
 
       {/* Edit Modal */}

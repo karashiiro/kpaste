@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import Editor from "react-simple-code-editor";
-import { Card } from "@tamagui/card";
 import { useTheme } from "@tamagui/core";
+import { InsetCard } from "./InsetCard";
 import { safeHighlight } from "../../prismUtils";
 import "prismjs/themes/prism-tomorrow.css";
 
@@ -40,7 +40,7 @@ export function CodeEditor({
   };
 
   return (
-    <Card padding="$0" bordered>
+    <InsetCard padding="$0">
       <Editor
         value={value}
         onValueChange={onChange}
@@ -49,6 +49,6 @@ export function CodeEditor({
         placeholder={placeholder}
         style={editorStyle}
       />
-    </Card>
+    </InsetCard>
   );
 }
