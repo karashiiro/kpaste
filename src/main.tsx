@@ -48,7 +48,6 @@ const tamaguiConfig = createTamagui({
       ...defaultConfig.themes.dark,
       // Background colors
       background: "#3a3a3a",
-      backgroundStrong: "#2b2b2b",
       backgroundSuperDark: "#0a0a0a",
 
       // Primary colors (header/accent)
@@ -64,7 +63,6 @@ const tamaguiConfig = createTamagui({
       greenHover: "#8FD084", // slightly darker mint green for hover
       greenPress: "#7AC46F", // darker mint green for press
       greenText: "#4A7C59", // darker green for text on green backgrounds
-      greenOverlay: "rgba(163, 220, 154, 0.8)", // transparent green overlay
 
       // Blue colors
       blueBase: "#7BB3F0", // soft sky blue base color
@@ -84,12 +82,8 @@ const tamaguiConfig = createTamagui({
       redPress: "#A93226", // deep red for press
       redText: "#FFFFFF", // white text on red background
 
-      // Soft accent colors
-      accentSoft: "#FFDBB6", // warm peachy-cream for soft accents
-
       // Overlay colors
       overlay: "rgba(255, 255, 255, 0.1)",
-      overlayStrong: "rgba(255, 255, 255, 0.2)",
 
       // Shadow colors
       shadow: "rgba(0, 0, 0, 0.25)",
