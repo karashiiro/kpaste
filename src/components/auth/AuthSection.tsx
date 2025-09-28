@@ -24,6 +24,7 @@ export function AuthSection({
     return (
       <InsetButton
         onPress={onLoginClick}
+        backgroundColor="rgba(255, 255, 255, 0.1)"
         color="white"
         fontWeight="600"
         size="$4"
@@ -52,7 +53,12 @@ export function AuthSection({
           @{session?.handle}
         </Paragraph>
       </Link>
-      <InsetButton onPress={onLogout} color="white" size="$3">
+      <InsetButton
+        onPress={onLogout}
+        backgroundColor="rgba(255, 255, 255, 0.1)"
+        color="white"
+        size="$3"
+      >
         <XStack alignItems="center" gap="$2">
           <HandRaisedIcon width={16} height={16} color="white" />
           <Paragraph color="white">Logout</Paragraph>
