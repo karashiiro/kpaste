@@ -24,7 +24,10 @@ export function ActionButton({
     <InsetButton {...variantStyles} {...props}>
       <XStack alignItems="center" gap="$2">
         {icon}
-        <Paragraph color={variantStyles.color || props.color || "$color"}>
+        <Paragraph
+          fontWeight={props.fontWeight}
+          color={variantStyles.color || props.color || "$color"}
+        >
           {children}
         </Paragraph>
       </XStack>

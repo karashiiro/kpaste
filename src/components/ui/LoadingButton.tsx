@@ -36,7 +36,10 @@ export function LoadingButton({
           icon
         )}
         {children && (
-          <Paragraph color={variantStyles.color || props.color || "$color"}>
+          <Paragraph
+            fontWeight={props.fontWeight}
+            color={variantStyles.color || props.color || "$color"}
+          >
             {loading ? loadingText || "Loading..." : children}
           </Paragraph>
         )}
