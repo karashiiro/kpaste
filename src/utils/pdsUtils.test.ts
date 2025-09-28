@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { parseAtUri, resolveUser, getTextBlob, getTextBlobs } from "./pdsUtils";
+import {
+  parseAtUri,
+  resolveUser,
+  getTextBlob,
+  getTextBlobs,
+} from "../pdsUtils";
 
 describe("pdsUtils", () => {
   describe("parseAtUri", () => {

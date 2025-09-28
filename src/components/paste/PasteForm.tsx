@@ -55,12 +55,12 @@ export function PasteForm({
       {isEdit ? (
         <XStack alignItems="center" gap="$2">
           {icon}
-          <Paragraph fontSize="$6" fontWeight="600" color="$color">
+          <Paragraph fontSize="$6" fontWeight="600" color="white">
             {title}
           </Paragraph>
         </XStack>
       ) : (
-        <Paragraph fontSize="$6" fontWeight="600" color="$color">
+        <Paragraph fontSize="$6" fontWeight="600" color="white">
           {title}
         </Paragraph>
       )}
@@ -86,7 +86,7 @@ export function PasteForm({
 
         <YStack gap="$2">
           <Paragraph fontSize="$4" fontWeight="500">
-            Language:
+            Syntax Language:
           </Paragraph>
           <LanguageSelect
             value={form.language}

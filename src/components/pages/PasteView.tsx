@@ -8,7 +8,7 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { EditModal } from "../paste/EditModal";
-import { safeHighlight } from "../../prismUtils";
+import { safeHighlight } from "../../utils/prismUtils";
 import type { PasteLoaderData } from "../../loaders/pasteLoader";
 import { useAuth } from "../../hooks/useAuth";
 import { usePasteForm } from "../../hooks/usePasteForm";

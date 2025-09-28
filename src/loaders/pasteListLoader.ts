@@ -2,7 +2,7 @@ import { Client, simpleFetchHandler } from "@atcute/client";
 import type { LoaderFunctionArgs } from "react-router";
 import type { Main as PasteRecord } from "../lexicons/types/moe/karashiiro/kpaste/paste";
 import type { PasteListItem } from "../types";
-import { getTextBlobs, resolveUser } from "../pdsUtils";
+import { getTextBlobs, resolveUser } from "../utils/pdsUtils";
 
 export interface PasteListLoaderData {
   pastes: PasteListItem[];

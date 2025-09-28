@@ -31,7 +31,7 @@ export function AuthSection({
       >
         <XStack alignItems="center" gap="$2">
           <RocketLaunchIcon width={20} height={20} color="white" />
-          <Paragraph fontWeight="600" color="$white">
+          <Paragraph fontWeight="600" color="white">
             Login
           </Paragraph>
         </XStack>
@@ -62,7 +62,7 @@ export function AuthSection({
       >
         <XStack alignItems="center" gap="$2">
           <HandRaisedIcon width={16} height={16} color="white" />
-          <Paragraph fontWeight="600" color="$white">
+          <Paragraph fontWeight="600" color="white">
             Logout
           </Paragraph>
         </XStack>

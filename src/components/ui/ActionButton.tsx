@@ -26,7 +26,7 @@ export function ActionButton({
         {icon}
         <Paragraph
           fontWeight={props.fontWeight || "500"}
-          color={variantStyles.color || props.color || "$color"}
+          color={variantStyles.color || props.color}
         >
           {children}
         </Paragraph>

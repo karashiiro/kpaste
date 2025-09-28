@@ -74,8 +74,8 @@ export function getVariantStyles(colorVariant: ColorVariant): VariantStyles {
       };
     default:
       return {
-        insetBorderColor: "$white",
-        color: "$white",
+        insetBorderColor: "white",
+        color: "white",
       };
   }
 }
