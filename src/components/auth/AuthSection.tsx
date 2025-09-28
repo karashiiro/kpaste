@@ -26,13 +26,14 @@ export function AuthSection({
         onPress={onLoginClick}
         backgroundColor="$overlay"
         color="white"
-        fontWeight="600"
         size="$4"
         {...(fullWidth && { width: "100%" })}
       >
         <XStack alignItems="center" gap="$2">
           <RocketLaunchIcon width={20} height={20} color="white" />
-          <Paragraph color="white">Login</Paragraph>
+          <Paragraph fontWeight="600" color="$white">
+            Login
+          </Paragraph>
         </XStack>
       </InsetButton>
     );
@@ -61,7 +62,9 @@ export function AuthSection({
       >
         <XStack alignItems="center" gap="$2">
           <HandRaisedIcon width={16} height={16} color="white" />
-          <Paragraph color="white">Logout</Paragraph>
+          <Paragraph fontWeight="600" color="$white">
+            Logout
+          </Paragraph>
         </XStack>
       </InsetButton>
     </XStack>

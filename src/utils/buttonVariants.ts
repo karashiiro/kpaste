@@ -20,7 +20,7 @@ export function getVariantStyles(colorVariant: ColorVariant): VariantStyles {
       return {
         backgroundColor: "$greenBase",
         color: "$greenText",
-        insetBorderColor: "$greenText",
+        insetBorderColor: "$borderColor",
         hoverStyle: {
           backgroundColor: "$greenHover",
           borderColor: "transparent",
@@ -34,7 +34,7 @@ export function getVariantStyles(colorVariant: ColorVariant): VariantStyles {
       return {
         backgroundColor: "$blueBase",
         color: "$blueText",
-        insetBorderColor: "$blueText",
+        insetBorderColor: "$borderColor",
         hoverStyle: {
           backgroundColor: "$blueHover",
           borderColor: "transparent",
@@ -62,7 +62,7 @@ export function getVariantStyles(colorVariant: ColorVariant): VariantStyles {
       return {
         backgroundColor: "$yellowBase",
         color: "$yellowText",
-        insetBorderColor: "$yellowText",
+        insetBorderColor: "$borderColor",
         hoverStyle: {
           backgroundColor: "$yellowHover",
           borderColor: "transparent",

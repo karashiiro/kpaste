@@ -22,6 +22,7 @@ import { safeHighlight } from "../../prismUtils";
 import { parseAtUri } from "../../pdsUtils";
 import { LoadingButton } from "../ui/LoadingButton";
 import { Card } from "@tamagui/card";
+import { ActionButton } from "../ui/ActionButton";
 
 interface PasteListProps {
   pastes: PasteListItem[];
@@ -266,7 +267,7 @@ export function PasteList({
               </Tooltip>
 
               {/* Edit button */}
-              <LoadingButton
+              <ActionButton
                 onPress={() => startEdit(paste)}
                 size="$4"
                 marginTop="$4"
@@ -274,7 +275,7 @@ export function PasteList({
                 icon={<PencilIcon width={20} height={20} color="white" />}
               >
                 Edit
-              </LoadingButton>
+              </ActionButton>
             </>
           )}
 

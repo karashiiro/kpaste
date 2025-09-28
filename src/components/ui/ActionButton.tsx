@@ -25,7 +25,7 @@ export function ActionButton({
       <XStack alignItems="center" gap="$2">
         {icon}
         <Paragraph
-          fontWeight={props.fontWeight}
+          fontWeight={props.fontWeight || "500"}
           color={variantStyles.color || props.color || "$color"}
         >
           {children}

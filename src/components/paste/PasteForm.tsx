@@ -99,7 +99,7 @@ export function PasteForm({
         <InsetCard
           backgroundColor="$insetCardPublicBackground"
           insetBorderColor="var(--redText)"
-          padding="$3"
+          padding="$2"
         >
           <XStack alignItems="center" gap="$2">
             <DocumentTextIcon width={16} height={16} color="var(--redText)" />

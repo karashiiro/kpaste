@@ -3,42 +3,51 @@ import type { CardProps } from "@tamagui/card";
 import { getShadowStyle, type ShadowProps } from "../../utils/shadowUtils";
 
 interface InsetCardProps extends CardProps, ShadowProps {
-  /** Padding around the card for the inset effect */
-  insetPadding?: string;
+  /** Border radius for the outer button */
+  outerRadius?: string | number;
+  /** Border radius for the inner card */
+  innerRadius?: string | number;
+  /** Padding between button edge and card */
+  insetPadding?: string | number;
   insetBorderColor?: string;
+  /** Padding inside the card around content */
+  cardPadding?: string | number;
 }
 
 export function InsetCard({
   children,
+  outerRadius = "12px",
+  innerRadius = "8px",
   insetPadding = "$2",
-  insetBorderColor = "var(--insetCardBorderColor, var(--color4))",
+  insetBorderColor = "var(--insetCardBorderColor)",
+  cardPadding = "$2",
   shadow = true,
   ...cardProps
 }: InsetCardProps) {
   return (
     <Card
       padding={insetPadding}
-      borderRadius="$insetCardBorderRadius"
+      borderRadius={outerRadius}
       backgroundColor="$insetCardBackground"
       style={{
         ...getShadowStyle(shadow),
       }}
       {...cardProps}
     >
-      <div
-        style={{
-          borderStyle: "dashed",
-          borderWidth: "var(--insetCardBorderWidth, 2px)",
-          borderColor: insetBorderColor,
-          borderRadius: "var(--insetCardInnerRadius, 8px)",
-          backgroundColor: "transparent",
-          margin: insetPadding || "8px",
-          boxSizing: "border-box",
-          padding: "0.75rem",
-        }}
+      <Card
+        unstyled
+        borderStyle="dashed"
+        borderWidth={2}
+        borderColor={insetBorderColor}
+        borderRadius={innerRadius}
+        backgroundColor="transparent"
+        width="100%"
+        height="100%"
+        padding={cardPadding}
+        boxSizing="border-box"
       >
         {children}
-      </div>
+      </Card>
     </Card>
   );
 }

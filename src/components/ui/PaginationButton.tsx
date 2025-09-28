@@ -21,7 +21,10 @@ export function PaginationButton({
   return (
     <InsetButton {...variantStyles} {...props}>
       {children && (
-        <Paragraph color={variantStyles.color || props.color || "$color"}>
+        <Paragraph
+          fontWeight={props.fontWeight || "500"}
+          color={variantStyles.color || props.color || "$color"}
+        >
           {children}
         </Paragraph>
       )}
