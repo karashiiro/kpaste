@@ -51,7 +51,7 @@ export function PasteForm({
   );
 
   return (
-    <InsetCard padding="$4" gap="$4" insetPadding="12px">
+    <InsetCard gap="$4" insetPadding="8px">
       {isEdit ? (
         <XStack alignItems="center" gap="$2">
           {icon}

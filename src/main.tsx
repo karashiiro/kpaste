@@ -40,7 +40,17 @@ const ErrorPage = lazy(() =>
 
 import { pasteListLoader } from "./loaders/pasteListLoader.ts";
 
-const tamaguiConfig = createTamagui(defaultConfig);
+const tamaguiConfig = createTamagui({
+  ...defaultConfig,
+  themes: {
+    ...defaultConfig.themes,
+    dark: {
+      ...defaultConfig.themes.dark,
+      background: "#3a3a3a",
+      color1: "#2b2b2b",
+    },
+  },
+});
 
 const router = createHashRouter(
   [

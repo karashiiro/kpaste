@@ -28,7 +28,6 @@ export function InsetButton({
 }: InsetButtonProps) {
   return (
     <Button
-      padding={0}
       paddingHorizontal={paddingHorizontal}
       paddingVertical={paddingVertical}
       borderRadius={outerRadius}

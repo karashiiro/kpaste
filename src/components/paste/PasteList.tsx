@@ -86,10 +86,9 @@ export function PasteList({
       {pastes.map((paste) => (
         <InsetCard
           key={paste.uri}
-          padding="$5"
           gap="$4"
           position="relative"
-          insetPadding="12px"
+          insetPadding="8px"
         >
           {userHandle ? (
             (() => {
@@ -260,11 +259,12 @@ export function PasteList({
                 </Tooltip.Content>
               </Tooltip>
 
-              {/* Edit button - full width */}
+              {/* Edit button */}
               <LoadingButton
                 onPress={() => startEdit(paste)}
                 size="$4"
                 marginTop="$4"
+                width="100%"
                 icon={<PencilIcon width={20} height={20} color="white" />}
               >
                 Edit

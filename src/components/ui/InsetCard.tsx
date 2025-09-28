@@ -11,44 +11,36 @@ interface InsetCardProps extends CardProps, ShadowProps {
 
 export function InsetCard({
   children,
-  insetPadding = "8px",
+  insetPadding = "$2",
   theme,
   shadow = true,
   ...cardProps
 }: InsetCardProps) {
-  // Map theme to CSS variable for background color
-  const getBackgroundColor = () => {
-    switch (theme) {
-      case "red":
-        return "var(--red2)";
-      case "blue":
-        return "var(--blue2)";
-      case "green":
-        return "var(--green2)";
-      default:
-        return "var(--color2)";
-    }
-  };
-
   return (
-    <div
+    <Card
+      padding={insetPadding}
+      borderRadius="12px"
+      theme={theme}
+      backgroundColor="$background"
       style={{
-        padding: insetPadding,
-        backgroundColor: getBackgroundColor(),
-        borderRadius: "12px",
         ...getShadowStyle(shadow),
       }}
+      {...cardProps}
     >
-      <Card
-        borderStyle="dashed"
-        borderWidth={2}
-        borderColor="$borderColor"
-        borderRadius="8px"
-        theme={theme}
-        {...cardProps}
+      <div
+        style={{
+          borderStyle: "dashed",
+          borderWidth: "2px",
+          borderColor: "var(--borderColor)",
+          borderRadius: "8px",
+          backgroundColor: "transparent",
+          margin: insetPadding || "8px",
+          boxSizing: "border-box",
+          padding: "0.75rem",
+        }}
       >
         {children}
-      </Card>
-    </div>
+      </div>
+    </Card>
   );
 }
