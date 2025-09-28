@@ -80,7 +80,7 @@ const tamaguiConfig = createTamagui({
       redBase: "#E74C3C", // bright red base - clear danger signal
       redHover: "#C0392B", // darker red for hover
       redPress: "#A93226", // deep red for press
-      redText: "#FFFFFF", // white text on red background
+      redText: "#640000ff", // white text on red background
 
       // Overlay colors
       overlay: "rgba(255, 255, 255, 0.1)",

@@ -3,8 +3,10 @@ import { Paragraph } from "@tamagui/text";
 import { InsetButton, type InsetButtonProps } from "./InsetButton";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import type { ReactNode } from "react";
-
-type ColorVariant = "default" | "green" | "blue" | "red";
+import {
+  getVariantStyles,
+  type ColorVariant,
+} from "../../utils/buttonVariants";
 
 interface LoadingButtonProps extends Omit<InsetButtonProps, "icon"> {
   loading?: boolean;
@@ -23,54 +25,7 @@ export function LoadingButton({
   colorVariant = "default",
   ...props
 }: LoadingButtonProps) {
-  // Get variant-specific styles
-  const getVariantStyles = () => {
-    switch (colorVariant) {
-      case "green":
-        return {
-          backgroundColor: "$greenBase",
-          color: "$greenText",
-          hoverStyle: {
-            backgroundColor: "$greenHover",
-            borderColor: "transparent",
-          },
-          pressStyle: {
-            backgroundColor: "$greenPress",
-            borderColor: "transparent",
-          },
-        };
-      case "blue":
-        return {
-          backgroundColor: "$blueBase",
-          color: "$blueText",
-          hoverStyle: {
-            backgroundColor: "$blueHover",
-            borderColor: "transparent",
-          },
-          pressStyle: {
-            backgroundColor: "$bluePress",
-            borderColor: "transparent",
-          },
-        };
-      case "red":
-        return {
-          backgroundColor: "$redBase",
-          color: "$redText",
-          hoverStyle: {
-            backgroundColor: "$redHover",
-            borderColor: "transparent",
-          },
-          pressStyle: {
-            backgroundColor: "$redPress",
-            borderColor: "transparent",
-          },
-        };
-      default:
-        return {};
-    }
-  };
-
-  const variantStyles = getVariantStyles();
+  const variantStyles = getVariantStyles(colorVariant);
 
   return (
     <InsetButton disabled={disabled || loading} {...variantStyles} {...props}>

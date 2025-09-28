@@ -235,7 +235,13 @@ export function PasteList({
                     loading={deleteLoading}
                     opacity={0.8}
                     zIndex={1}
-                    icon={<TrashIcon width={20} height={20} color="white" />}
+                    icon={
+                      <TrashIcon
+                        width={20}
+                        height={20}
+                        color="var(--redText)"
+                      />
+                    }
                   ></LoadingButton>
                 </Tooltip.Trigger>
                 <Tooltip.Content

@@ -10,6 +10,7 @@ export interface InsetButtonProps extends ButtonProps, ShadowProps {
   innerRadius?: string | number;
   /** Padding between button edge and card */
   insetPadding?: string | number;
+  insetBorderColor?: string;
   /** Padding inside the card around content */
   cardPadding?: string | number;
 }
@@ -19,6 +20,7 @@ export function InsetButton({
   outerRadius = "12px",
   innerRadius = "8px",
   insetPadding = "$2",
+  insetBorderColor = "var(--borderColor)",
   cardPadding = "$2",
   shadow = true,
   ...buttonProps
@@ -47,7 +49,7 @@ export function InsetButton({
         unstyled
         borderStyle="dashed"
         borderWidth={2}
-        borderColor="$borderColor"
+        borderColor={insetBorderColor}
         borderRadius={innerRadius}
         backgroundColor="transparent"
         width="100%"

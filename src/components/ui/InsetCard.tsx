@@ -5,11 +5,13 @@ import { getShadowStyle, type ShadowProps } from "../../utils/shadowUtils";
 interface InsetCardProps extends CardProps, ShadowProps {
   /** Padding around the card for the inset effect */
   insetPadding?: string;
+  insetBorderColor?: string;
 }
 
 export function InsetCard({
   children,
   insetPadding = "$2",
+  insetBorderColor = "var(--insetCardBorderColor, var(--color4))",
   shadow = true,
   ...cardProps
 }: InsetCardProps) {
@@ -27,7 +29,7 @@ export function InsetCard({
         style={{
           borderStyle: "dashed",
           borderWidth: "var(--insetCardBorderWidth, 2px)",
-          borderColor: "var(--insetCardBorderColor, var(--color4))",
+          borderColor: insetBorderColor,
           borderRadius: "var(--insetCardInnerRadius, 8px)",
           backgroundColor: "transparent",
           margin: insetPadding || "8px",

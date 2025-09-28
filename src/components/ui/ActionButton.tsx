@@ -2,8 +2,10 @@ import { XStack } from "@tamagui/stacks";
 import { Paragraph } from "@tamagui/text";
 import { InsetButton, type InsetButtonProps } from "./InsetButton";
 import type { ReactNode } from "react";
-
-type ColorVariant = "default" | "green" | "yellow";
+import {
+  getVariantStyles,
+  type ColorVariant,
+} from "../../utils/buttonVariants";
 
 interface ActionButtonProps extends InsetButtonProps {
   children: ReactNode;
@@ -16,41 +18,7 @@ export function ActionButton({
   colorVariant = "default",
   ...props
 }: ActionButtonProps) {
-  // Get variant-specific styles
-  const getVariantStyles = () => {
-    switch (colorVariant) {
-      case "green":
-        return {
-          backgroundColor: "$greenBase",
-          color: "$greenText",
-          hoverStyle: {
-            backgroundColor: "$greenHover",
-            borderColor: "transparent",
-          },
-          pressStyle: {
-            backgroundColor: "$greenPress",
-            borderColor: "transparent",
-          },
-        };
-      case "yellow":
-        return {
-          backgroundColor: "$yellowBase",
-          color: "$yellowText",
-          hoverStyle: {
-            backgroundColor: "$yellowHover",
-            borderColor: "transparent",
-          },
-          pressStyle: {
-            backgroundColor: "$yellowPress",
-            borderColor: "transparent",
-          },
-        };
-      default:
-        return {};
-    }
-  };
-
-  const variantStyles = getVariantStyles();
+  const variantStyles = getVariantStyles(colorVariant);
 
   return (
     <InsetButton {...variantStyles} {...props}>

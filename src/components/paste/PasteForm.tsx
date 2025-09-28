@@ -96,10 +96,14 @@ export function PasteForm({
           />
         </YStack>
 
-        <InsetCard backgroundColor="$insetCardPublicBackground" padding="$3">
+        <InsetCard
+          backgroundColor="$insetCardPublicBackground"
+          insetBorderColor="var(--redText)"
+          padding="$3"
+        >
           <XStack alignItems="center" gap="$2">
-            <DocumentTextIcon width={16} height={16} />
-            <Paragraph fontSize="$3">
+            <DocumentTextIcon width={16} height={16} color="var(--redText)" />
+            <Paragraph fontSize="$3" color="$redText">
               Note: All pastes are publicly accessible
             </Paragraph>
           </XStack>
