@@ -41,13 +41,13 @@ export function CreatePasteButton({
     >
       <InsetButton {...buttonProps}>
         <XStack alignItems="center" gap="$2">
-          <Paragraph fontWeight="700" color="rgba(83, 65, 22, 1)">
+          <Paragraph fontWeight="700" color="$accentText">
             Create Paste
           </Paragraph>
           {isNavigatingToHome ? (
             <ArrowPathIcon width={20} height={20} className="animate-spin" />
           ) : (
-            <SparklesIcon width={20} height={20} color="rgba(83, 65, 22, 1)" />
+            <SparklesIcon width={20} height={20} color="$accentText" />
           )}
         </XStack>
       </InsetButton>

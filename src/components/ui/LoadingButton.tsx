@@ -28,7 +28,7 @@ export function LoadingButton({
           icon
         )}
         {children && (
-          <Paragraph>
+          <Paragraph color={props.color || "$color"}>
             {loading ? loadingText || "Loading..." : children}
           </Paragraph>
         )}

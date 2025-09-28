@@ -24,7 +24,7 @@ export function AuthSection({
     return (
       <InsetButton
         onPress={onLoginClick}
-        backgroundColor="rgba(255, 255, 255, 0.1)"
+        backgroundColor="$overlay"
         color="white"
         fontWeight="600"
         size="$4"
@@ -55,7 +55,7 @@ export function AuthSection({
       </Link>
       <InsetButton
         onPress={onLogout}
-        backgroundColor="rgba(255, 255, 255, 0.1)"
+        backgroundColor="$overlay"
         color="white"
         size="$3"
       >

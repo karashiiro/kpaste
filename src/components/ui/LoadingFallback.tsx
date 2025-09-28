@@ -13,7 +13,7 @@ export function LoadingFallback() {
       <ArrowPathIcon
         width={32}
         height={32}
-        color="#999"
+        color="$textMuted"
         className="animate-spin"
       />
     </YStack>

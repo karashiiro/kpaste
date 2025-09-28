@@ -45,9 +45,9 @@ export function PasteForm({
     <SparklesIcon width={20} height={20} />
   );
   const submitIcon = isEdit ? (
-    <CheckIcon width={20} height={20} />
+    <CheckIcon width={20} height={20} color="var(--greenText)" />
   ) : (
-    <SparklesIcon width={20} height={20} />
+    <SparklesIcon width={20} height={20} color="var(--greenText)" />
   );
 
   return (
@@ -96,7 +96,7 @@ export function PasteForm({
           />
         </YStack>
 
-        <InsetCard theme="blue" padding="$3">
+        <InsetCard backgroundColor="$insetCardPublicBackground" padding="$3">
           <XStack alignItems="center" gap="$2">
             <DocumentTextIcon width={16} height={16} />
             <Paragraph fontSize="$3">
@@ -113,7 +113,8 @@ export function PasteForm({
               loading={loading}
               loadingText={loadingText}
               icon={submitIcon}
-              theme="green"
+              backgroundColor="$greenBase"
+              color="$greenText"
               size="$4"
               flex={1}
             >
@@ -135,7 +136,8 @@ export function PasteForm({
             loading={loading}
             loadingText={loadingText}
             icon={submitIcon}
-            theme="green"
+            backgroundColor="$greenBase"
+            color="$greenText"
             size="$4"
             marginTop="$2"
           >

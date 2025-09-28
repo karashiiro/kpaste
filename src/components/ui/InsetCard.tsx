@@ -16,8 +16,8 @@ export function InsetCard({
   return (
     <Card
       padding={insetPadding}
-      borderRadius="12px"
-      backgroundColor="$background"
+      borderRadius="$insetCardBorderRadius"
+      backgroundColor="$insetCardBackground"
       style={{
         ...getShadowStyle(shadow),
       }}
@@ -26,9 +26,9 @@ export function InsetCard({
       <div
         style={{
           borderStyle: "dashed",
-          borderWidth: "2px",
-          borderColor: "var(--borderColor)",
-          borderRadius: "8px",
+          borderWidth: "var(--insetCardBorderWidth, 2px)",
+          borderColor: "var(--insetCardBorderColor, var(--color4))",
+          borderRadius: "var(--insetCardInnerRadius, 8px)",
           backgroundColor: "transparent",
           margin: insetPadding || "8px",
           boxSizing: "border-box",

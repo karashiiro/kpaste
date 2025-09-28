@@ -27,7 +27,7 @@ export function RootLayout({ onLoginClick, children }: RootLayoutProps) {
           left={0}
           right={0}
           zIndex={999}
-          backgroundColor="rgba(165, 132, 49, 0.8)"
+          backgroundColor="$accentOverlay"
           paddingVertical="$2"
           paddingHorizontal="$4"
         >
