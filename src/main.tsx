@@ -56,13 +56,33 @@ const tamaguiConfig = createTamagui({
 
       // Golden/accent colors
       accent: "#a58431", // rgba(165, 132, 49, 1)
-      accentOverlay: "rgba(165, 132, 49, 0.8)", // transparent accent for loading overlay
+      accentOverlay: "rgba(255, 219, 182, .8)", // transparent accent for loading overlay
       accentText: "#534116", // rgba(83, 65, 22, 1)
 
       // Green colors
       greenBase: "#A3DC9A", // soft mint green base color
+      greenHover: "#8FD084", // slightly darker mint green for hover
+      greenPress: "#7AC46F", // darker mint green for press
       greenText: "#4A7C59", // darker green for text on green backgrounds
       greenOverlay: "rgba(163, 220, 154, 0.8)", // transparent green overlay
+
+      // Blue colors
+      blueBase: "#7BB3F0", // soft sky blue base color
+      blueHover: "#5A9BE8", // slightly darker blue for hover
+      bluePress: "#4285E0", // darker blue for press
+      blueText: "#2C5282", // darker blue for text on blue backgrounds
+
+      // Yellow colors (for create button)
+      yellowBase: "#F4D03F", // bright sunny yellow base - much more vibrant!
+      yellowHover: "#F1C40F", // golden yellow for hover
+      yellowPress: "#D4AC0D", // deeper gold for press
+      yellowText: "#7D6608", // dark golden text for readability
+
+      // Red colors (for delete button)
+      redBase: "#E74C3C", // bright red base - clear danger signal
+      redHover: "#C0392B", // darker red for hover
+      redPress: "#A93226", // deep red for press
+      redText: "#FFFFFF", // white text on red background
 
       // Soft accent colors
       accentSoft: "#FFDBB6", // warm peachy-cream for soft accents

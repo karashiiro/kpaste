@@ -40,10 +40,10 @@ export function RootLayout({ onLoginClick, children }: RootLayoutProps) {
             <ArrowPathIcon
               width={16}
               height={16}
-              color="white"
+              color="var(--accentText)"
               className="animate-spin"
             />
-            <Paragraph color="white" fontSize="$3" fontWeight="500">
+            <Paragraph color="$accentText" fontSize="$3" fontWeight="500">
               Loading...
             </Paragraph>
           </View>

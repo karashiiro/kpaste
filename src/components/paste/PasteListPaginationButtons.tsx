@@ -1,6 +1,6 @@
 import { useLoaderData, useSearchParams } from "react-router";
 import { XStack } from "@tamagui/stacks";
-import { InsetButton } from "../ui/InsetButton";
+import { PaginationButton } from "../ui/PaginationButton";
 import type { PasteListLoaderData } from "../../loaders/pasteListLoader";
 
 export function PasteListPaginationButtons() {
@@ -22,18 +22,18 @@ export function PasteListPaginationButtons() {
 
   return (
     <XStack gap="$3" justifyContent="center" alignItems="center">
-      <InsetButton onPress={handlePrevPage} size="$4" theme="blue">
+      <PaginationButton onPress={handlePrevPage} size="$4" colorVariant="blue">
         Previous
-      </InsetButton>
+      </PaginationButton>
 
-      <InsetButton
+      <PaginationButton
         onPress={handleNextPage}
         disabled={pastes.length < 20}
         size="$4"
-        theme="blue"
+        colorVariant="blue"
       >
         Next
-      </InsetButton>
+      </PaginationButton>
     </XStack>
   );
 }

@@ -1,6 +1,4 @@
-import { XStack } from "@tamagui/stacks";
-import { Paragraph } from "@tamagui/text";
-import { InsetButton } from "./InsetButton";
+import { ActionButton } from "./ActionButton";
 import { Link, useNavigation } from "react-router";
 import { SparklesIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
 
@@ -14,23 +12,6 @@ export function CreatePasteButton({
   const navigation = useNavigation();
   const isNavigatingToHome = navigation.location?.pathname === "/";
 
-  const buttonProps = {
-    backgroundColor: "$yellow9" as const,
-    size: "$3" as const,
-    fontWeight: "700" as const,
-    hoverStyle: {
-      backgroundColor: "$yellow10",
-      outlineWidth: 0,
-      borderColor: "transparent",
-    },
-    pressStyle: {
-      backgroundColor: "$yellow8",
-      outlineWidth: 0,
-      borderColor: "transparent",
-    },
-    ...(fullWidth && { width: "100%" }),
-  };
-
   return (
     <Link
       to="/"
@@ -39,18 +20,21 @@ export function CreatePasteButton({
         ...(fullWidth && { width: "100%" }),
       }}
     >
-      <InsetButton {...buttonProps}>
-        <XStack alignItems="center" gap="$2">
-          <Paragraph fontWeight="700" color="$accentText">
-            Create Paste
-          </Paragraph>
-          {isNavigatingToHome ? (
+      <ActionButton
+        colorVariant="yellow"
+        size="$3"
+        fontWeight="700"
+        {...(fullWidth && { width: "100%" })}
+        icon={
+          isNavigatingToHome ? (
             <ArrowPathIcon width={20} height={20} className="animate-spin" />
           ) : (
-            <SparklesIcon width={20} height={20} color="$accentText" />
-          )}
-        </XStack>
-      </InsetButton>
+            <SparklesIcon width={20} height={20} color="var(--yellowText)" />
+          )
+        }
+      >
+        Create Paste
+      </ActionButton>
     </Link>
   );
 }

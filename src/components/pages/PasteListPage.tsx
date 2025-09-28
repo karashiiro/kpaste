@@ -53,11 +53,15 @@ export function PasteListPage() {
                     style={{ textDecoration: "none", flex: 1, minWidth: 120 }}
                   >
                     <ActionButton
-                      theme="green"
+                      colorVariant="green"
                       size="$4"
                       width="100%"
                       icon={
-                        <SparklesIcon width={20} height={20} color="white" />
+                        <SparklesIcon
+                          width={20}
+                          height={20}
+                          color="var(--greenText)"
+                        />
                       }
                     >
                       Create New Paste
@@ -65,10 +69,16 @@ export function PasteListPage() {
                   </Link>
                 ) : (
                   <ActionButton
-                    theme="green"
+                    colorVariant="green"
                     size="$4"
                     width="100%"
-                    icon={<SparklesIcon width={20} height={20} color="white" />}
+                    icon={
+                      <SparklesIcon
+                        width={20}
+                        height={20}
+                        color="var(--greenText)"
+                      />
+                    }
                     onPress={openAuthModal}
                   >
                     Login to Create Paste

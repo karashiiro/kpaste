@@ -1,24 +1,34 @@
-import { XStack } from "@tamagui/stacks";
-import { Paragraph } from "@tamagui/text";
 import { InsetButton, type InsetButtonProps } from "./InsetButton";
 import type { ReactNode } from "react";
 
-type ColorVariant = "default" | "green" | "yellow";
+type ColorVariant = "default" | "blue" | "green";
 
-interface ActionButtonProps extends InsetButtonProps {
+interface PaginationButtonProps extends InsetButtonProps {
   children: ReactNode;
   colorVariant?: ColorVariant;
 }
 
-export function ActionButton({
-  icon,
+export function PaginationButton({
   children,
   colorVariant = "default",
   ...props
-}: ActionButtonProps) {
+}: PaginationButtonProps) {
   // Get variant-specific styles
   const getVariantStyles = () => {
     switch (colorVariant) {
+      case "blue":
+        return {
+          backgroundColor: "$blueBase",
+          color: "$blueText",
+          hoverStyle: {
+            backgroundColor: "$blueHover",
+            borderColor: "transparent",
+          },
+          pressStyle: {
+            backgroundColor: "$bluePress",
+            borderColor: "transparent",
+          },
+        };
       case "green":
         return {
           backgroundColor: "$greenBase",
@@ -32,19 +42,6 @@ export function ActionButton({
             borderColor: "transparent",
           },
         };
-      case "yellow":
-        return {
-          backgroundColor: "$yellowBase",
-          color: "$yellowText",
-          hoverStyle: {
-            backgroundColor: "$yellowHover",
-            borderColor: "transparent",
-          },
-          pressStyle: {
-            backgroundColor: "$yellowPress",
-            borderColor: "transparent",
-          },
-        };
       default:
         return {};
     }
@@ -54,12 +51,7 @@ export function ActionButton({
 
   return (
     <InsetButton {...variantStyles} {...props}>
-      <XStack alignItems="center" gap="$2">
-        {icon}
-        <Paragraph color={variantStyles.color || props.color || "$color"}>
-          {children}
-        </Paragraph>
-      </XStack>
+      {children}
     </InsetButton>
   );
 }

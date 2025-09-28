@@ -64,8 +64,14 @@ export function PasteView() {
                 <LoadingButton
                   onPress={startEdit}
                   size="$3"
-                  theme="blue"
-                  icon={<PencilIcon width={16} height={16} color="white" />}
+                  colorVariant="blue"
+                  icon={
+                    <PencilIcon
+                      width={16}
+                      height={16}
+                      color="var(--blueText)"
+                    />
+                  }
                 >
                   Edit
                 </LoadingButton>
@@ -75,8 +81,10 @@ export function PasteView() {
                   loading={deleteLoading}
                   loadingText="Deleting..."
                   size="$3"
-                  theme="red"
-                  icon={<TrashIcon width={16} height={16} color="white" />}
+                  colorVariant="red"
+                  icon={
+                    <TrashIcon width={16} height={16} color="var(--redText)" />
+                  }
                 >
                   Delete
                 </LoadingButton>

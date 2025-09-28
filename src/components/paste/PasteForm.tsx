@@ -113,8 +113,7 @@ export function PasteForm({
               loading={loading}
               loadingText={loadingText}
               icon={submitIcon}
-              backgroundColor="$greenBase"
-              color="$greenText"
+              colorVariant="green"
               size="$4"
               flex={1}
             >
@@ -136,8 +135,7 @@ export function PasteForm({
             loading={loading}
             loadingText={loadingText}
             icon={submitIcon}
-            backgroundColor="$greenBase"
-            color="$greenText"
+            colorVariant="green"
             size="$4"
             marginTop="$2"
           >

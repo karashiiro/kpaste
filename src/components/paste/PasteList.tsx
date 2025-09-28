@@ -222,7 +222,7 @@ export function PasteList({
                     right="$3"
                     size="$3"
                     circular
-                    theme="red"
+                    colorVariant="red"
                     outerRadius="50%"
                     innerRadius="50%"
                     paddingHorizontal="3px"
