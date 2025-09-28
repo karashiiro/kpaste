@@ -19,6 +19,11 @@ export function PasteListPage() {
   // Check if viewing current user's own pastes
   const isViewingOwnPastes = isAuthenticated && session?.handle === userHandle;
 
+  if (!userHandle) {
+    // Will never happen as this would have thrown in pasteListLoader
+    return <></>;
+  }
+
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
       <PageContainer flex={1}>
@@ -92,7 +97,7 @@ export function PasteListPage() {
 
           <PasteList
             pastes={pastes}
-            userHandle={session?.handle}
+            userHandle={userHandle}
             currentUserSession={session}
           />
 

@@ -26,7 +26,7 @@ import { ActionButton } from "../ui/ActionButton";
 
 interface PasteListProps {
   pastes: PasteListItem[];
-  userHandle?: string;
+  userHandle: string;
   currentUserSession?: { handle: string; did: string } | null;
 }
 
@@ -91,13 +91,13 @@ export function PasteList({
           position="relative"
           insetPadding="8px"
         >
-          {userHandle ? (
-            (() => {
-              // Extract rkey from URI for view link
-              const uriParts = parseAtUri(paste.uri);
-              const rkey = uriParts?.rkey || paste.uri.split("/").pop();
+          {(() => {
+            // Extract rkey from URI for view link
+            const uriParts = parseAtUri(paste.uri);
+            const rkey = uriParts?.rkey || paste.uri.split("/").pop();
 
-              return (
+            return (
+              <XStack>
                 <Link
                   to={`/p/${userHandle}/${rkey}`}
                   style={{ textDecoration: "none" }}
@@ -107,22 +107,24 @@ export function PasteList({
                     gap="$2"
                     pressStyle={{ opacity: 0.7 }}
                   >
-                    <DocumentTextIcon width={24} height={24} color="white" />
-                    <Paragraph fontSize="$7" fontWeight="600" color="$blue10">
+                    <DocumentTextIcon
+                      width={24}
+                      height={24}
+                      color="var(--textTitle)"
+                      style={{ marginLeft: -4 }}
+                    />
+                    <Paragraph
+                      fontSize="$7"
+                      fontWeight="600"
+                      color="$textTitle"
+                    >
                       {paste.value.title || "Untitled Paste"}
                     </Paragraph>
                   </XStack>
                 </Link>
-              );
-            })()
-          ) : (
-            <XStack alignItems="center" gap="$2">
-              <DocumentTextIcon width={24} height={24} color="white" />
-              <Paragraph fontSize="$7" fontWeight="600" color="$color">
-                {paste.value.title || "Untitled Paste"}
-              </Paragraph>
-            </XStack>
-          )}
+              </XStack>
+            );
+          })()}
 
           <YStack gap="$3">
             <XStack

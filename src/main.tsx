@@ -51,7 +51,7 @@ const tamaguiConfig = createTamagui({
       backgroundSuperDark: "#0a0a0a",
 
       // Primary colors (header/accent)
-      primary: "#5D688A",
+      primary: "#364163ff",
 
       // Golden/accent colors
       accent: "#a58431", // rgba(165, 132, 49, 1)
@@ -89,19 +89,17 @@ const tamaguiConfig = createTamagui({
       shadow: "rgba(0, 0, 0, 0.25)",
 
       // Text colors
+      textTitle: "rgba(236, 241, 255, 1)",
       textMuted: "#999999",
 
       // InsetCard styling
-      insetCardBackground: "#5D688A", // background for the outer card
+      insetCardBackground: "rgba(107, 120, 158, 1)", // background for the outer card
       insetCardPublicBackground: "#F7A5A5", // cute peachy-pink for public cards
-      insetCardBorderColor: "$color4", // dashed border color
+      insetCardBorderColor: "rgba(61, 71, 102, 1)", // dashed border color
       insetCardBorderRadius: "12px", // outer border radius
       insetCardInnerRadius: "8px", // inner border radius
       insetCardBorderWidth: "2px", // border thickness
       insetCardPadding: "$2", // default inset padding
-
-      // Legacy mappings for tamagui compatibility
-      color1: "#2b2b2b",
     },
   },
 });
