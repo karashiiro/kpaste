@@ -1,7 +1,7 @@
 import { YStack } from "@tamagui/stacks";
 import { View } from "@tamagui/core";
 import { Paragraph } from "@tamagui/text";
-import { Button } from "@tamagui/button";
+import { InsetButton } from "../ui/InsetButton";
 
 export interface AuthRequiredViewProps {
   title: string;
@@ -25,9 +25,14 @@ export function AuthRequiredView({
         <Paragraph fontSize="$5" textAlign="center">
           {subtitle}
         </Paragraph>
-        <Button onPress={onLoginClick} theme="green" size="$5" marginTop="$2">
+        <InsetButton
+          onPress={onLoginClick}
+          theme="green"
+          size="$5"
+          marginTop="$2"
+        >
           {buttonText}
-        </Button>
+        </InsetButton>
       </YStack>
     </View>
   );

@@ -1,20 +1,19 @@
 import { XStack } from "@tamagui/stacks";
 import { Paragraph } from "@tamagui/text";
-import { Button, type ButtonProps } from "@tamagui/button";
+import { InsetButton, type InsetButtonProps } from "./InsetButton";
 import type { ReactNode } from "react";
 
-interface ActionButtonProps extends Omit<ButtonProps, "icon"> {
-  icon: ReactNode;
+interface ActionButtonProps extends InsetButtonProps {
   children: ReactNode;
 }
 
 export function ActionButton({ icon, children, ...props }: ActionButtonProps) {
   return (
-    <Button {...props}>
+    <InsetButton {...props}>
       <XStack alignItems="center" gap="$2">
         {icon}
         <Paragraph>{children}</Paragraph>
       </XStack>
-    </Button>
+    </InsetButton>
   );
 }

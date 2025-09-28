@@ -3,10 +3,10 @@ import { useAuth } from "../../hooks/useAuth";
 import { Sheet } from "@tamagui/sheet";
 import { XStack, YStack } from "@tamagui/stacks";
 import { Paragraph, H2 } from "@tamagui/text";
-import { Button } from "@tamagui/button";
 import { Input } from "@tamagui/input";
 import { Label } from "@tamagui/label";
 import { InsetCard } from "../ui/InsetCard";
+import { InsetButton } from "../ui/InsetButton";
 import {
   XMarkIcon,
   RocketLaunchIcon,
@@ -109,7 +109,7 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
               )}
 
               <XStack gap="$3" width="100%">
-                <Button
+                <InsetButton
                   onPress={onClose}
                   disabled={isAuthenticating}
                   size="$4"
@@ -120,9 +120,9 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
                     <XMarkIcon width={20} height={20} color="white" />
                     <Paragraph>Cancel</Paragraph>
                   </XStack>
-                </Button>
+                </InsetButton>
 
-                <Button
+                <InsetButton
                   onPress={handleLogin}
                   disabled={isLoading || !handle.trim() || isAuthenticating}
                   backgroundColor="$blue9"
@@ -130,6 +130,7 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
                   size="$4"
                   fontWeight="600"
                   flex={1}
+                  theme="blue"
                 >
                   <XStack alignItems="center" gap="$2">
                     {isAuthenticating ? (
@@ -148,7 +149,7 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
                         : "Continue with OAuth"}
                     </Paragraph>
                   </XStack>
-                </Button>
+                </InsetButton>
               </XStack>
             </YStack>
           </YStack>

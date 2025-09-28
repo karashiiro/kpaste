@@ -1,5 +1,5 @@
 import { YStack } from "@tamagui/stacks";
-import { Button } from "@tamagui/button";
+import { InsetButton } from "../ui/InsetButton";
 import { Paragraph, H1 } from "@tamagui/text";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { PageContainer } from "../layout/PageContainer";
@@ -15,7 +15,7 @@ export function ErrorPage() {
           <Paragraph fontSize="$5" textAlign="center" opacity={0.8}>
             The paste you're looking for doesn't exist or couldn't be loaded.
           </Paragraph>
-          <Button
+          <InsetButton
             onPress={() => (window.location.href = "/")}
             theme="blue"
             size="$5"
@@ -23,7 +23,7 @@ export function ErrorPage() {
             icon={<HomeIcon width={20} height={20} />}
           >
             Back to KPaste
-          </Button>
+          </InsetButton>
         </YStack>
       </PageContainer>
     </YStack>

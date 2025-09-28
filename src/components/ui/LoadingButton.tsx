@@ -1,10 +1,10 @@
 import { XStack } from "@tamagui/stacks";
-import { Button, type ButtonProps } from "@tamagui/button";
 import { Paragraph } from "@tamagui/text";
+import { InsetButton, type InsetButtonProps } from "./InsetButton";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import type { ReactNode } from "react";
 
-interface LoadingButtonProps extends Omit<ButtonProps, "icon"> {
+interface LoadingButtonProps extends Omit<InsetButtonProps, "icon"> {
   loading?: boolean;
   loadingText?: string;
   icon?: ReactNode;
@@ -20,7 +20,7 @@ export function LoadingButton({
   ...props
 }: LoadingButtonProps) {
   return (
-    <Button disabled={disabled || loading} {...props}>
+    <InsetButton disabled={disabled || loading} {...props}>
       <XStack alignItems="center" gap="$2">
         {loading ? (
           <ArrowPathIcon width={20} height={20} className="animate-spin" />
@@ -33,6 +33,6 @@ export function LoadingButton({
           </Paragraph>
         )}
       </XStack>
-    </Button>
+    </InsetButton>
   );
 }

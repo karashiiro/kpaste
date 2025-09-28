@@ -222,24 +222,20 @@ export function PasteList({
                     right="$3"
                     size="$3"
                     circular
-                    backgroundColor="$red2"
-                    borderColor="$red6"
-                    borderWidth={1}
-                    hoverStyle={{
-                      backgroundColor: "$red4",
-                      borderColor: "$red8",
-                      scale: 1.05,
-                    }}
-                    pressStyle={{
-                      backgroundColor: "$red5",
-                      borderColor: "$red9",
-                      scale: 0.95,
-                    }}
+                    theme="red"
+                    outerRadius="50%"
+                    innerRadius="50%"
+                    paddingHorizontal="3px"
+                    paddingVertical="3px"
+                    flex={0}
+                    flexShrink={0}
+                    flexGrow={0}
+                    cardPadding={0}
                     onPress={() => deletePaste(paste.uri)}
                     loading={deleteLoading}
                     opacity={0.8}
                     zIndex={1}
-                    icon={<TrashIcon width={16} height={16} color="white" />}
+                    icon={<TrashIcon width={20} height={20} color="white" />}
                   ></LoadingButton>
                 </Tooltip.Trigger>
                 <Tooltip.Content

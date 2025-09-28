@@ -1,7 +1,8 @@
 import { Card } from "@tamagui/card";
 import type { CardProps } from "@tamagui/card";
+import { getShadowStyle, type ShadowProps } from "../../utils/shadowUtils";
 
-interface InsetCardProps extends CardProps {
+interface InsetCardProps extends CardProps, ShadowProps {
   /** Padding around the card for the inset effect */
   insetPadding?: string;
   /** Theme for the card and background matching */
@@ -12,6 +13,7 @@ export function InsetCard({
   children,
   insetPadding = "8px",
   theme,
+  shadow = true,
   ...cardProps
 }: InsetCardProps) {
   // Map theme to CSS variable for background color
@@ -34,6 +36,7 @@ export function InsetCard({
         padding: insetPadding,
         backgroundColor: getBackgroundColor(),
         borderRadius: "12px",
+        ...getShadowStyle(shadow),
       }}
     >
       <Card

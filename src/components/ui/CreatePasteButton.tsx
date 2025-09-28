@@ -1,6 +1,6 @@
 import { XStack } from "@tamagui/stacks";
-import { Button } from "@tamagui/button";
 import { Paragraph } from "@tamagui/text";
+import { InsetButton } from "./InsetButton";
 import { Link, useNavigation } from "react-router";
 import { SparklesIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
 
@@ -16,16 +16,17 @@ export function CreatePasteButton({
 
   const buttonProps = {
     backgroundColor: "$yellow9" as const,
-    borderColor: "rgba(165, 132, 49, 1)",
-    borderWidth: 1,
     size: "$3" as const,
-    borderRadius: "$10" as const,
     fontWeight: "700" as const,
     hoverStyle: {
       backgroundColor: "$yellow10",
+      outlineWidth: 0,
+      borderColor: "transparent",
     },
     pressStyle: {
       backgroundColor: "$yellow8",
+      outlineWidth: 0,
+      borderColor: "transparent",
     },
     ...(fullWidth && { width: "100%" }),
   };
@@ -38,7 +39,7 @@ export function CreatePasteButton({
         ...(fullWidth && { width: "100%" }),
       }}
     >
-      <Button {...buttonProps}>
+      <InsetButton {...buttonProps}>
         <XStack alignItems="center" gap="$2">
           <Paragraph fontWeight="700" color="rgba(83, 65, 22, 1)">
             Create Paste
@@ -49,7 +50,7 @@ export function CreatePasteButton({
             <SparklesIcon width={20} height={20} color="rgba(83, 65, 22, 1)" />
           )}
         </XStack>
-      </Button>
+      </InsetButton>
     </Link>
   );
 }

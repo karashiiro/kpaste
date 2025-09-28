@@ -2,7 +2,6 @@ import { useLoaderData } from "react-router";
 import { useMemo } from "react";
 import { YStack, XStack } from "@tamagui/stacks";
 import { Paragraph } from "@tamagui/text";
-import { InsetCard } from "../ui/InsetCard";
 import {
   DocumentTextIcon,
   PencilIcon,
@@ -18,6 +17,7 @@ import { useDeletePaste } from "../../hooks/useDeletePaste";
 import { PageContainer } from "../layout/PageContainer";
 import { PasteMetadata } from "../paste/PasteMetadata";
 import { LoadingButton } from "../ui/LoadingButton";
+import { Card } from "@tamagui/card";
 
 export function PasteView() {
   const paste = useLoaderData() as PasteLoaderData;
@@ -92,7 +92,7 @@ export function PasteView() {
           />
         </YStack>
 
-        <InsetCard padding="$0" insetPadding="12px">
+        <Card padding={0} bordered>
           <pre
             style={{
               fontFamily: '"Inconsolata", monospace',
@@ -109,7 +109,7 @@ export function PasteView() {
               ),
             }}
           />
-        </InsetCard>
+        </Card>
       </PageContainer>
 
       {/* Edit Modal */}
