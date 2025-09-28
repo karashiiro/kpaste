@@ -5,14 +5,11 @@ import { getShadowStyle, type ShadowProps } from "../../utils/shadowUtils";
 interface InsetCardProps extends CardProps, ShadowProps {
   /** Padding around the card for the inset effect */
   insetPadding?: string;
-  /** Theme for the card and background matching */
-  theme?: "red" | "blue" | "green" | undefined;
 }
 
 export function InsetCard({
   children,
   insetPadding = "$2",
-  theme,
   shadow = true,
   ...cardProps
 }: InsetCardProps) {
@@ -20,7 +17,6 @@ export function InsetCard({
     <Card
       padding={insetPadding}
       borderRadius="12px"
-      theme={theme}
       backgroundColor="$background"
       style={{
         ...getShadowStyle(shadow),
