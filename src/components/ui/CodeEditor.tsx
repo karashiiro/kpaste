@@ -1,9 +1,9 @@
 import { useCallback } from "react";
 import Editor from "react-simple-code-editor";
 import { useTheme } from "@tamagui/core";
-import { InsetCard } from "./InsetCard";
 import { safeHighlight } from "../../prismUtils";
 import "prismjs/themes/prism-tomorrow.css";
+import { Card } from "@tamagui/card";
 
 export interface CodeEditorProps {
   value: string;
@@ -29,26 +29,24 @@ export function CodeEditor({
     [language],
   );
 
-  const editorStyle = {
-    fontFamily: '"Inconsolata", monospace',
-    fontSize: 14,
-    lineHeight: 1.4,
-    minHeight,
-    backgroundColor: theme.background?.get(),
-    color: theme.color?.get(),
-    ...style,
-  };
-
   return (
-    <InsetCard padding="$0">
+    <Card padding={2} bordered>
       <Editor
         value={value}
         onValueChange={onChange}
         highlight={highlightCode}
         padding={12}
         placeholder={placeholder}
-        style={editorStyle}
+        style={{
+          fontFamily: '"Inconsolata", monospace',
+          fontSize: 14,
+          lineHeight: 1.4,
+          minHeight,
+          backgroundColor: theme.background?.get(),
+          color: theme.color?.get(),
+          ...style,
+        }}
       />
-    </InsetCard>
+    </Card>
   );
 }

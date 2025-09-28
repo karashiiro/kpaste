@@ -21,6 +21,7 @@ import { EditModal } from "./EditModal";
 import { safeHighlight } from "../../prismUtils";
 import { parseAtUri } from "../../pdsUtils";
 import { LoadingButton } from "../ui/LoadingButton";
+import { Card } from "@tamagui/card";
 
 interface PasteListProps {
   pastes: PasteListItem[];
@@ -171,7 +172,7 @@ export function PasteList({
               Content:
             </Paragraph>
             {paste.content ? (
-              <InsetCard padding="$3" borderRadius="$4">
+              <Card padding="$3" bordered>
                 <ScrollView maxHeight={200}>
                   <pre
                     style={{
@@ -190,7 +191,7 @@ export function PasteList({
                     }}
                   />
                 </ScrollView>
-              </InsetCard>
+              </Card>
             ) : paste.contentLoading ? (
               <XStack alignItems="center" gap="$2">
                 <ArrowPathIcon
