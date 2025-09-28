@@ -4,6 +4,7 @@ import {
   getVariantStyles,
   type ColorVariant,
 } from "../../utils/buttonVariants";
+import { Paragraph } from "@tamagui/text";
 
 interface PaginationButtonProps extends InsetButtonProps {
   children: ReactNode;
@@ -19,7 +20,11 @@ export function PaginationButton({
 
   return (
     <InsetButton {...variantStyles} {...props}>
-      {children}
+      {children && (
+        <Paragraph color={variantStyles.color || props.color || "$color"}>
+          {children}
+        </Paragraph>
+      )}
     </InsetButton>
   );
 }
