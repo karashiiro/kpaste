@@ -8,10 +8,8 @@ export interface InsetButtonProps extends ButtonProps, ShadowProps {
   outerRadius?: string | number;
   /** Border radius for the inner card */
   innerRadius?: string | number;
-  /** Horizontal padding between button edge and card */
-  paddingHorizontal?: string | number;
-  /** Vertical padding between button edge and card */
-  paddingVertical?: string | number;
+  /** Padding between button edge and card */
+  insetPadding?: string | number;
   /** Padding inside the card around content */
   cardPadding?: string | number;
 }
@@ -20,18 +18,16 @@ export function InsetButton({
   children,
   outerRadius = "12px",
   innerRadius = "8px",
-  paddingHorizontal = "6px",
-  paddingVertical = "6px",
+  insetPadding = "$2",
   cardPadding = "$2",
   shadow = true,
   ...buttonProps
 }: InsetButtonProps) {
   return (
     <Button
-      paddingHorizontal={paddingHorizontal}
-      paddingVertical={paddingVertical}
+      padding={insetPadding}
       borderRadius={outerRadius}
-      minHeight="auto"
+      height={50}
       style={buttonProps.style || getShadowStyle(shadow)}
       focusStyle={{
         outlineWidth: 0,
