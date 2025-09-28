@@ -1,7 +1,6 @@
 import { YStack, XStack } from "@tamagui/stacks";
 import { ScrollView } from "@tamagui/scroll-view";
 import { InsetCard } from "../ui/InsetCard";
-import { Tooltip } from "@tamagui/tooltip";
 import { Paragraph } from "@tamagui/text";
 import { Link } from "react-router";
 import {
@@ -20,9 +19,8 @@ import { useUpdatePaste } from "../../hooks/useUpdatePaste";
 import { EditModal } from "./EditModal";
 import { safeHighlight } from "../../utils/prismUtils";
 import { parseAtUri } from "../../utils/pdsUtils";
-import { LoadingButton } from "../ui/LoadingButton";
 import { Card } from "@tamagui/card";
-import { ActionButton } from "../ui/ActionButton";
+import { InsetCircleButton } from "../ui/CircleInsetButton";
 
 interface PasteListProps {
   pastes: PasteListItem[];
@@ -216,68 +214,31 @@ export function PasteList({
           {/* Only show edit/delete buttons if current user owns this paste */}
           {currentUserSession && userHandle === currentUserSession.handle && (
             <>
-              {/* Delete button - subtle circle in corner */}
-              <Tooltip>
-                <Tooltip.Trigger asChild>
-                  <LoadingButton
-                    position="absolute"
-                    top="$3"
-                    right="$3"
-                    size="$3"
-                    circular
-                    colorVariant="red"
-                    outerRadius="50%"
-                    innerRadius="50%"
-                    paddingHorizontal="3px"
-                    paddingVertical="3px"
-                    flex={0}
-                    flexShrink={0}
-                    flexGrow={0}
-                    cardPadding={0}
-                    onPress={() => deletePaste(paste.uri)}
-                    loading={deleteLoading}
-                    opacity={0.8}
-                    zIndex={1}
-                    icon={
-                      <TrashIcon
-                        width={20}
-                        height={20}
-                        color="var(--redText)"
-                      />
-                    }
-                  ></LoadingButton>
-                </Tooltip.Trigger>
-                <Tooltip.Content
-                  enterStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
-                  exitStyle={{ x: 0, y: -5, opacity: 0, scale: 0.9 }}
-                  scale={1}
-                  x={0}
-                  y={0}
-                  opacity={1}
-                  animation={[
-                    "quick",
-                    {
-                      opacity: {
-                        overshootClamping: true,
-                      },
-                    },
-                  ]}
-                >
-                  <Tooltip.Arrow />
-                  <Paragraph>Delete this paste</Paragraph>
-                </Tooltip.Content>
-              </Tooltip>
+              {/* Delete button */}
+              <InsetCircleButton
+                position="absolute"
+                top="$3"
+                right="$3"
+                zIndex={1}
+                colorVariant="red"
+                onPress={() => deletePaste(paste.uri)}
+                loading={deleteLoading}
+                icon={
+                  <TrashIcon width={20} height={20} color="var(--redText)" />
+                }
+                tooltipText="Delete this paste"
+              />
 
               {/* Edit button */}
-              <ActionButton
+              <InsetCircleButton
+                position="absolute"
+                top="$3"
+                right="$11"
+                zIndex={1}
                 onPress={() => startEdit(paste)}
-                size="$4"
-                marginTop="$4"
-                width="100%"
                 icon={<PencilIcon width={20} height={20} color="white" />}
-              >
-                Edit
-              </ActionButton>
+                tooltipText="Edit this paste"
+              />
             </>
           )}
 

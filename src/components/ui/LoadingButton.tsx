@@ -8,7 +8,7 @@ import {
   type ColorVariant,
 } from "../../utils/buttonVariants";
 
-interface LoadingButtonProps extends Omit<InsetButtonProps, "icon"> {
+export interface LoadingButtonProps extends Omit<InsetButtonProps, "icon"> {
   loading?: boolean;
   loadingText?: string;
   icon?: ReactNode;
