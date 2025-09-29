@@ -20,25 +20,32 @@ export function PasteListPaginationButtons() {
     setSearchParams({ prev: "", cursor: prevCursor || "" });
   };
 
+  const prevDisabled = !prevCursor;
+  const nextDisabled = pastes.length < 20;
+
   return (
     <XStack gap="$3" justifyContent="center" alignItems="center">
-      <PaginationButton
-        onPress={handlePrevPage}
-        disabled={!prevCursor}
-        size="$4"
-        colorVariant="blue"
-      >
-        Previous
-      </PaginationButton>
+      {!prevDisabled && (
+        <PaginationButton
+          onPress={handlePrevPage}
+          disabled={prevDisabled}
+          size="$4"
+          colorVariant="blue"
+        >
+          Previous
+        </PaginationButton>
+      )}
 
-      <PaginationButton
-        onPress={handleNextPage}
-        disabled={pastes.length < 20}
-        size="$4"
-        colorVariant="blue"
-      >
-        Next
-      </PaginationButton>
+      {!nextDisabled && (
+        <PaginationButton
+          onPress={handleNextPage}
+          disabled={nextDisabled}
+          size="$4"
+          colorVariant="blue"
+        >
+          Next
+        </PaginationButton>
+      )}
     </XStack>
   );
 }
