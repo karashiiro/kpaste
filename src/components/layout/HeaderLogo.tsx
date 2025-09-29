@@ -18,7 +18,7 @@ export function HeaderLogo() {
   }, []);
 
   return (
-    <Link to="/">
+    <Link to="/" aria-label="Go to home page">
       <Image
         source={{
           width: 125,
