@@ -4,6 +4,7 @@ import { YStack } from "@tamagui/stacks";
 import { Paragraph } from "@tamagui/text";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { Header } from "./Header";
+import { Footer } from "./Footer";
 import type { ReactNode } from "react";
 import { Card } from "@tamagui/card";
 import { getShadowStyle } from "../../utils/shadowUtils";
@@ -66,6 +67,8 @@ export function RootLayout({ onLoginClick, children }: RootLayoutProps) {
       <View flex={1} position="relative">
         {children}
       </View>
+
+      <Footer />
     </YStack>
   );
 }
