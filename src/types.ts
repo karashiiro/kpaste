@@ -6,5 +6,4 @@ export interface PasteListItem {
   uri: string;
   value: PasteRecord;
   content: string;
-  contentLoading?: boolean; // Loading state for blob fetch
 }

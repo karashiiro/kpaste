@@ -38,5 +38,43 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json", "html"],
+      exclude: [
+        "node_modules/",
+        "src/test/",
+        "**/*.d.ts",
+        "src/vite-env.d.ts",
+        "src/lexicons/types/**",
+        "**/*.test.{ts,tsx}",
+        "**/*.spec.{ts,tsx}",
+        "src/main.tsx",
+        "scripts/",
+        "public/",
+        "dist/",
+        "*.config.{ts,js}",
+      ],
+      thresholds: {
+        global: {
+          branches: 70,
+          functions: 70,
+          lines: 75,
+          statements: 75,
+        },
+        "src/hooks/": {
+          branches: 85,
+          functions: 85,
+          lines: 90,
+          statements: 90,
+        },
+        "src/auth/": {
+          branches: 80,
+          functions: 80,
+          lines: 85,
+          statements: 85,
+        },
+      },
+    },
   },
 });

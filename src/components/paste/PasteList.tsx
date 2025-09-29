@@ -5,8 +5,6 @@ import { Paragraph } from "@tamagui/text";
 import { Link } from "react-router";
 import {
   DocumentTextIcon,
-  ArrowPathIcon,
-  ClockIcon,
   PencilIcon,
   TrashIcon,
   XMarkIcon,
@@ -167,44 +165,26 @@ export function PasteList({
           </YStack>
 
           <YStack gap="$2" marginTop="$2">
-            {paste.content ? (
-              <Card padding="$3" bordered>
-                <ScrollView maxHeight={200}>
-                  <pre
-                    style={{
-                      fontFamily: '"Inconsolata", monospace',
-                      fontSize: 13,
-                      lineHeight: 1.4,
-                      margin: 0,
-                      padding: 0,
-                      overflow: "auto",
-                    }}
-                    dangerouslySetInnerHTML={{
-                      __html: safeHighlight(
-                        paste.content,
-                        paste.value.language || "text",
-                      ),
-                    }}
-                  />
-                </ScrollView>
-              </Card>
-            ) : paste.contentLoading ? (
-              <XStack alignItems="center" gap="$2">
-                <ArrowPathIcon
-                  width={16}
-                  height={16}
-                  className="animate-spin"
+            <Card padding="$3" bordered>
+              <ScrollView maxHeight={200}>
+                <pre
+                  style={{
+                    fontFamily: '"Inconsolata", monospace',
+                    fontSize: 13,
+                    lineHeight: 1.4,
+                    margin: 0,
+                    padding: 0,
+                    overflow: "auto",
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: safeHighlight(
+                      paste.content,
+                      paste.value.language || "text",
+                    ),
+                  }}
                 />
-                <Paragraph fontSize="$3">Loading content...</Paragraph>
-              </XStack>
-            ) : (
-              <XStack alignItems="center" gap="$2">
-                <ClockIcon width={16} height={16} />
-                <Paragraph fontSize="$3">
-                  Content will load automatically...
-                </Paragraph>
-              </XStack>
-            )}
+              </ScrollView>
+            </Card>
           </YStack>
 
           {/* Only show edit/delete buttons if current user owns this paste */}

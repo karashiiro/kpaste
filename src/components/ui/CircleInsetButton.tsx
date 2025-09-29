@@ -34,6 +34,7 @@ export function InsetCircleButton({
           loading={loading}
           opacity={0.8}
           icon={icon}
+          aria-label={tooltipText}
           {...props}
         ></LoadingButton>
       </Tooltip.Trigger>
