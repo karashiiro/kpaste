@@ -146,6 +146,7 @@ const router = createHashRouter(
             </Suspense>
           ),
           loader: pasteLoader,
+          errorElement: <ErrorPage kind="not-found" />,
         },
       ],
     },
