@@ -19,7 +19,7 @@ export function InsetCard({
   outerRadius = "12px",
   innerRadius = "8px",
   insetPadding = "$2",
-  insetBorderColor = "var(--insetCardBorderColor)",
+  insetBorderColor = "var(--borderColor)",
   cardPadding = "$2",
   shadow = true,
   ...cardProps
