@@ -22,7 +22,12 @@ export function PasteListPaginationButtons() {
 
   return (
     <XStack gap="$3" justifyContent="center" alignItems="center">
-      <PaginationButton onPress={handlePrevPage} size="$4" colorVariant="blue">
+      <PaginationButton
+        onPress={handlePrevPage}
+        disabled={!prevCursor}
+        size="$4"
+        colorVariant="blue"
+      >
         Previous
       </PaginationButton>
 

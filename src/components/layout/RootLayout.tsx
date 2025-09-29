@@ -5,6 +5,8 @@ import { Paragraph } from "@tamagui/text";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { Header } from "./Header";
 import type { ReactNode } from "react";
+import { Card } from "@tamagui/card";
+import { getShadowStyle } from "../../utils/shadowUtils";
 
 interface RootLayoutProps {
   onLoginClick?: () => void;
@@ -21,33 +23,44 @@ export function RootLayout({ onLoginClick, children }: RootLayoutProps) {
 
       {/* Global navigation pending indicator */}
       {isNavigating && (
-        <View
+        <Card
+          unstyled
           position="absolute"
           top={0}
           left={0}
           right={0}
           zIndex={999}
+          borderRadius={0}
           backgroundColor="$accentOverlay"
-          paddingVertical="$2"
-          paddingHorizontal="$4"
+          style={getShadowStyle(true)}
         >
-          <View
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="center"
-            gap="$2"
-          >
-            <ArrowPathIcon
-              width={16}
-              height={16}
-              color="var(--accentText)"
-              className="animate-spin"
-            />
-            <Paragraph color="$accentText" fontSize="$3" fontWeight="500">
-              Loading...
-            </Paragraph>
+          <View paddingVertical="$1" paddingHorizontal="$4">
+            <View
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="center"
+              gap="$2"
+            >
+              <ArrowPathIcon
+                width={16}
+                height={16}
+                color="var(--accentText)"
+                className="animate-spin"
+              />
+              <Paragraph color="$accentText" fontSize="$3" fontWeight="500">
+                Loading...
+              </Paragraph>
+            </View>
           </View>
-        </View>
+
+          <Card
+            unstyled
+            borderBottomColor="$accentText"
+            borderBottomWidth={2}
+            borderStyle="dashed"
+          />
+          <div style={{ height: 8 }} />
+        </Card>
       )}
 
       <View flex={1} position="relative">

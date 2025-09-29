@@ -4,6 +4,10 @@ export interface VariantStyles {
   backgroundColor?: string;
   color?: string;
   insetBorderColor?: string;
+  disabledStyle?: {
+    backgroundColor?: string;
+    borderColor?: string;
+  };
   hoverStyle?: {
     backgroundColor?: string;
     borderColor?: string;
@@ -21,6 +25,10 @@ export function getVariantStyles(colorVariant: ColorVariant): VariantStyles {
         backgroundColor: "$greenBase",
         color: "$greenText",
         insetBorderColor: "$borderColor",
+        disabledStyle: {
+          backgroundColor: "$greenDisabled",
+          borderColor: "transparent",
+        },
         hoverStyle: {
           backgroundColor: "$greenHover",
           borderColor: "transparent",
@@ -35,6 +43,10 @@ export function getVariantStyles(colorVariant: ColorVariant): VariantStyles {
         backgroundColor: "$blueBase",
         color: "$blueText",
         insetBorderColor: "$borderColor",
+        disabledStyle: {
+          backgroundColor: "$blueDisabled",
+          borderColor: "transparent",
+        },
         hoverStyle: {
           backgroundColor: "$blueHover",
           borderColor: "transparent",
