@@ -76,7 +76,7 @@ const tamaguiConfig = createTamagui({
       yellowBase: "#F4D03F", // bright sunny yellow base
       yellowHover: "#F1C40F", // golden yellow for hover
       yellowPress: "#D4AC0D", // deeper gold for press
-      yellowText: "#7D6608", // dark golden text for readability
+      yellowText: "#4A3D08", // dark golden text for readability
 
       // Red colors (for delete button)
       redBase: "#E74C3C", // bright red base
