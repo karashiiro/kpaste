@@ -10,7 +10,7 @@ export function Footer() {
       paddingVertical="$3"
       paddingHorizontal="$4"
       borderTopWidth={2}
-      borderTopColor="$borderColor"
+      borderTopColor="$primary"
       borderStyle="dashed"
       backgroundColor="$background"
     >
