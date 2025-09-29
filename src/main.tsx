@@ -47,7 +47,7 @@ const tamaguiConfig = createTamagui({
     dark: {
       ...defaultConfig.themes.dark,
       // Background colors
-      background: "#3a3a3a",
+      background: "hsla(249, 17%, 16%, 1.00)",
       backgroundSuperDark: "#0a0a0a",
 
       // Primary colors (header/accent)
