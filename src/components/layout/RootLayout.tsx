@@ -20,16 +20,12 @@ export function RootLayout({ onLoginClick, children }: RootLayoutProps) {
 
   return (
     <YStack flex={1} minHeight="100vh">
-      <Header onLoginClick={onLoginClick} />
+      <Header onLoginClick={onLoginClick} isNavigating={isNavigating} />
 
       {/* Global navigation pending indicator */}
       {isNavigating && (
         <Card
           unstyled
-          position="absolute"
-          top={0}
-          left={0}
-          right={0}
           zIndex={999}
           borderRadius={0}
           backgroundColor="$accentOverlay"

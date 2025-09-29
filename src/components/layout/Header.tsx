@@ -9,9 +9,10 @@ import { getShadowStyle } from "../../utils/shadowUtils";
 
 export interface HeaderProps {
   onLoginClick?: () => void;
+  isNavigating?: boolean;
 }
 
-export function Header({ onLoginClick }: HeaderProps) {
+export function Header({ onLoginClick, isNavigating }: HeaderProps) {
   const { isAuthenticated, session, logout } = useAuth();
 
   return (
@@ -80,13 +81,17 @@ export function Header({ onLoginClick }: HeaderProps) {
           </View>
         </YStack>
       </Card>
-      <Card
-        unstyled
-        borderBottomColor="$borderColor"
-        borderBottomWidth={2}
-        borderStyle="dashed"
-      />
-      <div style={{ height: 8 }} />
+      {!isNavigating && (
+        <>
+          <Card
+            unstyled
+            borderBottomColor="$borderColor"
+            borderBottomWidth={2}
+            borderStyle="dashed"
+          />
+          <div style={{ height: 8 }} />
+        </>
+      )}
     </View>
   );
 }

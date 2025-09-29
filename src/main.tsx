@@ -55,7 +55,7 @@ const tamaguiConfig = createTamagui({
 
       // Golden/accent colors
       accent: "#a58431", // rgba(165, 132, 49, 1)
-      accentOverlay: "rgba(255, 219, 182, .8)", // transparent accent for loading overlay
+      accentOverlay: "rgba(221, 189, 158, 1)", // transparent accent for loading overlay
       accentText: "#534116", // rgba(83, 65, 22, 1)
 
       // Green colors
