@@ -5,6 +5,7 @@ import { RouterProvider } from "react-router/dom";
 import { TamaguiProvider, createTamagui, Theme } from "@tamagui/core";
 import { defaultConfig } from "@tamagui/config/v4";
 import { LoadingFallback } from "./components/ui/LoadingFallback.tsx";
+import { AppErrorBoundary } from "./components/ui/AppErrorBoundary.tsx";
 import { pasteLoader } from "./loaders/pasteLoader.ts";
 
 const App = lazy(() =>
@@ -32,13 +33,9 @@ const OAuthCallbackHash = lazy(() =>
     default: m.OAuthCallbackHash,
   })),
 );
-const ErrorPage = lazy(() =>
-  import("./components/pages/ErrorPage.tsx").then((m) => ({
-    default: m.ErrorPage,
-  })),
-);
 
 import { pasteListLoader } from "./loaders/pasteListLoader.ts";
+import { ErrorPage } from "./components/pages/ErrorPage.tsx";
 
 const tamaguiConfig = createTamagui({
   ...defaultConfig,
@@ -115,6 +112,7 @@ const router = createHashRouter(
         </Suspense>
       ),
       HydrateFallback: LoadingFallback,
+      errorElement: <ErrorPage />,
       children: [
         {
           index: true,
@@ -149,11 +147,6 @@ const router = createHashRouter(
             </Suspense>
           ),
           loader: pasteLoader,
-          errorElement: (
-            <Suspense fallback={<LoadingFallback />}>
-              <ErrorPage />
-            </Suspense>
-          ),
         },
       ],
     },
@@ -167,10 +160,12 @@ const router = createHashRouter(
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <TamaguiProvider config={tamaguiConfig}>
-      <Theme name="dark">
-        <RouterProvider router={router} />
-      </Theme>
-    </TamaguiProvider>
+    <AppErrorBoundary>
+      <TamaguiProvider config={tamaguiConfig}>
+        <Theme name="dark">
+          <RouterProvider router={router} />
+        </Theme>
+      </TamaguiProvider>
+    </AppErrorBoundary>
   </StrictMode>,
 );
