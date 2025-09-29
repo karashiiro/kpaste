@@ -213,7 +213,13 @@ export function PasteList({
 
           {/* Only show edit/delete buttons if current user owns this paste */}
           {currentUserSession && userHandle === currentUserSession.handle && (
-            <>
+            <Card
+              unstyled
+              position="absolute"
+              top={0}
+              right={-48}
+              $xs={{ right: 0 }}
+            >
               {/* Delete button */}
               <InsetCircleButton
                 position="absolute"
@@ -232,14 +238,15 @@ export function PasteList({
               {/* Edit button */}
               <InsetCircleButton
                 position="absolute"
-                top="$3"
-                right="$11"
+                top="$11"
+                right="$3"
                 zIndex={1}
                 onPress={() => startEdit(paste)}
                 icon={<PencilIcon width={20} height={20} color="white" />}
                 tooltipText="Edit this paste"
+                $xs={{ top: "$3", right: "$11" }}
               />
-            </>
+            </Card>
           )}
 
           {deleteError && (
