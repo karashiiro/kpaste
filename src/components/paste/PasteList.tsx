@@ -124,15 +124,14 @@ export function PasteList({
             );
           })()}
 
-          <YStack gap="$3">
+          <YStack gap="$3" marginTop="$2">
             <XStack
               alignItems="center"
-              gap="$3"
+              gap="$1"
               flexWrap="wrap"
               $xs={{
                 flexDirection: "column",
                 alignItems: "flex-start",
-                gap: "$2",
               }}
             >
               <XStack alignItems="center" gap="$2">
@@ -167,10 +166,7 @@ export function PasteList({
             </XStack>
           </YStack>
 
-          <YStack gap="$2">
-            <Paragraph fontSize="$3" fontWeight="500">
-              Content:
-            </Paragraph>
+          <YStack gap="$2" marginTop="$2">
             {paste.content ? (
               <Card padding="$3" bordered>
                 <ScrollView maxHeight={200}>
