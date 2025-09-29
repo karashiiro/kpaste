@@ -43,10 +43,6 @@ export function getVariantStyles(colorVariant: ColorVariant): VariantStyles {
         backgroundColor: "$blueBase",
         color: "$blueText",
         insetBorderColor: "$borderColor",
-        disabledStyle: {
-          backgroundColor: "$blueDisabled",
-          borderColor: "transparent",
-        },
         hoverStyle: {
           backgroundColor: "$blueHover",
           borderColor: "transparent",
