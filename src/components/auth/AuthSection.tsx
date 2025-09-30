@@ -2,7 +2,7 @@ import { XStack } from "@tamagui/stacks";
 import { Paragraph } from "@tamagui/text";
 import { InsetButton } from "../ui/InsetButton";
 import { Link } from "react-router";
-import { RocketLaunchIcon, HandRaisedIcon } from "@heroicons/react/24/outline";
+import { ArrowRightStartOnRectangleIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
 import type { AuthSession } from "../../auth/types";
 
 interface AuthSectionProps {
@@ -61,7 +61,7 @@ export function AuthSection({
         size="$3"
       >
         <XStack alignItems="center" gap="$2">
-          <HandRaisedIcon width={16} height={16} color="white" />
+          <ArrowRightStartOnRectangleIcon width={16} height={16} color="white" />
           <Paragraph fontWeight="600" color="white">
             Logout
           </Paragraph>
