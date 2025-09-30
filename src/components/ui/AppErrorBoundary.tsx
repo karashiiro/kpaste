@@ -1,11 +1,12 @@
 import { useCallback } from "react";
 import type { ReactNode, ErrorInfo } from "react";
-import { ErrorBoundary } from "react-error-boundary";
+import { ErrorBoundary, type FallbackProps } from "react-error-boundary";
 import { YStack } from "@tamagui/stacks";
 import { InsetButton } from "./InsetButton";
 import { Paragraph, H1 } from "@tamagui/text";
 import { ArrowPathIcon, HomeIcon } from "@heroicons/react/24/outline";
 import { PageContainer } from "../layout/PageContainer";
+import { isRouteErrorResponse } from "react-router";
 
 interface AppErrorBoundaryProps {
   children: ReactNode;
@@ -17,9 +18,18 @@ const isChunkError = (error: Error): boolean => {
   return error.message.includes("Failed to fetch dynamically imported module");
 };
 
-interface ErrorFallbackProps {
-  error: Error;
-  resetErrorBoundary: () => void;
+type ErrorFallbackProps = FallbackProps;
+
+function getErrorMessage(error: Error): string {
+  if (isRouteErrorResponse(error)) {
+    return `Error ${error.status}: ${error.statusText}`;
+  }
+
+  if (isChunkError(error)) {
+    return "A loading error occurred. Please try refreshing the page or going back to home.";
+  }
+
+  return "An unexpected error occurred. Please try refreshing the page or going back to home.";
 }
 
 function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
@@ -52,8 +62,7 @@ function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
             Something went wrong
           </H1>
           <Paragraph fontSize="$5" textAlign="center" opacity={0.8}>
-            An unexpected error occurred. Please try refreshing the page or
-            going back to home.
+            {getErrorMessage(error)}
           </Paragraph>
           {error.message && (
             <Paragraph
