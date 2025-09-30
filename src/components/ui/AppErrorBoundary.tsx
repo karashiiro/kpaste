@@ -14,9 +14,7 @@ interface AppErrorBoundaryProps {
 
 // Check if this is a chunk loading error
 const isChunkError = (error: Error): boolean => {
-  return error.message.includes(
-    "TypeError: Failed to fetch dynamically imported module",
-  );
+  return error.message.includes("Failed to fetch dynamically imported module");
 };
 
 interface ErrorFallbackProps {
