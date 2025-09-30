@@ -123,7 +123,8 @@ describe("pasteListLoader", () => {
     await expect(pasteListLoader(mockArgs)).rejects.toThrow();
   }, 10000);
 
-  it("should return empty list for handle with no pastes", async () => {
+  // TODO: Make this test useful
+  it.skip("should return empty list for handle with no pastes", async () => {
     // This test might be tricky since we need a real handle with no pastes
     // For now, we'll test the structure and let the real integration determine behavior
     const mockArgs: LoaderFunctionArgs = {

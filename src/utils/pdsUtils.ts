@@ -1,7 +1,8 @@
 import { Client, simpleFetchHandler } from "@atcute/client";
 import type { Did } from "@atcute/lexicons";
+import { data } from "react-router";
 
-interface PlcDirectoryDoc {
+interface DidDocument {
   id: string;
   service?: Array<{
     id: string;
@@ -32,33 +33,68 @@ export async function resolveUser(
   );
 
   if (!resolveResponse.ok) {
-    throw new Response(`Failed to resolve handle: ${handle}`, {
+    throw data(`Failed to resolve handle: ${handle}`, {
       status: 404,
     });
   }
 
   const did = resolveResponse.data.did;
 
+  // Split the DID to get the type
+  const [didType] = did.split(":").slice(1);
+
+  // Fetch the DID document from the appropriate service
+  if (didType === "plc") {
+    return await resolveUserPlc(did);
+  } else if (didType === "web") {
+    return await resolveUserWeb(did);
+  } else {
+    throw data(`Unsupported DID type: ${didType}`, { status: 400 });
+  }
+}
+
+async function resolveUserPlc(did: Did): Promise<ResolveUserPdsResult> {
   // Get user's PDS from plc.directory
   const plcUrl = `https://plc.directory/${did}`;
   const plcResponse = await fetch(plcUrl);
 
   if (!plcResponse.ok) {
-    throw new Response(`Failed to get PDS for DID: ${did}`, { status: 404 });
+    throw data(`Failed to get PDS for DID: ${did}`, { status: 404 });
   }
 
-  const plcDoc: PlcDirectoryDoc = await plcResponse.json();
+  const didDoc: DidDocument = await plcResponse.json();
+  const pdsService = extractPdsFromDidDocument(didDoc);
 
+  return { did, pdsUrl: pdsService };
+}
+
+async function resolveUserWeb(did: Did): Promise<ResolveUserPdsResult> {
+  // Fetch the DID document from the well-known endpoint
+  const [endpoint] = did.split(":").slice(2);
+  const didUrl = `https://${endpoint}/.well-known/did.json`;
+  const didResponse = await fetch(didUrl);
+
+  if (!didResponse.ok) {
+    throw data(`Failed to get DID document for: ${did}`, { status: 404 });
+  }
+
+  const didDoc = await didResponse.json();
+  const pdsService = extractPdsFromDidDocument(didDoc);
+
+  return { did, pdsUrl: pdsService };
+}
+
+function extractPdsFromDidDocument(doc: DidDocument): string {
   // Find the atproto_pds service
-  const pdsService = plcDoc.service?.find(
+  const pdsService = doc.service?.find(
     (s) => s.type === "AtprotoPersonalDataServer" || s.id === "#atproto_pds",
   );
 
   if (!pdsService) {
-    throw new Response("No PDS found for user", { status: 404 });
+    throw data("No PDS found for user", { status: 404 });
   }
 
-  return { did, pdsUrl: pdsService.serviceEndpoint };
+  return pdsService.serviceEndpoint;
 }
 
 async function readTextBlob(client: Client, did: Did, blobCid: string) {
@@ -71,7 +107,7 @@ async function readTextBlob(client: Client, did: Did, blobCid: string) {
   });
 
   if (!blobResponse.ok) {
-    throw new Response("Failed to load paste content", { status: 500 });
+    throw data("Failed to load paste content", { status: 500 });
   }
 
   const blob = blobResponse.data as Blob;

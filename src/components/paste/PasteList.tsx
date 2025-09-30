@@ -58,12 +58,7 @@ export function PasteList({
 
   if (pastes.length === 0) {
     return (
-      <InsetCard
-        padding="$6"
-        marginTop="$4"
-        alignItems="center"
-        insetPadding="12px"
-      >
+      <InsetCard marginTop="$4" alignItems="center" insetPadding="8px">
         <XStack alignItems="center" gap="$2">
           <DocumentTextIcon width={24} height={24} color="white" />
           <Paragraph fontSize="$5" textAlign="center">
