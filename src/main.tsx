@@ -3,39 +3,56 @@ import { createRoot } from "react-dom/client";
 import { createHashRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import { TamaguiProvider, createTamagui, Theme } from "@tamagui/core";
+import { Paragraph } from "@tamagui/text";
 import { defaultConfig } from "@tamagui/config/v4";
 import { LoadingFallback } from "./components/ui/LoadingFallback.tsx";
 import { AppErrorBoundary } from "./components/ui/AppErrorBoundary.tsx";
 import { pasteLoader } from "./loaders/pasteLoader.ts";
-
-const App = lazy(() =>
-  import("./App.tsx").then((m) => ({
-    default: m.App,
-  })),
-);
-const Home = lazy(() =>
-  import("./components/pages/Home.tsx").then((m) => ({
-    default: m.Home,
-  })),
-);
-const PasteListPage = lazy(() =>
-  import("./components/pages/PasteListPage.tsx").then((m) => ({
-    default: m.PasteListPage,
-  })),
-);
-const PasteView = lazy(() =>
-  import("./components/pages/PasteView.tsx").then((m) => ({
-    default: m.PasteView,
-  })),
-);
-const OAuthCallbackHash = lazy(() =>
-  import("./components/pages/OAuthCallbackHash.tsx").then((m) => ({
-    default: m.OAuthCallbackHash,
-  })),
-);
-
 import { pasteListLoader } from "./loaders/pasteListLoader.ts";
 import { ErrorPage } from "./components/pages/ErrorPage.tsx";
+
+function reloadOnFailure() {
+  window.location.reload();
+  return {
+    default: () => <Paragraph>Reloading...</Paragraph>,
+  };
+}
+
+const App = lazy(() =>
+  import("./App.tsx")
+    .then((m) => ({
+      default: m.App,
+    }))
+    .catch(reloadOnFailure),
+);
+const Home = lazy(() =>
+  import("./components/pages/Home.tsx")
+    .then((m) => ({
+      default: m.Home,
+    }))
+    .catch(reloadOnFailure),
+);
+const PasteListPage = lazy(() =>
+  import("./components/pages/PasteListPage.tsx")
+    .then((m) => ({
+      default: m.PasteListPage,
+    }))
+    .catch(reloadOnFailure),
+);
+const PasteView = lazy(() =>
+  import("./components/pages/PasteView.tsx")
+    .then((m) => ({
+      default: m.PasteView,
+    }))
+    .catch(reloadOnFailure),
+);
+const OAuthCallbackHash = lazy(() =>
+  import("./components/pages/OAuthCallbackHash.tsx")
+    .then((m) => ({
+      default: m.OAuthCallbackHash,
+    }))
+    .catch(reloadOnFailure),
+);
 
 const tamaguiConfig = createTamagui({
   ...defaultConfig,

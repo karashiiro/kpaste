@@ -13,11 +13,6 @@ interface AppErrorBoundaryProps {
   maxRetries?: number;
 }
 
-// Check if this is a chunk loading error
-const isChunkError = (error: Error): boolean => {
-  return error.message.includes("Failed to fetch dynamically imported module");
-};
-
 type ErrorFallbackProps = FallbackProps;
 
 function getErrorMessage(error: Error): string {
@@ -25,26 +20,10 @@ function getErrorMessage(error: Error): string {
     return `Error ${error.status}: ${error.statusText}`;
   }
 
-  if (isChunkError(error)) {
-    return "A loading error occurred. Please try refreshing the page or going back to home.";
-  }
-
   return "An unexpected error occurred. Please try refreshing the page or going back to home.";
 }
 
 function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
-  const isChunk = isChunkError(error);
-
-  const handleRetry = useCallback(() => {
-    if (isChunk) {
-      // If this is a chunk error, just reload the page for the most reliable fix
-      window.location.reload();
-    } else {
-      // For non-chunk errors, try resetting the error boundary first
-      resetErrorBoundary();
-    }
-  }, [isChunk, resetErrorBoundary]);
-
   const handleGoHome = useCallback(() => {
     window.location.href = "/";
   }, []);
@@ -76,7 +55,7 @@ function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
           )}
           <YStack gap="$3" width="100%">
             <InsetButton
-              onPress={handleRetry}
+              onPress={resetErrorBoundary}
               theme="green"
               size="$5"
               icon={<ArrowPathIcon width={20} height={20} />}
