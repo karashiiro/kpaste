@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import { createHashRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import { TamaguiProvider, createTamagui, Theme } from "@tamagui/core";
-import { Paragraph } from "@tamagui/text";
 import { defaultConfig } from "@tamagui/config/v4";
 import { LoadingFallback } from "./components/ui/LoadingFallback.tsx";
 import { AppErrorBoundary } from "./components/ui/AppErrorBoundary.tsx";
@@ -12,9 +11,11 @@ import { pasteListLoader } from "./loaders/pasteListLoader.ts";
 import { ErrorPage } from "./components/pages/ErrorPage.tsx";
 
 function reloadOnFailure() {
+  // Reload since this is usually due to a redeployment causing chunk load failures
   window.location.reload();
   return {
-    default: () => <Paragraph>Reloading...</Paragraph>,
+    // Not actually rendered, just for type checking
+    default: () => <span>Reloading...</span>,
   };
 }
 
