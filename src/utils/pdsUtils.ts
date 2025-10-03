@@ -2,13 +2,9 @@ import { Client, simpleFetchHandler } from "@atcute/client";
 import type { Did } from "@atcute/lexicons";
 import { data } from "react-router";
 
-interface DidDocument {
-  id: string;
-  service?: Array<{
-    id: string;
-    type: string;
-    serviceEndpoint: string;
-  }>;
+interface MiniDidDocument {
+  did: Did;
+  pds: string;
 }
 
 export interface ResolveUserPdsResult {
@@ -19,82 +15,23 @@ export interface ResolveUserPdsResult {
 export async function resolveUser(
   handle: string,
 ): Promise<ResolveUserPdsResult> {
-  // Resolve handle to DID using bsky.social
-  const bskyHandler = simpleFetchHandler({
-    service: "https://bsky.social",
-  });
-  const bskyClient = new Client({ handler: bskyHandler });
-
-  const resolveResponse = await bskyClient.get(
-    "com.atproto.identity.resolveHandle",
-    {
-      params: { handle: handle as `${string}.${string}` },
-    },
+  // Resolve handle to DID using slingshot
+  const endpoint = new URL(
+    "https://slingshot.microcosm.blue/xrpc/com.bad-example.identity.resolveMiniDoc",
   );
+  endpoint.searchParams.set("identifier", handle);
 
+  const resolveResponse = await fetch(endpoint);
   if (!resolveResponse.ok) {
     throw data(`Failed to resolve handle: ${handle}`, {
       status: 404,
     });
   }
 
-  const did = resolveResponse.data.did;
+  const miniDidDocument: MiniDidDocument = await resolveResponse.json();
+  const { did, pds } = miniDidDocument;
 
-  // Split the DID to get the type
-  const [didType] = did.split(":").slice(1);
-
-  // Fetch the DID document from the appropriate service
-  if (didType === "plc") {
-    return await resolveUserPlc(did);
-  } else if (didType === "web") {
-    return await resolveUserWeb(did);
-  } else {
-    throw data(`Unsupported DID type: ${didType}`, { status: 400 });
-  }
-}
-
-async function resolveUserPlc(did: Did): Promise<ResolveUserPdsResult> {
-  // Get user's PDS from plc.directory
-  const plcUrl = `https://plc.directory/${did}`;
-  const plcResponse = await fetch(plcUrl);
-
-  if (!plcResponse.ok) {
-    throw data(`Failed to get PDS for DID: ${did}`, { status: 404 });
-  }
-
-  const didDoc: DidDocument = await plcResponse.json();
-  const pdsService = extractPdsFromDidDocument(didDoc);
-
-  return { did, pdsUrl: pdsService };
-}
-
-async function resolveUserWeb(did: Did): Promise<ResolveUserPdsResult> {
-  // Fetch the DID document from the well-known endpoint
-  const [endpoint] = did.split(":").slice(2);
-  const didUrl = `https://${endpoint}/.well-known/did.json`;
-  const didResponse = await fetch(didUrl);
-
-  if (!didResponse.ok) {
-    throw data(`Failed to get DID document for: ${did}`, { status: 404 });
-  }
-
-  const didDoc = await didResponse.json();
-  const pdsService = extractPdsFromDidDocument(didDoc);
-
-  return { did, pdsUrl: pdsService };
-}
-
-function extractPdsFromDidDocument(doc: DidDocument): string {
-  // Find the atproto_pds service
-  const pdsService = doc.service?.find(
-    (s) => s.type === "AtprotoPersonalDataServer" || s.id === "#atproto_pds",
-  );
-
-  if (!pdsService) {
-    throw data("No PDS found for user", { status: 404 });
-  }
-
-  return pdsService.serviceEndpoint;
+  return { did, pdsUrl: pds };
 }
 
 async function readTextBlob(client: Client, did: Did, blobCid: string) {
