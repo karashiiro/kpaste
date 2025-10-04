@@ -3,6 +3,7 @@ import type {
   AuthSession,
   AuthStateChangeListener,
   AuthManagerConfig,
+  AuthError,
 } from "./types";
 import {
   configureOAuth,
@@ -16,6 +17,8 @@ import {
 import type { Session } from "@atcute/oauth-browser-client";
 import { Client } from "@atcute/client";
 
+type TimerHandle = ReturnType<typeof setInterval>;
+
 export interface OAuthLoginRequest {
   handle: string;
 }
@@ -23,9 +26,14 @@ export interface OAuthLoginRequest {
 export class OAuthAuthManager {
   private state: AuthStateData;
   private listeners: Set<AuthStateChangeListener> = new Set();
-  private config: AuthManagerConfig;
+  private config: Required<AuthManagerConfig>;
   private client: Client | null = null;
   private agent: OAuthUserAgent | null = null;
+  private initialized = false;
+  private refreshTimer: TimerHandle | null = null;
+
+  // Constants for storage keys
+  private readonly OAUTH_HANDLE_KEY = "oauth_handle";
 
   constructor(config: AuthManagerConfig = {}) {
     this.config = {
@@ -40,9 +48,22 @@ export class OAuthAuthManager {
       isLoading: false,
     };
 
-    // Configure OAuth
     this.initializeOAuth();
-    this.loadPersistedSession();
+  }
+
+  /**
+   * Initialize the auth manager and load any persisted session.
+   * Must be called before using any other methods.
+   */
+  public async initialize(): Promise<void> {
+    if (this.initialized) return;
+    await this.loadPersistedSession();
+    this.initialized = true;
+
+    // Start auto-refresh if enabled
+    if (this.config.autoRefresh) {
+      this.startAutoRefresh();
+    }
   }
 
   private initializeOAuth() {
@@ -77,19 +98,48 @@ export class OAuthAuthManager {
 
   private setState(newState: Partial<AuthStateData>): void {
     this.state = { ...this.state, ...newState };
-    this.notifyListeners();
 
+    // Persist first (critical operation)
     if (this.state.session) {
       this.persistSession(this.state.session);
     } else {
       this.clearPersistedSession();
     }
+
+    // Notify listeners last (non-critical, isolated)
+    this.notifyListeners();
   }
 
   private notifyListeners(): void {
-    this.listeners.forEach((listener) => listener(this.getState()));
+    const state = this.getState(); // Clone once
+    this.listeners.forEach((listener) => {
+      try {
+        listener(state);
+      } catch (error) {
+        console.error("Listener error:", error);
+        // Continue notifying other listeners
+      }
+    });
   }
 
+  private handleError(error: unknown): void {
+    this.setState({
+      state: "error",
+      error: this.formatError(error),
+      isLoading: false,
+    });
+  }
+
+  /**
+   * Initiates the OAuth login flow for a given user handle.
+   *
+   * This method will redirect the user to the OAuth authorization server.
+   * After authorization, the user will be redirected back to the configured
+   * redirect URI where handleOAuthCallback() should be called.
+   *
+   * @param request - The login request containing the user's handle
+   * @throws {Error} If handle resolution fails or authorization URL cannot be created
+   */
   public async startLogin(request: OAuthLoginRequest): Promise<void> {
     this.setState({
       state: "authenticating",
@@ -109,57 +159,31 @@ export class OAuthAuthManager {
       });
 
       // Store handle for after redirect
-      sessionStorage.setItem("oauth_handle", request.handle);
+      sessionStorage.setItem(this.OAUTH_HANDLE_KEY, request.handle);
 
       // Redirect to authorization server
       window.location.assign(authUrl);
     } catch (error) {
-      this.setState({
-        state: "error",
-        error: this.formatError(error),
-        isLoading: false,
-      });
+      this.handleError(error);
     }
   }
 
+  /**
+   * Completes the OAuth flow after the user is redirected back from the
+   * authorization server.
+   *
+   * @param params - URLSearchParams from the callback URL (contains code and state)
+   * @throws {Error} If authorization cannot be finalized or token exchange fails
+   */
   public async handleOAuthCallback(params: URLSearchParams): Promise<void> {
     this.setState({ isLoading: true });
 
     try {
-      // Finalize the authorization
-      const session: Session = await finalizeAuthorization(params);
+      const oauthSession = await finalizeAuthorization(params);
+      const handle = this.retrieveStoredHandle();
 
-      // Create OAuth user agent and Client
-      this.agent = new OAuthUserAgent(session);
-      this.client = new Client({ handler: this.agent });
-
-      // Get handle from session storage
-      const handle = sessionStorage.getItem("oauth_handle") || "unknown";
-      sessionStorage.removeItem("oauth_handle");
-
-      // Convert to our auth session format
-      const authSession: AuthSession = {
-        did: session.info.sub,
-        handle: handle,
-        accessJwt: session.token.access,
-        refreshJwt: session.token.refresh || "",
-        active: true,
-        endpoint: {
-          url: session.info.aud,
-          name: new URL(session.info.aud).hostname,
-        },
-        createdAt: new Date(),
-        expiresAt: session.token.expires_at
-          ? new Date(session.token.expires_at * 1000)
-          : undefined,
-        profile: {
-          did: session.info.sub,
-          handle: handle,
-          displayName: undefined,
-          avatar: undefined,
-          description: undefined,
-        },
-      };
+      this.initializeClientFromSession(oauthSession);
+      const authSession = this.convertToAuthSession(oauthSession, handle);
 
       this.setState({
         state: "authenticated",
@@ -167,18 +191,64 @@ export class OAuthAuthManager {
         isLoading: false,
       });
     } catch (error) {
-      this.setState({
-        state: "error",
-        error: this.formatError(error),
-        isLoading: false,
-      });
+      this.handleError(error);
     }
+  }
+
+  private retrieveStoredHandle(): string {
+    const handle = sessionStorage.getItem(this.OAUTH_HANDLE_KEY) || "unknown";
+    sessionStorage.removeItem(this.OAUTH_HANDLE_KEY);
+    return handle;
+  }
+
+  private initializeClientFromSession(session: Session): void {
+    this.agent = new OAuthUserAgent(session);
+    this.client = new Client({ handler: this.agent });
+  }
+
+  private parseEndpointName(url: string): string {
+    try {
+      return new URL(url).hostname;
+    } catch {
+      return url; // Fallback to original if parsing fails
+    }
+  }
+
+  private convertToAuthSession(session: Session, handle: string): AuthSession {
+    return {
+      did: session.info.sub,
+      handle: handle,
+      accessJwt: session.token.access,
+      refreshJwt: session.token.refresh || "",
+      active: true,
+      endpoint: {
+        url: session.info.aud,
+        name: this.parseEndpointName(session.info.aud),
+      },
+      createdAt: new Date(),
+      expiresAt: session.token.expires_at
+        ? new Date(session.token.expires_at * 1000)
+        : undefined,
+      profile: {
+        did: session.info.sub,
+        handle: handle,
+        displayName: undefined,
+        avatar: undefined,
+        description: undefined,
+      },
+    };
   }
 
   public async logout(): Promise<void> {
     this.setState({ isLoading: true });
 
     try {
+      // Stop auto-refresh timer
+      if (this.refreshTimer) {
+        clearInterval(this.refreshTimer);
+        this.refreshTimer = null;
+      }
+
       if (this.state.session?.did) {
         deleteStoredSession(this.state.session.did);
       }
@@ -195,6 +265,10 @@ export class OAuthAuthManager {
     } catch (error) {
       console.warn("Logout cleanup failed:", error);
       // Even if cleanup fails, clear local state
+      if (this.refreshTimer) {
+        clearInterval(this.refreshTimer);
+        this.refreshTimer = null;
+      }
       this.client = null;
       this.agent = null;
 
@@ -207,9 +281,60 @@ export class OAuthAuthManager {
     }
   }
 
+  private startAutoRefresh(): void {
+    const checkInterval = 60000; // Check every minute
+    this.refreshTimer = setInterval(() => {
+      if (this.state.session?.expiresAt) {
+        const msUntilExpiry =
+          this.state.session.expiresAt.getTime() - Date.now();
+        if (msUntilExpiry < this.config.refreshThreshold) {
+          this.refreshSession();
+        }
+      }
+    }, checkInterval);
+  }
+
+  private async refreshSession(): Promise<void> {
+    try {
+      if (!this.state.session?.did) return;
+
+      // Get the refreshed OAuth session
+      const oauthSession = await getSession(this.state.session.did, {
+        allowStale: false,
+      });
+
+      if (oauthSession) {
+        // Update agent and client with new session
+        this.agent = new OAuthUserAgent(oauthSession);
+        this.client = new Client({ handler: this.agent });
+
+        // Update session with new tokens
+        const updatedSession: AuthSession = {
+          ...this.state.session,
+          accessJwt: oauthSession.token.access,
+          refreshJwt: oauthSession.token.refresh || "",
+          expiresAt: oauthSession.token.expires_at
+            ? new Date(oauthSession.token.expires_at * 1000)
+            : undefined,
+        };
+
+        this.setState({
+          session: updatedSession,
+        });
+      } else {
+        // Session cannot be refreshed, log out
+        console.warn("Session refresh failed, logging out");
+        await this.logout();
+      }
+    } catch (error) {
+      console.error("Failed to refresh session:", error);
+      await this.logout();
+    }
+  }
+
   private async loadPersistedSession(): Promise<void> {
     try {
-      const stored = localStorage.getItem(this.config.storageKey!);
+      const stored = localStorage.getItem(this.config.storageKey);
       if (!stored) return;
 
       const parsed = JSON.parse(stored);
@@ -239,6 +364,13 @@ export class OAuthAuthManager {
     }
   }
 
+  /**
+   * SECURITY NOTE: Tokens are stored in localStorage for persistence.
+   * This makes them vulnerable to XSS attacks. Ensure:
+   * 1. All dependencies are regularly audited
+   * 2. CSP headers are properly configured
+   * 3. Input sanitization is enforced throughout the app
+   */
   private persistSession(session: AuthSession): void {
     try {
       const serializedSession = JSON.stringify({
@@ -246,7 +378,7 @@ export class OAuthAuthManager {
         createdAt: session.createdAt.toISOString(),
         expiresAt: session.expiresAt?.toISOString(),
       });
-      localStorage.setItem(this.config.storageKey!, serializedSession);
+      localStorage.setItem(this.config.storageKey, serializedSession);
     } catch (error) {
       console.warn("Failed to persist session:", error);
     }
@@ -254,23 +386,48 @@ export class OAuthAuthManager {
 
   private clearPersistedSession(): void {
     try {
-      localStorage.removeItem(this.config.storageKey!);
+      localStorage.removeItem(this.config.storageKey);
     } catch (error) {
       console.warn("Failed to clear persisted session:", error);
     }
   }
 
-  private formatError(error: unknown): { code: string; message: string } {
+  private formatError(error: unknown): AuthError {
     if (error instanceof Error) {
+      // Check for OAuth-specific errors
+      const errorObj = error as Error & {
+        error?: string;
+        error_description?: string;
+      };
+      const oauthError = errorObj.error;
+      const oauthDescription = errorObj.error_description;
+
       return {
-        code: "OAUTH_ERROR",
-        message: error.message,
+        code: oauthError || "OAUTH_ERROR",
+        message: oauthDescription || error.message,
+        details: {
+          stack: error.stack,
+          name: error.name,
+          // Preserve original error for debugging
+          originalError: error,
+        },
       };
     }
 
+    // Handle string errors
+    if (typeof error === "string") {
+      return {
+        code: "OAUTH_ERROR",
+        message: error,
+        details: undefined,
+      };
+    }
+
+    // Handle completely unknown errors
     return {
       code: "UNKNOWN_ERROR",
       message: "An unknown error occurred",
+      details: { originalError: error },
     };
   }
 }

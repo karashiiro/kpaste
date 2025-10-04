@@ -159,12 +159,7 @@ export function OAuthCallbackHash() {
     >
       <InsetCard padding="$4" theme="blue" insetPadding="12px">
         <YStack alignItems="center" gap="$3">
-          <ArrowPathIcon
-            width={48}
-            height={48}
-            color="blue"
-            className="animate-spin"
-          />
+          <ArrowPathIcon width={48} height={48} className="animate-spin" />
           <Paragraph fontSize="$6" fontWeight="600" textAlign="center">
             Completing Login...
           </Paragraph>

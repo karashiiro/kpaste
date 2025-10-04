@@ -25,11 +25,16 @@ export function useAuth() {
   useEffect(() => {
     const authManager = authManagerRef.current!;
 
+    // Add listener first
     const unsubscribe = authManager.addListener((newState) => {
       setAuthState(newState);
     });
 
-    setAuthState(authManager.getState());
+    // Initialize the auth manager (loads persisted session)
+    // This must happen after listener is added so we get state updates
+    authManager.initialize().catch((error) => {
+      console.error("Failed to initialize auth manager:", error);
+    });
 
     return unsubscribe;
   }, []);

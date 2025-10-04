@@ -104,8 +104,9 @@ describe("OAuthAuthManager", () => {
   });
 
   describe("state management", () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       authManager = new OAuthAuthManager();
+      await authManager.initialize();
     });
 
     it("should add and remove listeners correctly", () => {
@@ -176,8 +177,9 @@ describe("OAuthAuthManager", () => {
   });
 
   describe("login process", () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       authManager = new OAuthAuthManager();
+      await authManager.initialize();
     });
 
     it("should set authenticating state when starting login", async () => {
@@ -224,10 +226,11 @@ describe("OAuthAuthManager", () => {
 
       const state = authManager.getState();
       expect(state.state).toBe("error");
-      expect(state.error).toEqual({
+      expect(state.error).toMatchObject({
         code: "OAUTH_ERROR",
         message: "Failed to resolve identity",
       });
+      expect(state.error?.details).toBeDefined();
       expect(state.isLoading).toBe(false);
     });
 
@@ -241,16 +244,18 @@ describe("OAuthAuthManager", () => {
 
       const state = authManager.getState();
       expect(state.state).toBe("error");
-      expect(state.error).toEqual({
-        code: "UNKNOWN_ERROR",
-        message: "An unknown error occurred",
+      // String errors are now handled as OAUTH_ERROR with the string as message
+      expect(state.error).toMatchObject({
+        code: "OAUTH_ERROR",
+        message: "string error",
       });
     });
   });
 
   describe("OAuth callback handling", () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       authManager = new OAuthAuthManager();
+      await authManager.initialize();
     });
 
     it("should successfully handle OAuth callback", async () => {
@@ -322,16 +327,18 @@ describe("OAuthAuthManager", () => {
 
       const state = authManager.getState();
       expect(state.state).toBe("error");
-      expect(state.error).toEqual({
+      expect(state.error).toMatchObject({
         code: "OAUTH_ERROR",
         message: "Invalid authorization code",
       });
+      expect(state.error?.details).toBeDefined();
     });
   });
 
   describe("logout", () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       authManager = new OAuthAuthManager();
+      await authManager.initialize();
     });
 
     it("should clear state on logout", async () => {
@@ -376,6 +383,7 @@ describe("OAuthAuthManager", () => {
   describe("session persistence", () => {
     it("should persist session data after authentication", async () => {
       authManager = new OAuthAuthManager();
+      await authManager.initialize();
 
       const { finalizeAuthorization } = await import(
         "@atcute/oauth-browser-client"
@@ -443,9 +451,7 @@ describe("OAuthAuthManager", () => {
       });
 
       authManager = new OAuthAuthManager();
-
-      // Wait for async session loading
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await authManager.initialize();
 
       const state = authManager.getState();
       expect(state.state).toBe("authenticated");
@@ -458,9 +464,7 @@ describe("OAuthAuthManager", () => {
       const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
       authManager = new OAuthAuthManager();
-
-      // Wait for async session loading
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await authManager.initialize();
 
       expect(mockLocalStorage.removeItem).toHaveBeenCalledWith(
         "atproto_oauth_session",
@@ -472,26 +476,30 @@ describe("OAuthAuthManager", () => {
   });
 
   describe("utility methods", () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       authManager = new OAuthAuthManager();
+      await authManager.initialize();
     });
 
     it("should format errors correctly", () => {
       const testError = new Error("Test error");
       const result = (authManager as any).formatError(testError);
 
-      expect(result).toEqual({
+      expect(result).toMatchObject({
         code: "OAUTH_ERROR",
         message: "Test error",
       });
+      expect(result.details).toBeDefined();
+      expect(result.details.stack).toBeDefined();
     });
 
     it("should format unknown errors", () => {
       const result = (authManager as any).formatError("unknown error");
 
-      expect(result).toEqual({
-        code: "UNKNOWN_ERROR",
-        message: "An unknown error occurred",
+      // String errors now get OAUTH_ERROR code
+      expect(result).toMatchObject({
+        code: "OAUTH_ERROR",
+        message: "unknown error",
       });
     });
   });

@@ -20,6 +20,7 @@ describe("useAuth", () => {
 
     mockAuthManager = {
       getState: vi.fn(),
+      initialize: vi.fn().mockResolvedValue(undefined),
       addListener: vi.fn((listener) => {
         mockListeners.add(listener);
         return () => mockListeners.delete(listener);
