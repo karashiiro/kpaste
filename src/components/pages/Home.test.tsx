@@ -9,21 +9,6 @@ import { Home } from "./Home";
 
 const config = createTamagui(defaultConfig);
 
-// Mock window.matchMedia for Tamagui components
-Object.defineProperty(window, "matchMedia", {
-  writable: true,
-  value: vi.fn().mockImplementation((query) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
-});
-
 // Mock localStorage
 const mockLocalStorage = {
   getItem: vi.fn(),
