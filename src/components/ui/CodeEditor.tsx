@@ -19,7 +19,6 @@ export function CodeEditor({
   onChange,
   language,
   placeholder = "Paste your code or text here...",
-  minHeight = "200px",
   style = {},
 }: CodeEditorProps) {
   const theme = useTheme();
@@ -41,7 +40,7 @@ export function CodeEditor({
           fontFamily: '"Inconsolata", monospace',
           fontSize: 14,
           lineHeight: 1.4,
-          minHeight,
+          minHeight: "200px",
           backgroundColor: theme.background?.get(),
           color: theme.color?.get(),
           ...style,

@@ -1,7 +1,11 @@
 import { Sheet } from "@tamagui/sheet";
-import { ScrollView } from "@tamagui/scroll-view";
 import type { EditPasteForm } from "../../hooks/usePasteForm";
 import { PasteForm } from "./PasteForm";
+import { Card } from "@tamagui/card";
+
+function EditModelContainer({ children }: { children: React.ReactNode }) {
+  return <div>{children}</div>;
+}
 
 interface EditModalProps {
   isOpen: boolean;
@@ -28,25 +32,22 @@ export function EditModal({
       open={isOpen}
       onOpenChange={onClose}
       snapPoints={[90]}
-      dismissOnSnapToBottom
+      containerComponent={EditModelContainer}
+      disableDrag
     >
-      <Sheet.Overlay />
-      <Sheet.Handle />
       <Sheet.Frame
         padding="$4"
-        justifyContent="flex-start"
         alignItems="center"
-        gap="$2"
-        flex={1}
+        justifyContent="flex-start"
+        borderTopLeftRadius="none"
+        borderTopRightRadius="none"
+        overflow="scroll"
+        scrollbarWidth="none"
+        marginTop={130}
+        $sm={{ marginTop: 0 }}
       >
-        <ScrollView
-          maxWidth={600}
-          width="100%"
-          contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: "flex-start",
-          }}
-        >
+        <Card unstyled maxWidth={1200} width="100%">
+          <div style={{ height: 40 }} />
           <PasteForm
             form={editForm}
             loading={loading}
@@ -55,7 +56,9 @@ export function EditModal({
             onCancel={onClose}
             mode="edit"
           />
-        </ScrollView>
+          {/* Spacer for when modal fills screen to avoid touching bottom */}
+          <div style={{ height: 20 }} />
+        </Card>
       </Sheet.Frame>
     </Sheet>
   );

@@ -1,5 +1,5 @@
-import { useLoaderData } from "react-router";
-import { useMemo } from "react";
+import { useLoaderData, useLocation } from "react-router";
+import { useEffect, useMemo } from "react";
 import { YStack, XStack } from "@tamagui/stacks";
 import { Paragraph } from "@tamagui/text";
 import {
@@ -25,6 +25,16 @@ export function PasteView() {
   const forms = usePasteForm();
   const { updatePaste, loading: updateLoading } = useUpdatePaste();
   const { deletePaste, loading: deleteLoading } = useDeletePaste();
+  const location = useLocation();
+
+  // Close edit modal when navigating to a different paste
+  useEffect(() => {
+    if (forms.editForm) {
+      forms.cancelEdit();
+    }
+    // TODO: nasty hack, figure out how to remove this
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location]);
 
   // Check if current user owns this paste (reactive to session changes)
   const isOwner = useMemo(

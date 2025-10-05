@@ -26,7 +26,7 @@ export function RootLayout({ onLoginClick, children }: RootLayoutProps) {
       {isNavigating && (
         <Card
           unstyled
-          zIndex={999}
+          zIndex={1000000}
           borderRadius={0}
           backgroundColor="$accentOverlay"
           style={getShadowStyle(true)}

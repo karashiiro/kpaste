@@ -16,7 +16,7 @@ export function Header({ onLoginClick, isNavigating }: HeaderProps) {
   const { isAuthenticated, session, logout } = useAuth();
 
   return (
-    <View background="$primary" zIndex={1} style={getShadowStyle(true)}>
+    <View background="$primary" zIndex={1000000} style={getShadowStyle(true)}>
       <Card unstyled paddingVertical="$4" paddingHorizontal="$5">
         {/* Desktop layout: horizontal */}
         <XStack

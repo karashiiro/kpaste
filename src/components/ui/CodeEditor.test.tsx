@@ -131,17 +131,6 @@ describe("CodeEditor", () => {
       expect(textarea).toHaveValue(testCode);
     });
 
-    it("should apply custom minHeight", () => {
-      render(
-        <TestWrapper>
-          <CodeEditor {...defaultProps} minHeight="300px" />
-        </TestWrapper>,
-      );
-
-      const textarea = screen.getByTestId("code-editor-textarea");
-      expect(textarea).toHaveStyle({ minHeight: "300px" });
-    });
-
     it("should apply custom styles", () => {
       const customStyle = {
         backgroundColor: "#ff0000",

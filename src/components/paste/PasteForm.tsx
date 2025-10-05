@@ -23,6 +23,7 @@ interface PasteFormProps {
   onCancel?: () => void;
   mode: "create" | "edit";
   submitButtonText?: string;
+  codeEditorStyle?: React.CSSProperties;
 }
 
 export function PasteForm({
@@ -33,6 +34,7 @@ export function PasteForm({
   onCancel,
   mode,
   submitButtonText,
+  codeEditorStyle = {},
 }: PasteFormProps) {
   const isEdit = mode === "edit";
   const title = isEdit ? "Edit Paste" : "Create New Paste";
@@ -81,6 +83,7 @@ export function PasteForm({
             value={form.content}
             onChange={(content) => onFormChange({ ...form, content })}
             language={form.language}
+            style={codeEditorStyle}
           />
         </YStack>
 

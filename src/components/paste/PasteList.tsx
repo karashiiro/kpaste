@@ -2,7 +2,7 @@ import { YStack, XStack } from "@tamagui/stacks";
 import { ScrollView } from "@tamagui/scroll-view";
 import { InsetCard } from "../ui/InsetCard";
 import { Paragraph } from "@tamagui/text";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import {
   DocumentTextIcon,
   PencilIcon,
@@ -11,7 +11,7 @@ import {
 } from "@heroicons/react/24/outline";
 import type { PasteListItem } from "../../types";
 import { useDeletePaste } from "../../hooks/useDeletePaste";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { usePasteForm } from "../../hooks/usePasteForm";
 import { useUpdatePaste } from "../../hooks/useUpdatePaste";
 import { EditModal } from "./EditModal";
@@ -55,6 +55,16 @@ export function PasteList({
     },
     [forms],
   );
+
+  // Close edit modal when navigating to a different paste
+  const location = useLocation();
+  useEffect(() => {
+    if (forms.editForm) {
+      forms.cancelEdit();
+    }
+    // TODO: nasty hack, figure out how to remove this
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location]);
 
   if (pastes.length === 0) {
     return (
