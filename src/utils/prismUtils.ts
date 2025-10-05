@@ -1,31 +1,50 @@
 import { highlight, languages } from "prismjs";
 
+export const SUPPORTED_LANGUAGES = [
+  "text",
+  "javascript",
+  "typescript",
+  "python",
+  "java",
+  "cpp",
+  "rust",
+  "go",
+  "html",
+  "css",
+  "json",
+  "markdown",
+  "bash",
+];
+
 export function getPrismLanguage(language: string) {
   switch (language) {
     case "javascript":
-      return languages.javascript || languages.text;
+      return languages.javascript;
     case "typescript":
-      return languages.typescript || languages.javascript || languages.text;
+      return languages.typescript || languages.javascript;
     case "python":
-      return languages.python || languages.text;
+      return languages.python;
     case "java":
-      return languages.java || languages.text;
+      return languages.java;
     case "cpp":
-      return languages.cpp || languages.c || languages.clike || languages.text;
+      return languages.cpp || languages.c || languages.clike;
     case "rust":
-      return languages.rust || languages.text;
+      return languages.rust;
     case "go":
-      return languages.go || languages.text;
+      return languages.go;
     case "html":
-      return languages.html || languages.markup || languages.text;
+      return languages.html || languages.markup;
     case "css":
-      return languages.css || languages.text;
+      return languages.css;
     case "json":
-      return languages.json || languages.text;
+      return languages.json;
     case "markdown":
-      return languages.markdown || languages.text;
+      return languages.markdown;
+    case "bash":
+      return languages.bash;
     default:
-      return languages.text || languages.plain;
+      // Not a real language, prismjs will just return the code as-is
+      return languages.plain;
   }
 }
 

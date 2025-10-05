@@ -1,5 +1,6 @@
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react-swc";
+import prismjs from "vite-plugin-prismjs";
 import metadata from "./public/oauth-client-metadata.json" with { type: "json" };
 
 const SERVER_HOST = "127.0.0.1";
@@ -8,6 +9,24 @@ const SERVER_PORT = 5173;
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
+    prismjs({
+      languages: [
+        "javascript",
+        "typescript",
+        "python",
+        "java",
+        "cpp",
+        "rust",
+        "go",
+        "html",
+        "css",
+        "json",
+        "markdown",
+        "bash",
+      ],
+      theme: "tomorrow",
+      css: true,
+    }),
     react(),
     {
       name: "oauth-env-injection",

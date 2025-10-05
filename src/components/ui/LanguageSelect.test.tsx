@@ -4,6 +4,7 @@ import "@testing-library/jest-dom";
 import { TamaguiProvider, createTamagui } from "@tamagui/core";
 import { defaultConfig } from "@tamagui/config/v4";
 import { LanguageSelect } from "./LanguageSelect";
+import { SUPPORTED_LANGUAGES } from "../../utils/prismUtils";
 
 const config = createTamagui(defaultConfig);
 
@@ -130,6 +131,7 @@ describe("LanguageSelect", () => {
         "CSS",
         "JSON",
         "Markdown",
+        "Bash",
       ];
 
       // Check that all language options exist in the component
@@ -147,22 +149,9 @@ describe("LanguageSelect", () => {
       );
 
       // Count Select.Item elements by checking for unique language values
-      const languageCount = [
-        "text",
-        "javascript",
-        "typescript",
-        "python",
-        "java",
-        "cpp",
-        "rust",
-        "go",
-        "html",
-        "css",
-        "json",
-        "markdown",
-      ].length;
+      const languageCount = SUPPORTED_LANGUAGES.length;
 
-      expect(languageCount).toBe(12);
+      expect(languageCount).toBe(13);
     });
   });
 

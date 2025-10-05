@@ -67,6 +67,9 @@ export function LanguageSelect({
             <Select.Item index={11} value="markdown">
               <Select.ItemText>Markdown</Select.ItemText>
             </Select.Item>
+            <Select.Item index={12} value="bash">
+              <Select.ItemText>Bash</Select.ItemText>
+            </Select.Item>
           </Select.Group>
         </Select.Viewport>
 
