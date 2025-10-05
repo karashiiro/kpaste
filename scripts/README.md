@@ -24,7 +24,7 @@ node scripts/publish-lexicon.js --handle your.handle --password your-password --
 
 ### Notes
 
-- The script publishes the lexicon with rkey `moe.karashiiro.kpaste.paste`
+- The script publishes the lexicon with rkey `moe.karashiiro.kpaste.paste` - you will need to change this somehow if you want to deploy a custom one (not currently simple)
 - Uses `putRecord` so it will overwrite any existing schema with the same rkey
 - For accounts with 2FA enabled, use an app password instead of your main password
 - The published record can be accessed at `at://your.did/com.atproto.lexicon.schema/moe.karashiiro.kpaste.paste`
@@ -35,4 +35,4 @@ node scripts/publish-lexicon.js --handle your.handle --password your-password --
 pnpm publish-lexicon --handle alice.bsky.social --password my-app-password
 ```
 
-This will publish the lexicon schema to Alice's repository, making it discoverable by other AT Protocol applications.
+This will publish the lexicon schema to `alice.bsky.social`'s repository, making it discoverable by the application.

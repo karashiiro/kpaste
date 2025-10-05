@@ -10,6 +10,7 @@
     "format": "prettier . --write",
     "preview": "vite preview",
     "test": "vitest",
+    "test:coverage": "vitest run --coverage",
     "test:run": "vitest run",
     "publish-lexicon": "node scripts/publish-lexicon.js"
   },
