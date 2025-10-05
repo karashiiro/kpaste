@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -46,6 +45,7 @@ describe("PasteView - Live Data Integration", () => {
         const loaderData = await pasteLoader({
           params: { handle: identifier, rkey },
           request: new Request(`http://localhost/p/${identifier}/${rkey}`),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any);
 
         // Render the component with the loader data using Routes
