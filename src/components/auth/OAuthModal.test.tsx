@@ -97,11 +97,8 @@ describe("OAuthModal", () => {
         </TestWrapper>,
       );
 
-      expect(screen.getByText("Login to Bluesky")).toBeInTheDocument();
-      expect(
-        screen.getByText("Connect to Bluesky or any compatible service"),
-      ).toBeInTheDocument();
-      expect(screen.getByText("Handle or Email:")).toBeInTheDocument();
+      expect(screen.getByText("Login with ATProto")).toBeInTheDocument();
+      expect(screen.getByText("Handle:")).toBeInTheDocument();
       expect(screen.getByPlaceholderText("Your handle")).toBeInTheDocument();
       expect(screen.getByText("Cancel")).toBeInTheDocument();
       expect(screen.getByText("Continue with OAuth")).toBeInTheDocument();
@@ -482,8 +479,8 @@ describe("OAuthModal", () => {
         </TestWrapper>,
       );
 
-      // Should not crash
-      expect(screen.getByText("Login to Bluesky")).toBeInTheDocument();
+      // Should not throw
+      expect(screen.getByText("Login with ATProto")).toBeInTheDocument();
     });
 
     it("should handle special characters in handle", async () => {
