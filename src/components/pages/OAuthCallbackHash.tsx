@@ -96,7 +96,7 @@ export function OAuthCallbackHash() {
         alignItems="center"
         padding="$6"
         gap="$4"
-        backgroundColor="$backgroundSuperDark"
+        backgroundColor="$background"
       >
         <InsetCard padding="$4" theme="green" insetPadding="12px">
           <YStack alignItems="center" gap="$3">
@@ -121,7 +121,7 @@ export function OAuthCallbackHash() {
         alignItems="center"
         padding="$6"
         gap="$4"
-        backgroundColor="$backgroundSuperDark"
+        backgroundColor="$background"
       >
         <InsetCard padding="$4" theme="red" insetPadding="12px">
           <YStack alignItems="center" gap="$3">
@@ -155,7 +155,7 @@ export function OAuthCallbackHash() {
       alignItems="center"
       padding="$6"
       gap="$4"
-      backgroundColor="$backgroundSuperDark"
+      backgroundColor="$background"
     >
       <InsetCard padding="$4" theme="blue" insetPadding="12px">
         <YStack alignItems="center" gap="$3">
