@@ -85,6 +85,7 @@ const tamaguiConfig = createTamagui({
       blueHover: "rgba(44, 130, 223, 1)", // slightly darker blue for hover
       bluePress: "rgba(31, 110, 196, 1)", // darker blue for press
       blueText: "rgba(30, 68, 114, 1)", // darker blue for text on blue backgrounds
+      blueDisabled: "rgba(61, 154, 253, 0.5)", // faded blue for disabled state
 
       // Yellow colors (for create button)
       yellowBase: "#F4D03F", // bright sunny yellow base

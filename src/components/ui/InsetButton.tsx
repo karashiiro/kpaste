@@ -2,6 +2,10 @@ import { Button } from "@tamagui/button";
 import type { ButtonProps } from "@tamagui/button";
 import { Card } from "@tamagui/card";
 import { getShadowStyle, type ShadowProps } from "../../utils/shadowUtils";
+import {
+  getVariantStyles,
+  type ColorVariant,
+} from "../../utils/buttonVariants";
 
 export interface InsetButtonProps extends ButtonProps, ShadowProps {
   /** Border radius for the outer button */
@@ -13,6 +17,7 @@ export interface InsetButtonProps extends ButtonProps, ShadowProps {
   insetBorderColor?: string;
   /** Padding inside the card around content */
   cardPadding?: string | number;
+  colorVariant?: ColorVariant;
 }
 
 export function InsetButton({
@@ -23,8 +28,11 @@ export function InsetButton({
   insetBorderColor = "var(--borderColor)",
   cardPadding = "$2",
   shadow = true,
+  colorVariant = "default",
   ...buttonProps
 }: InsetButtonProps) {
+  const variantStyles = getVariantStyles(colorVariant);
+
   return (
     <Button
       padding={insetPadding}
@@ -43,6 +51,7 @@ export function InsetButton({
         outlineWidth: 0,
         borderColor: "transparent",
       }}
+      {...variantStyles}
       {...buttonProps}
     >
       <Card

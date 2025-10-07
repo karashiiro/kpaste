@@ -10,11 +10,11 @@ import { InsetButton } from "../ui/InsetButton";
 import {
   XMarkIcon,
   RocketLaunchIcon,
-  ArrowPathIcon,
   AtSymbolIcon,
 } from "@heroicons/react/24/outline";
 import { Image } from "@tamagui/image";
 import styles from "./OAuthModal.module.css";
+import { LoadingButton } from "../ui/LoadingButton";
 
 interface OAuthModalProps {
   isOpen: boolean;
@@ -187,34 +187,20 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
                 </XStack>
               </InsetButton>
 
-              <InsetButton
+              <LoadingButton
                 onPress={handleLogin}
+                loading={isAuthenticating}
+                loadingText="Redirecting..."
                 disabled={isLoading || !handle.trim() || isAuthenticating}
-                backgroundColor="$blue9"
+                iconComponent={RocketLaunchIcon}
+                colorVariant="blue"
                 color="white"
                 size="$4"
                 fontWeight="600"
                 flex={1}
-                theme="blue"
               >
-                <XStack alignItems="center" gap="$2">
-                  {isAuthenticating ? (
-                    <ArrowPathIcon
-                      width={20}
-                      height={20}
-                      color="white"
-                      className="animate-spin"
-                    />
-                  ) : (
-                    <RocketLaunchIcon width={20} height={20} color="white" />
-                  )}
-                  <Paragraph color="white" fontWeight="600">
-                    {isAuthenticating
-                      ? "Redirecting..."
-                      : "Continue with OAuth"}
-                  </Paragraph>
-                </XStack>
-              </InsetButton>
+                Continue with OAuth
+              </LoadingButton>
             </XStack>
           </YStack>
         </YStack>

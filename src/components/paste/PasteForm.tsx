@@ -46,11 +46,7 @@ export function PasteForm({
   ) : (
     <SparklesIcon width={20} height={20} />
   );
-  const submitIcon = isEdit ? (
-    <CheckIcon width={20} height={20} color="var(--greenText)" />
-  ) : (
-    <SparklesIcon width={20} height={20} color="var(--greenText)" />
-  );
+  const submitIcon = isEdit ? CheckIcon : SparklesIcon;
 
   return (
     <InsetCard gap="$4" insetPadding="8px">
@@ -119,7 +115,7 @@ export function PasteForm({
               disabled={loading || !form.content.trim()}
               loading={loading}
               loadingText={loadingText}
-              icon={submitIcon}
+              iconComponent={submitIcon}
               colorVariant="green"
               size="$4"
               flex={1}
@@ -141,7 +137,7 @@ export function PasteForm({
             disabled={loading || !form.content.trim()}
             loading={loading}
             loadingText={loadingText}
-            icon={submitIcon}
+            iconComponent={submitIcon}
             colorVariant="green"
             size="$4"
             marginTop="$2"

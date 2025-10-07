@@ -1,3 +1,5 @@
+import type { SizableTextProps } from "@tamagui/text";
+
 export type ColorVariant = "default" | "green" | "blue" | "red" | "yellow";
 
 export interface VariantStyles {
@@ -16,6 +18,20 @@ export interface VariantStyles {
     backgroundColor?: string;
     borderColor?: string;
   };
+}
+
+export function getCssColor(
+  color: SizableTextProps["color"],
+): string | undefined {
+  if (typeof color !== "string") {
+    return undefined;
+  }
+
+  if (color.startsWith("$")) {
+    return `var(--${color.slice(1)})`;
+  }
+
+  return color;
 }
 
 export function getVariantStyles(colorVariant: ColorVariant): VariantStyles {
@@ -43,6 +59,10 @@ export function getVariantStyles(colorVariant: ColorVariant): VariantStyles {
         backgroundColor: "$blueBase",
         color: "$blueText",
         insetBorderColor: "$borderColor",
+        disabledStyle: {
+          backgroundColor: "$blueDisabled",
+          borderColor: "transparent",
+        },
         hoverStyle: {
           backgroundColor: "$blueHover",
           borderColor: "transparent",
