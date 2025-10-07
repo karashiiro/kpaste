@@ -232,9 +232,6 @@ export class OAuthAuthManager {
       profile: {
         did: session.info.sub,
         handle: handle,
-        displayName: undefined,
-        avatar: undefined,
-        description: undefined,
       },
     };
   }

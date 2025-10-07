@@ -1,9 +1,20 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { TamaguiProvider, createTamagui } from "@tamagui/core";
 import { defaultConfig } from "@tamagui/config/v4";
 import { ErrorPage } from "./ErrorPage";
+
+const mockNavigate = vi.hoisted(() => vi.fn());
+
+vi.mock("react-router", async (importActual) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const actual = (await importActual()) as any;
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
 
 const config = createTamagui(defaultConfig);
 
@@ -26,23 +37,8 @@ vi.mock("../ui/ActionButton", () => ({
 }));
 
 describe("ErrorPage", () => {
-  let originalLocation: Location;
-
   beforeEach(() => {
-    vi.clearAllMocks();
-    // Save original location
-    originalLocation = window.location;
-    // Mock window.location.href
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    delete (window as any).location;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).location = { ...originalLocation, href: "" };
-  });
-
-  afterEach(() => {
-    // Restore original location
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).location = originalLocation;
+    vi.resetAllMocks();
   });
 
   describe("error kind variants", () => {
@@ -169,7 +165,7 @@ describe("ErrorPage", () => {
       const button = screen.getByTestId("action-button");
       fireEvent.click(button);
 
-      expect(window.location.href).toBe("/");
+      expect(mockNavigate).toHaveBeenCalledWith("/");
     });
 
     it("should render button with home icon", async () => {
@@ -260,7 +256,7 @@ describe("ErrorPage", () => {
 
       // Button should be clickable
       fireEvent.click(button);
-      expect(window.location.href).toBe("/");
+      expect(mockNavigate).toHaveBeenCalledWith("/");
     });
   });
 
@@ -369,7 +365,7 @@ describe("ErrorPage", () => {
       fireEvent.click(button);
 
       // Should still navigate correctly
-      expect(window.location.href).toBe("/");
+      expect(mockNavigate).toHaveBeenCalledWith("/");
     });
   });
 });

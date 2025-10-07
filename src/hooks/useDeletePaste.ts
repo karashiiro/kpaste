@@ -1,8 +1,10 @@
 import { useCallback, useState } from "react";
 import { useAuth } from "./useAuth";
+import { useNavigate } from "react-router";
 
 export function useDeletePaste() {
   const { getClient, isAuthenticated, session } = useAuth();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -47,7 +49,8 @@ export function useDeletePaste() {
         });
 
         if (response.ok) {
-          location.reload(); // Reload the page to reflect changes
+          // Redirect to home after successful deletion
+          navigate(`/pastes/${session.handle}`);
         } else {
           console.error("Delete error:", response.data);
           setError(`Failed to delete paste: ${response.status}`);
@@ -59,7 +62,7 @@ export function useDeletePaste() {
         setLoading(false);
       }
     },
-    [getClient, isAuthenticated, session?.did],
+    [getClient, isAuthenticated, navigate, session],
   );
 
   return { deletePaste, loading, error };

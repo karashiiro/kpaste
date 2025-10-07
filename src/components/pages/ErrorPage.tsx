@@ -3,6 +3,7 @@ import { Paragraph, H1 } from "@tamagui/text";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { PageContainer } from "../layout/PageContainer";
 import { ActionButton } from "../ui/ActionButton";
+import { useNavigate } from "react-router";
 
 type ErrorKind = "not-found" | "generic";
 
@@ -31,6 +32,7 @@ function getMessage(kind: ErrorKind) {
 }
 
 export function ErrorPage({ kind = "generic" }: ErrorPageProps) {
+  const navigate = useNavigate();
   return (
     <YStack minHeight="100vh" backgroundColor="$background">
       <PageContainer flex={1} justifyContent="center" alignItems="center">
@@ -42,7 +44,7 @@ export function ErrorPage({ kind = "generic" }: ErrorPageProps) {
             {getMessage(kind)}
           </Paragraph>
           <ActionButton
-            onPress={() => (window.location.href = "/")}
+            onPress={() => navigate("/")}
             colorVariant="blue"
             size="$4"
             marginTop="$3"

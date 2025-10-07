@@ -1,26 +1,28 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useDeletePaste } from "./useDeletePaste";
+import { useAuth } from "./useAuth";
+
+const mockNavigate = vi.hoisted(() => vi.fn());
 
 // Mock the dependencies
 vi.mock("./useAuth");
+vi.mock("react-router", async (importActual) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const actual = (await importActual()) as any;
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
 
-// Mock window.confirm and location.reload
+// Mock window.confirm
 Object.defineProperty(window, "confirm", {
   value: vi.fn(),
   writable: true,
 });
 
-Object.defineProperty(window, "location", {
-  value: { reload: vi.fn() },
-  writable: true,
-});
-
-// Mock useAuth hook
 const mockGetClient = vi.fn();
-
-import { useAuth } from "./useAuth";
 
 vi.mocked(useAuth).mockReturnValue({
   getClient: mockGetClient,
@@ -38,6 +40,7 @@ vi.mocked(useAuth).mockReturnValue({
   logout: vi.fn(),
   isLoading: false,
   error: undefined,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any);
 
 describe("useDeletePaste", () => {
@@ -46,7 +49,7 @@ describe("useDeletePaste", () => {
   };
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     mockGetClient.mockReturnValue(mockClient);
 
     // Reset useAuth to authenticated state for each test
@@ -66,6 +69,7 @@ describe("useDeletePaste", () => {
       logout: vi.fn(),
       isLoading: false,
       error: undefined,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
     // Mock confirm to return true by default
@@ -115,8 +119,8 @@ describe("useDeletePaste", () => {
       },
     );
 
-    // Verify page reload was called
-    expect(window.location.reload).toHaveBeenCalled();
+    // Verify navigation was called
+    expect(mockNavigate).toHaveBeenCalled();
   });
 
   it("should extract rkey from different URI formats", async () => {
@@ -166,7 +170,7 @@ describe("useDeletePaste", () => {
 
     // Verify delete API was NOT called
     expect(mockClient.post).not.toHaveBeenCalled();
-    expect(window.location.reload).not.toHaveBeenCalled();
+    expect(mockNavigate).not.toHaveBeenCalled();
   });
 
   it("should handle authentication errors", async () => {
@@ -178,6 +182,7 @@ describe("useDeletePaste", () => {
       logout: vi.fn(),
       isLoading: false,
       error: undefined,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
     const { result } = renderHook(() => useDeletePaste());
@@ -232,7 +237,7 @@ describe("useDeletePaste", () => {
     expect(result.current.error).toBe("Failed to delete paste: 404");
 
     expect(mockClient.post).toHaveBeenCalled();
-    expect(window.location.reload).not.toHaveBeenCalled();
+    expect(mockNavigate).not.toHaveBeenCalled();
   });
 
   it("should handle network errors", async () => {
@@ -262,11 +267,13 @@ describe("useDeletePaste", () => {
         active: true,
         endpoint: { url: "https://bsky.social" },
         createdAt: new Date(),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
       startLogin: vi.fn(),
       logout: vi.fn(),
       isLoading: false,
       error: undefined,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
     const { result } = renderHook(() => useDeletePaste());

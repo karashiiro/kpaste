@@ -15,9 +15,6 @@ export interface ServiceEndpoint {
 export interface UserProfile {
   did: string;
   handle: string;
-  displayName?: string;
-  avatar?: string;
-  description?: string;
 }
 
 // Extend the atcute session data with our additional fields
