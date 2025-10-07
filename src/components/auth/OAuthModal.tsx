@@ -21,6 +21,42 @@ interface OAuthModalProps {
   onClose: () => void;
 }
 
+function LoginBrandLink({
+  href,
+  name,
+  logoImage,
+}: {
+  href: string;
+  name: string;
+  logoImage: {
+    width: number;
+    height: number;
+    uri: string;
+  };
+}) {
+  return (
+    <XStack justifyContent="center" alignItems="center" gap="$2">
+      <Image
+        source={{
+          width: logoImage.width,
+          height: logoImage.height,
+          uri: logoImage.uri,
+        }}
+      />
+      <Paragraph fontWeight="500">
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.link}
+        >
+          {name}
+        </a>
+      </Paragraph>
+    </XStack>
+  );
+}
+
 export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
   const {
     isAuthenticated,
@@ -76,44 +112,25 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
           </H2>
           <YStack alignItems="center" gap="$4" maxWidth={350} width="100%">
             <XStack gap="$3" justifyContent="center">
-              <XStack justifyContent="center" alignItems="center" gap="$2">
-                <Image
-                  source={{
-                    width: 19,
-                    height: 16,
-                    uri: "/brand/bsky.svg",
-                  }}
-                />
-                <Paragraph fontWeight="500">
-                  <a
-                    href="https://bsky.app/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.link}
-                  >
-                    Bluesky
-                  </a>
-                </Paragraph>
-              </XStack>
-              <XStack justifyContent="center" alignItems="center" gap="$2">
-                <Image
-                  source={{
-                    width: 19,
-                    height: 19,
-                    uri: "/brand/tangled.svg",
-                  }}
-                />
-                <Paragraph fontWeight="500">
-                  <a
-                    href="https://tangled.org/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.link}
-                  >
-                    tangled
-                  </a>
-                </Paragraph>
-              </XStack>
+              <LoginBrandLink
+                href="https://bsky.app/"
+                name="Bluesky"
+                logoImage={{ width: 19, height: 16, uri: "/brand/bsky.svg" }}
+              />
+              <LoginBrandLink
+                href="https://blacksky.community/"
+                name="Blacksky"
+                logoImage={{
+                  width: 19,
+                  height: 17,
+                  uri: "/brand/blacksky.svg",
+                }}
+              />
+              <LoginBrandLink
+                href="https://tangled.org/"
+                name="tangled"
+                logoImage={{ width: 19, height: 19, uri: "/brand/tangled.svg" }}
+              />
               <XStack justifyContent="center" alignItems="center" gap="$2">
                 <AtSymbolIcon width={19} height={19} color="white" />
                 <Paragraph fontWeight="500">...and more!</Paragraph>
