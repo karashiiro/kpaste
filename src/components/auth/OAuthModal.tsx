@@ -24,23 +24,22 @@ interface OAuthModalProps {
 function LoginBrandLink({
   href,
   name,
-  logoImage,
+  logoUri,
 }: {
   href: string;
   name: string;
-  logoImage: {
-    width: number;
-    height: number;
-    uri: string;
-  };
+  logoUri: string;
 }) {
   return (
     <XStack justifyContent="center" alignItems="center" gap="$2">
       <Image
+        style={{
+          filter: "brightness(0) invert(1)",
+        }}
         source={{
-          width: logoImage.width,
-          height: logoImage.height,
-          uri: logoImage.uri,
+          width: 19,
+          height: 19,
+          uri: logoUri,
         }}
       />
       <Paragraph fontWeight="500">
@@ -115,21 +114,22 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
               <LoginBrandLink
                 href="https://bsky.app/"
                 name="Bluesky"
-                logoImage={{ width: 19, height: 16, uri: "/brand/bsky.svg" }}
+                logoUri="https://web-cdn.bsky.app/static/favicon-32x32.png"
               />
               <LoginBrandLink
                 href="https://blacksky.community/"
                 name="Blacksky"
-                logoImage={{
-                  width: 19,
-                  height: 17,
-                  uri: "/brand/blacksky.svg",
-                }}
+                logoUri="https://blacksky.community/static/favicon-32x32.png"
               />
               <LoginBrandLink
                 href="https://tangled.org/"
                 name="tangled"
-                logoImage={{ width: 19, height: 19, uri: "/brand/tangled.svg" }}
+                logoUri="https://tangled.org/favicon.ico"
+              />
+              <LoginBrandLink
+                href="https://sprk.so/"
+                name="Spark"
+                logoUri="https://sprk.so/meta/favicon.ico"
               />
               <XStack justifyContent="center" alignItems="center" gap="$2">
                 <AtSymbolIcon width={19} height={19} color="white" />
