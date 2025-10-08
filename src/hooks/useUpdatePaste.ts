@@ -73,6 +73,9 @@ export function useUpdatePaste() {
         });
 
         if (updateResponse.ok) {
+          // Wait a moment for consistency and then reload
+          // Fetching too soon can lead to a 404 on getBlob
+          await new Promise((resolve) => setTimeout(resolve, 500));
           location.reload();
         } else {
           console.error("Update error:", updateResponse.data);
