@@ -1,5 +1,5 @@
 import { Client, simpleFetchHandler } from "@atcute/client";
-import type { Did } from "@atcute/lexicons";
+import type { Did, ResourceUri } from "@atcute/lexicons";
 import { data } from "react-router";
 
 interface MiniDidDocument {
@@ -15,7 +15,8 @@ export interface ResolveUserPdsResult {
 export async function resolveUser(
   handle: string,
 ): Promise<ResolveUserPdsResult> {
-  // Resolve handle to DID using slingshot
+  // Resolve handle to DID/PDS using slingshot
+  // TODO: Have some sort of fallback - manual PDS resolution is annoying though
   const endpoint = new URL(
     "https://slingshot.microcosm.blue/xrpc/com.bad-example.identity.resolveMiniDoc",
   );
@@ -32,6 +33,54 @@ export async function resolveUser(
   const { did, pds } = miniDidDocument;
 
   return { did, pdsUrl: pds };
+}
+
+interface PasteRecord {
+  uri: ResourceUri;
+  value: Record<string, unknown>;
+  cid?: string | undefined;
+}
+
+async function getPasteRecordCore(
+  endpoint: string,
+  did: Did,
+  rkey: string,
+): Promise<PasteRecord> {
+  const handler = simpleFetchHandler({
+    service: endpoint,
+  });
+  const client = new Client({ handler: handler });
+  const recordResponse = await client.get("com.atproto.repo.getRecord", {
+    params: {
+      repo: did,
+      collection: "moe.karashiiro.kpaste.paste",
+      rkey: rkey,
+    },
+  });
+
+  if (!recordResponse.ok) {
+    throw data("Paste not found", { status: 404 });
+  }
+
+  return recordResponse.data;
+}
+
+export async function getPasteRecord(
+  endpoint: string,
+  did: Did,
+  rkey: string,
+): Promise<PasteRecord> {
+  try {
+    // Prefer slingshot for performance
+    return await getPasteRecordCore(
+      "https://slingshot.microcosm.blue",
+      did,
+      rkey,
+    );
+  } catch (error) {
+    console.error("Not found on slingshot, trying user's PDS:", error);
+    return await getPasteRecordCore(endpoint, did, rkey);
+  }
 }
 
 async function readTextBlob(client: Client, did: Did, blobCid: string) {

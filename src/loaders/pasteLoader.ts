@@ -1,7 +1,6 @@
-import { Client, simpleFetchHandler } from "@atcute/client";
 import { data, type LoaderFunctionArgs } from "react-router";
 import type { Main as PasteRecord } from "../lexicons/types/moe/karashiiro/kpaste/paste";
-import { getTextBlob, resolveUser } from "../utils/pdsUtils";
+import { getPasteRecord, getTextBlob, resolveUser } from "../utils/pdsUtils";
 
 export interface PasteLoaderData {
   uri: string;
@@ -24,24 +23,7 @@ export async function pasteLoader({
 
   const { did, pdsUrl } = await resolveUser(handle);
 
-  const pdsHandler = simpleFetchHandler({
-    service: pdsUrl,
-  });
-  const pdsClient = new Client({ handler: pdsHandler });
-
-  const recordResponse = await pdsClient.get("com.atproto.repo.getRecord", {
-    params: {
-      repo: did,
-      collection: "moe.karashiiro.kpaste.paste",
-      rkey: rkey,
-    },
-  });
-
-  if (!recordResponse.ok) {
-    throw data("Paste not found", { status: 404 });
-  }
-
-  const pasteData = recordResponse.data;
+  const pasteData = await getPasteRecord(pdsUrl, did, rkey);
 
   // Load the blob content
   const blobContent = (pasteData.value as PasteRecord).content;
