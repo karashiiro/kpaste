@@ -8,6 +8,10 @@ const SERVER_PORT = 5173;
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    outDir: "../../dist",
+    emptyOutDir: true,
+  },
   plugins: [
     prismjs({
       languages: [
