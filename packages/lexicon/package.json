@@ -1,7 +1,7 @@
 {
   "name": "@kpaste-app/lexicon",
-  "version": "1.0.1",
-  "description": "ATProto lexicon types for KPaste - code and text snippet sharing",
+  "version": "1.0.2",
+  "description": "ATProto lexicon types for KPaste",
   "type": "module",
   "main": "./src/lexicons/index.ts",
   "types": "./src/lexicons/index.ts",
