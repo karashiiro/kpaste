@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { useAuth } from "./useAuth";
+import { useAuth } from "@kpaste/atproto-auth";
 import { useNavigate } from "react-router";
 
 export function useDeletePaste() {

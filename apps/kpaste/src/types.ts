@@ -1,4 +1,4 @@
-import type { Main as PasteRecord } from "./lexicons/types/moe/karashiiro/kpaste/paste";
+import type { Main as PasteRecord } from "@kpaste/lexicon/types";
 
 export type { PasteRecord };
 

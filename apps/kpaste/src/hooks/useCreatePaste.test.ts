@@ -5,14 +5,14 @@ import { useCreatePaste } from "./useCreatePaste";
 import type { CreatePasteForm } from "./usePasteForm";
 
 // Mock the dependencies
-vi.mock("./useAuth");
+vi.mock("@kpaste/atproto-auth");
 vi.mock("react-router");
 
 // Mock useAuth hook
 const mockGetClient = vi.fn();
 const mockNavigate = vi.fn();
 
-import { useAuth } from "./useAuth";
+import { useAuth } from "@kpaste/atproto-auth";
 import { useNavigate } from "react-router";
 
 vi.mocked(useAuth).mockReturnValue({

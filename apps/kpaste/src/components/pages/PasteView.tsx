@@ -10,7 +10,7 @@ import {
 import { EditModal } from "../paste/EditModal";
 import { safeHighlight } from "../../utils/prismUtils";
 import type { PasteLoaderData } from "../../loaders/pasteLoader";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "@kpaste/atproto-auth";
 import { usePasteForm } from "../../hooks/usePasteForm";
 import { useUpdatePaste } from "../../hooks/useUpdatePaste";
 import { useDeletePaste } from "../../hooks/useDeletePaste";

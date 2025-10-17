@@ -4,7 +4,7 @@ import { BookOpenIcon } from "@heroicons/react/24/outline";
 import { useLoaderData, useParams } from "react-router";
 import { PasteList } from "../paste/PasteList";
 import type { PasteListLoaderData } from "../../loaders/pasteListLoader";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "@kpaste/atproto-auth";
 import { PasteListPaginationButtons } from "../paste/PasteListPaginationButtons";
 import { PageContainer } from "../layout/PageContainer";
 

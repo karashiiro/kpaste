@@ -1,12 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useDeletePaste } from "./useDeletePaste";
-import { useAuth } from "./useAuth";
+import { useAuth } from "@kpaste/atproto-auth";
 
 const mockNavigate = vi.hoisted(() => vi.fn());
 
 // Mock the dependencies
-vi.mock("./useAuth");
+vi.mock("@kpaste/atproto-auth");
 vi.mock("react-router", async (importActual) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const actual = (await importActual()) as any;

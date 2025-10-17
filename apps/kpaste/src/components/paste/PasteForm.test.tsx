@@ -6,7 +6,7 @@ import { defaultConfig } from "@tamagui/config/v4";
 import { TamaguiProvider } from "@tamagui/core";
 import { PasteForm } from "./PasteForm";
 import type { CreatePasteForm, EditPasteForm } from "../../hooks/usePasteForm";
-import type { Main as PasteRecord } from "../../lexicons/types/moe/karashiiro/kpaste/paste";
+import type { Main as PasteRecord } from "@kpaste/lexicon/types";
 
 // Mock window.matchMedia for Tamagui Select
 Object.defineProperty(window, "matchMedia", {

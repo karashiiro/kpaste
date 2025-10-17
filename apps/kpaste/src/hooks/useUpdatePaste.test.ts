@@ -3,10 +3,10 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useUpdatePaste } from "./useUpdatePaste";
 import type { EditPasteForm } from "./usePasteForm";
-import type { Main as PasteRecord } from "../lexicons/types/moe/karashiiro/kpaste/paste";
+import type { Main as PasteRecord } from "@kpaste/lexicon/types";
 
 // Mock the dependencies
-vi.mock("./useAuth");
+vi.mock("@kpaste/atproto-auth");
 
 // Mock location.reload
 Object.defineProperty(window, "location", {
@@ -17,7 +17,7 @@ Object.defineProperty(window, "location", {
 // Mock useAuth hook
 const mockGetClient = vi.fn();
 
-import { useAuth } from "./useAuth";
+import { useAuth } from "@kpaste/atproto-auth";
 
 vi.mocked(useAuth).mockReturnValue({
   getClient: mockGetClient,

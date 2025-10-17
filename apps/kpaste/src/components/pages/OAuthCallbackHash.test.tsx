@@ -21,7 +21,7 @@ vi.mock("react-router", () => ({
 const mockHandleOAuthCallback = vi.fn();
 const mockUseAuth = vi.fn();
 
-vi.mock("../../hooks/useAuth", () => ({
+vi.mock("@kpaste/atproto-auth", () => ({
   useAuth: () => mockUseAuth(),
 }));
 

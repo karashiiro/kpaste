@@ -1,0 +1,20 @@
+{
+  "name": "@kpaste/lexicon",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/lexicons/index.ts",
+  "exports": {
+    ".": "./src/lexicons/index.ts",
+    "./types": "./src/lexicons/types/moe/karashiiro/kpaste/paste.ts"
+  },
+  "scripts": {
+    "generate": "lex-cli generate -c ./lex.config.js"
+  },
+  "devDependencies": {
+    "@atcute/lex-cli": "^2.2.0"
+  },
+  "dependencies": {
+    "@atcute/atproto": "^3.1.4"
+  }
+}

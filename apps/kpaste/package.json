@@ -14,6 +14,8 @@
     "publish-lexicon": "node scripts/publish-lexicon.js"
   },
   "dependencies": {
+    "@kpaste/atproto-auth": "workspace:*",
+    "@kpaste/lexicon": "workspace:*",
     "@atcute/atproto": "^3.1.4",
     "@atcute/client": "^4.0.3",
     "@atcute/lexicons": "^1.1.1",

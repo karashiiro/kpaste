@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "@kpaste/atproto-auth";
 import { Sheet } from "@tamagui/sheet";
 import { XStack, YStack } from "@tamagui/stacks";
 import { Paragraph, H2 } from "@tamagui/text";

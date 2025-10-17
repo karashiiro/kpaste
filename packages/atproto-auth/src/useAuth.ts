@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { OAuthAuthManager } from "../auth/OAuthAuthManager";
-import type { OAuthLoginRequest } from "../auth/OAuthAuthManager";
-import type { AuthStateData, AuthManagerConfig } from "../auth/types";
+import { OAuthAuthManager } from "./OAuthAuthManager";
+import type { OAuthLoginRequest } from "./OAuthAuthManager";
+import type { AuthStateData, AuthManagerConfig } from "./types";
 import type { Client } from "@atcute/client";
 
 let globalAuthManager: OAuthAuthManager | null = null;

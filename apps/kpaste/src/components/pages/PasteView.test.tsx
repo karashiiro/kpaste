@@ -20,7 +20,7 @@ vi.mock("react-router", async () => {
 });
 
 // Mock all the hooks
-vi.mock("../../hooks/useAuth", () => ({
+vi.mock("@kpaste/atproto-auth", () => ({
   useAuth: vi.fn(),
 }));
 
@@ -149,7 +149,7 @@ describe("PasteView", () => {
     vi.mocked(routerModule.useLoaderData).mockReturnValue(mockPasteData);
 
     // Mock useAuth - default to not authenticated
-    const useAuthModule = await import("../../hooks/useAuth");
+    const useAuthModule = await import("@kpaste/atproto-auth");
     vi.mocked(useAuthModule.useAuth).mockReturnValue({
       session: null,
     } as any);
@@ -267,7 +267,7 @@ describe("PasteView", () => {
     });
 
     it("should show edit/delete buttons for paste owner", async () => {
-      const useAuthModule = await import("../../hooks/useAuth");
+      const useAuthModule = await import("@kpaste/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         session: mockSession,
       } as any);
@@ -283,7 +283,7 @@ describe("PasteView", () => {
     });
 
     it("should handle case where session handle doesn't match paste handle", async () => {
-      const useAuthModule = await import("../../hooks/useAuth");
+      const useAuthModule = await import("@kpaste/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         session: { ...mockSession, handle: "different.bsky.social" },
       } as any);
@@ -299,7 +299,7 @@ describe("PasteView", () => {
     });
 
     it("should handle undefined session gracefully", async () => {
-      const useAuthModule = await import("../../hooks/useAuth");
+      const useAuthModule = await import("@kpaste/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         session: undefined,
       } as any);
@@ -317,7 +317,7 @@ describe("PasteView", () => {
 
   describe("edit functionality", () => {
     beforeEach(async () => {
-      const useAuthModule = await import("../../hooks/useAuth");
+      const useAuthModule = await import("@kpaste/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         session: mockSession,
       } as any);
@@ -428,7 +428,7 @@ describe("PasteView", () => {
 
   describe("delete functionality", () => {
     beforeEach(async () => {
-      const useAuthModule = await import("../../hooks/useAuth");
+      const useAuthModule = await import("@kpaste/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         session: mockSession,
       } as any);
@@ -485,7 +485,7 @@ describe("PasteView", () => {
 
   describe("loading states", () => {
     beforeEach(async () => {
-      const useAuthModule = await import("../../hooks/useAuth");
+      const useAuthModule = await import("@kpaste/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         session: mockSession,
       } as any);
@@ -596,7 +596,7 @@ describe("PasteView", () => {
     });
 
     it("should handle session changes reactively", async () => {
-      const useAuthModule = await import("../../hooks/useAuth");
+      const useAuthModule = await import("@kpaste/atproto-auth");
 
       // Initially not owner
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
@@ -628,7 +628,7 @@ describe("PasteView", () => {
 
   describe("responsive design", () => {
     beforeEach(async () => {
-      const useAuthModule = await import("../../hooks/useAuth");
+      const useAuthModule = await import("@kpaste/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         session: mockSession,
       } as any);

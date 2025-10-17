@@ -29,6 +29,12 @@ importers:
       '@heroicons/react':
         specifier: ^2.2.0
         version: 2.2.0(react@19.1.1)
+      '@kpaste/atproto-auth':
+        specifier: workspace:*
+        version: link:../../packages/atproto-auth
+      '@kpaste/lexicon':
+        specifier: workspace:*
+        version: link:../../packages/lexicon
       '@tamagui/button':
         specifier: ^1.134.0
         version: 1.134.0(react-dom@19.1.1(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
@@ -153,6 +159,28 @@ importers:
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.5.2)(jsdom@27.0.0(postcss@8.5.6))(terser@5.44.0)
+
+  packages/atproto-auth:
+    dependencies:
+      '@atcute/client':
+        specifier: ^4.0.0
+        version: 4.0.3
+      '@atcute/oauth-browser-client':
+        specifier: ^1.0.0
+        version: 1.0.26
+      react:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.1
+
+  packages/lexicon:
+    dependencies:
+      '@atcute/atproto':
+        specifier: ^3.1.4
+        version: 3.1.4
+    devDependencies:
+      '@atcute/lex-cli':
+        specifier: ^2.2.0
+        version: 2.2.0
 
 packages:
 
