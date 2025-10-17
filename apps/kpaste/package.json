@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@kpaste/atproto-auth": "workspace:*",
+    "@kpaste/atproto-utils": "workspace:*",
     "@kpaste/lexicon": "workspace:*",
     "@atcute/atproto": "^3.1.4",
     "@atcute/client": "^4.0.3",

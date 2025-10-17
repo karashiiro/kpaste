@@ -32,6 +32,9 @@ importers:
       '@kpaste/atproto-auth':
         specifier: workspace:*
         version: link:../../packages/atproto-auth
+      '@kpaste/atproto-utils':
+        specifier: workspace:*
+        version: link:../../packages/atproto-utils
       '@kpaste/lexicon':
         specifier: workspace:*
         version: link:../../packages/lexicon
@@ -178,6 +181,19 @@ importers:
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@22.18.10)(jsdom@27.0.0(postcss@8.5.6))(terser@5.44.0)
+
+  packages/atproto-utils:
+    dependencies:
+      '@atcute/lexicons':
+        specifier: ^1.1.1
+        version: 1.1.1
+    devDependencies:
+      '@atcute/client':
+        specifier: ^4.0.3
+        version: 4.0.3
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.4(@types/node@24.5.2)(jsdom@27.0.0(postcss@8.5.6))(terser@5.44.0)
 
   packages/lexicon:
     dependencies:
