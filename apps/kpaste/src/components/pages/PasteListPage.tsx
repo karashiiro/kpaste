@@ -4,9 +4,9 @@ import { BookOpenIcon } from "@heroicons/react/24/outline";
 import { useLoaderData, useParams } from "react-router";
 import { PasteList } from "../paste/PasteList";
 import type { PasteListLoaderData } from "../../loaders/pasteListLoader";
-import { useAuth } from "@kpaste/atproto-auth";
+import { useAuth } from "@kpaste-app/atproto-auth";
 import { PasteListPaginationButtons } from "../paste/PasteListPaginationButtons";
-import { PageContainer } from "@kpaste/ui";
+import { PageContainer } from "@kpaste-app/ui";
 
 export function PasteListPage() {
   const { isAuthenticated, session } = useAuth();

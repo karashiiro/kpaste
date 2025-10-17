@@ -6,7 +6,7 @@ import {
   ArrowRightStartOnRectangleIcon,
   RocketLaunchIcon,
 } from "@heroicons/react/24/outline";
-import type { AuthSession } from "@kpaste/atproto-auth/types";
+import type { AuthSession } from "@kpaste-app/atproto-auth/types";
 
 interface AuthSectionProps {
   isAuthenticated: boolean;

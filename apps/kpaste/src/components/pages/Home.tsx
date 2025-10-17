@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { YStack, XStack } from "@tamagui/stacks";
 import { Paragraph } from "@tamagui/text";
-import { InsetCard, PageContainer, useAuthModal } from "@kpaste/ui";
+import { InsetCard, PageContainer, useAuthModal } from "@kpaste-app/ui";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useAuth } from "@kpaste/atproto-auth";
+import { useAuth } from "@kpaste-app/atproto-auth";
 import { usePasteForm } from "../../hooks/usePasteForm";
 import { useCreatePaste } from "../../hooks/useCreatePaste";
 import { PasteForm } from "../paste/PasteForm";

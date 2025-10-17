@@ -4,7 +4,7 @@ import { createHashRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import { TamaguiProvider, createTamagui, Theme } from "@tamagui/core";
 import { defaultConfig } from "@tamagui/config/v4";
-import { LoadingFallback, AppErrorBoundary } from "@kpaste/ui";
+import { LoadingFallback, AppErrorBoundary } from "@kpaste-app/ui";
 import { pasteLoader } from "./loaders/pasteLoader.ts";
 import { pasteListLoader } from "./loaders/pasteListLoader.ts";
 import { ErrorPage } from "./components/pages/ErrorPage.tsx";

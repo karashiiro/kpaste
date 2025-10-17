@@ -18,7 +18,7 @@ vi.mock("react-router", () => ({
   useParams: vi.fn(),
 }));
 
-vi.mock("@kpaste/atproto-auth", () => ({
+vi.mock("@kpaste-app/atproto-auth", () => ({
   useAuth: vi.fn(),
 }));
 
@@ -32,8 +32,8 @@ vi.mock("../paste/PasteListPaginationButtons", () => ({
   )),
 }));
 
-vi.mock("@kpaste/ui", async () => {
-  const actual = await vi.importActual("@kpaste/ui");
+vi.mock("@kpaste-app/ui", async () => {
+  const actual = await vi.importActual("@kpaste-app/ui");
   return {
     ...actual,
     PageContainer: vi.fn(({ children }) => <div>{children}</div>),
@@ -83,7 +83,7 @@ describe("PasteListPage", () => {
   describe("rendering", () => {
     it("should render the paste list page with basic structure", async () => {
       const { useLoaderData, useParams } = await import("react-router");
-      const { useAuth } = await import("@kpaste/atproto-auth");
+      const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
@@ -108,7 +108,7 @@ describe("PasteListPage", () => {
 
     it("should render with empty paste list", async () => {
       const { useLoaderData, useParams } = await import("react-router");
-      const { useAuth } = await import("@kpaste/atproto-auth");
+      const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: [],
@@ -132,7 +132,7 @@ describe("PasteListPage", () => {
 
     it("should render nothing when userHandle is undefined", async () => {
       const { useLoaderData, useParams } = await import("react-router");
-      const { useAuth } = await import("@kpaste/atproto-auth");
+      const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
@@ -159,7 +159,7 @@ describe("PasteListPage", () => {
   describe("viewing own pastes", () => {
     it("should display 'Your Pastes' when viewing own pastes", async () => {
       const { useLoaderData, useParams } = await import("react-router");
-      const { useAuth } = await import("@kpaste/atproto-auth");
+      const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
@@ -187,7 +187,7 @@ describe("PasteListPage", () => {
 
     it("should pass currentUserSession to PasteList when authenticated", async () => {
       const { useLoaderData, useParams } = await import("react-router");
-      const { useAuth } = await import("@kpaste/atproto-auth");
+      const { useAuth } = await import("@kpaste-app/atproto-auth");
       const { PasteList } = await import("../paste/PasteList");
 
       const mockSession = {
@@ -225,7 +225,7 @@ describe("PasteListPage", () => {
   describe("viewing other user's pastes", () => {
     it("should display other user's handle when viewing their pastes", async () => {
       const { useLoaderData, useParams } = await import("react-router");
-      const { useAuth } = await import("@kpaste/atproto-auth");
+      const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
@@ -257,7 +257,7 @@ describe("PasteListPage", () => {
 
     it("should display user handle when not authenticated", async () => {
       const { useLoaderData, useParams } = await import("react-router");
-      const { useAuth } = await import("@kpaste/atproto-auth");
+      const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
@@ -286,7 +286,7 @@ describe("PasteListPage", () => {
 
     it("should pass null session to PasteList when not authenticated", async () => {
       const { useLoaderData, useParams } = await import("react-router");
-      const { useAuth } = await import("@kpaste/atproto-auth");
+      const { useAuth } = await import("@kpaste-app/atproto-auth");
       const { PasteList } = await import("../paste/PasteList");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
@@ -319,7 +319,7 @@ describe("PasteListPage", () => {
   describe("pagination", () => {
     it("should render pagination buttons twice (top and bottom)", async () => {
       const { useLoaderData, useParams } = await import("react-router");
-      const { useAuth } = await import("@kpaste/atproto-auth");
+      const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
@@ -348,7 +348,7 @@ describe("PasteListPage", () => {
   describe("accessibility", () => {
     it("should have proper heading structure", async () => {
       const { useLoaderData, useParams } = await import("react-router");
-      const { useAuth } = await import("@kpaste/atproto-auth");
+      const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
@@ -377,7 +377,7 @@ describe("PasteListPage", () => {
 
     it("should render book icon for visual identification", async () => {
       const { useLoaderData, useParams } = await import("react-router");
-      const { useAuth } = await import("@kpaste/atproto-auth");
+      const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
@@ -405,7 +405,7 @@ describe("PasteListPage", () => {
   describe("component integration", () => {
     it("should pass correct props to PasteList component", async () => {
       const { useLoaderData, useParams } = await import("react-router");
-      const { useAuth } = await import("@kpaste/atproto-auth");
+      const { useAuth } = await import("@kpaste-app/atproto-auth");
       const { PasteList } = await import("../paste/PasteList");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
@@ -436,8 +436,8 @@ describe("PasteListPage", () => {
 
     it("should render PageContainer with correct props", async () => {
       const { useLoaderData, useParams } = await import("react-router");
-      const { useAuth } = await import("@kpaste/atproto-auth");
-      const { PageContainer } = await import("@kpaste/ui");
+      const { useAuth } = await import("@kpaste-app/atproto-auth");
+      const { PageContainer } = await import("@kpaste-app/ui");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,

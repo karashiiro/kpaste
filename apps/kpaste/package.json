@@ -14,10 +14,10 @@
     "publish-lexicon": "node scripts/publish-lexicon.js"
   },
   "dependencies": {
-    "@kpaste/atproto-auth": "workspace:*",
-    "@kpaste/atproto-utils": "workspace:*",
-    "@kpaste/lexicon": "workspace:*",
-    "@kpaste/ui": "workspace:*",
+    "@kpaste-app/atproto-auth": "workspace:*",
+    "@kpaste-app/atproto-utils": "workspace:*",
+    "@kpaste-app/lexicon": "workspace:*",
+    "@kpaste-app/ui": "workspace:*",
     "@atcute/atproto": "^3.1.4",
     "@atcute/client": "^4.0.3",
     "@atcute/lexicons": "^1.1.1",

@@ -1,6 +1,6 @@
 import { YStack, XStack } from "@tamagui/stacks";
 import { ScrollView } from "@tamagui/scroll-view";
-import { InsetCard } from "@kpaste/ui";
+import { InsetCard } from "@kpaste-app/ui";
 import { Paragraph } from "@tamagui/text";
 import { Link, useLocation } from "react-router";
 import {
@@ -15,10 +15,10 @@ import { useCallback, useEffect } from "react";
 import { usePasteForm } from "../../hooks/usePasteForm";
 import { useUpdatePaste } from "../../hooks/useUpdatePaste";
 import { EditModal } from "./EditModal";
-import { safeHighlight } from "@kpaste/ui";
+import { safeHighlight } from "@kpaste-app/ui";
 import { parseAtUri } from "../../utils/pdsUtils";
 import { Card } from "@tamagui/card";
-import { InsetCircleButton } from "@kpaste/ui";
+import { InsetCircleButton } from "@kpaste-app/ui";
 
 interface PasteListProps {
   pastes: PasteListItem[];

@@ -10,11 +10,19 @@ This is a pnpm workspace monorepo:
 kpaste/
 ├── apps/
 │   └── kpaste/          # Main KPaste application
-├── packages/            # Shared packages (for future reusable code)
+├── packages/
+│   ├── lexicon/         # ATProto lexicon types (published to npm)
+│   ├── atproto-auth/    # Authentication package
+│   ├── atproto-utils/   # ATProto utility functions
+│   └── ui/              # Shared UI components
 └── pnpm-workspace.yaml  # Workspace configuration
 ```
 
 All commands can be run from the root directory and will automatically target the appropriate workspace packages.
+
+### Published Packages
+
+- **[@kpaste-app/lexicon](https://www.npmjs.com/package/@kpaste-app/lexicon)** - ATProto lexicon types for KPaste, published separately for use in other applications. See [packages/lexicon/README.md](./packages/lexicon/README.md) for publishing workflow.
 
 ## Development
 

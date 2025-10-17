@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import type { CreatePasteForm } from "./usePasteForm";
-import { useAuth } from "@kpaste/atproto-auth";
+import { useAuth } from "@kpaste-app/atproto-auth";
 import { useNavigate } from "react-router";
 
 export function useCreatePaste() {

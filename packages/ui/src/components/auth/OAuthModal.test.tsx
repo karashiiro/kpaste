@@ -5,7 +5,7 @@ import "@testing-library/jest-dom";
 import { MemoryRouter } from "react-router";
 import { TamaguiProvider, createTamagui } from "@tamagui/core";
 import { defaultConfig } from "@tamagui/config/v4";
-import type { AuthStateData } from "@kpaste/atproto-auth/types";
+import type { AuthStateData } from "@kpaste-app/atproto-auth/types";
 import { OAuthModal } from "./OAuthModal";
 
 const config = createTamagui(defaultConfig);
@@ -40,7 +40,7 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
 }));
 
 // Mock useAuth hook
-vi.mock("@kpaste/atproto-auth", () => ({
+vi.mock("@kpaste-app/atproto-auth", () => ({
   useAuth: vi.fn(),
 }));
 
@@ -81,7 +81,7 @@ describe("OAuthModal", () => {
     vi.clearAllMocks();
 
     // Mock useAuth with default state
-    const useAuthModule = await import("@kpaste/atproto-auth");
+    const useAuthModule = await import("@kpaste-app/atproto-auth");
     vi.mocked(useAuthModule.useAuth).mockReturnValue(defaultAuthState);
   });
 
@@ -231,7 +231,7 @@ describe("OAuthModal", () => {
 
   describe("authentication states", () => {
     it("should show loading state when authenticating", async () => {
-      const useAuthModule = await import("@kpaste/atproto-auth");
+      const useAuthModule = await import("@kpaste-app/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         ...defaultAuthState,
         isAuthenticating: true,
@@ -257,7 +257,7 @@ describe("OAuthModal", () => {
     });
 
     it("should close modal when user becomes authenticated", async () => {
-      const useAuthModule = await import("@kpaste/atproto-auth");
+      const useAuthModule = await import("@kpaste-app/atproto-auth");
 
       // Initially not authenticated
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
@@ -291,7 +291,7 @@ describe("OAuthModal", () => {
     });
 
     it("should disable submit button when loading", async () => {
-      const useAuthModule = await import("@kpaste/atproto-auth");
+      const useAuthModule = await import("@kpaste-app/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         ...defaultAuthState,
         isLoading: true,
@@ -342,7 +342,7 @@ describe("OAuthModal", () => {
 
   describe("error handling", () => {
     it("should display error message when hasError is true", async () => {
-      const useAuthModule = await import("@kpaste/atproto-auth");
+      const useAuthModule = await import("@kpaste-app/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         ...defaultAuthState,
         hasError: true,
@@ -371,7 +371,7 @@ describe("OAuthModal", () => {
     });
 
     it("should not display error when error is null", async () => {
-      const useAuthModule = await import("@kpaste/atproto-auth");
+      const useAuthModule = await import("@kpaste-app/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         ...defaultAuthState,
         hasError: true,
@@ -466,7 +466,7 @@ describe("OAuthModal", () => {
 
   describe("edge cases", () => {
     it("should handle undefined error gracefully", async () => {
-      const useAuthModule = await import("@kpaste/atproto-auth");
+      const useAuthModule = await import("@kpaste-app/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         ...defaultAuthState,
         hasError: true,
@@ -527,7 +527,7 @@ describe("OAuthModal", () => {
     });
 
     it("should handle rapid state changes", async () => {
-      const useAuthModule = await import("@kpaste/atproto-auth");
+      const useAuthModule = await import("@kpaste-app/atproto-auth");
 
       const { rerender } = render(
         <TestWrapper>

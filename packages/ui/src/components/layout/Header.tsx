@@ -1,6 +1,6 @@
 import { XStack, YStack } from "@tamagui/stacks";
 import { View } from "@tamagui/core";
-import { useAuth } from "@kpaste/atproto-auth";
+import { useAuth } from "@kpaste-app/atproto-auth";
 import { HeaderLogo } from "./HeaderLogo";
 import { CreatePasteButton } from "../ui/CreatePasteButton";
 import { AuthSection } from "../auth/AuthSection";

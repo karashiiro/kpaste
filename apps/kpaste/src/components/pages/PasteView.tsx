@@ -8,15 +8,15 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { EditModal } from "../paste/EditModal";
-import { safeHighlight } from "@kpaste/ui";
+import { safeHighlight } from "@kpaste-app/ui";
 import type { PasteLoaderData } from "../../loaders/pasteLoader";
-import { useAuth } from "@kpaste/atproto-auth";
+import { useAuth } from "@kpaste-app/atproto-auth";
 import { usePasteForm } from "../../hooks/usePasteForm";
 import { useUpdatePaste } from "../../hooks/useUpdatePaste";
 import { useDeletePaste } from "../../hooks/useDeletePaste";
-import { PageContainer } from "@kpaste/ui";
+import { PageContainer } from "@kpaste-app/ui";
 import { PasteMetadata } from "../paste/PasteMetadata";
-import { LoadingButton } from "@kpaste/ui";
+import { LoadingButton } from "@kpaste-app/ui";
 import { Card } from "@tamagui/card";
 
 export function PasteView() {

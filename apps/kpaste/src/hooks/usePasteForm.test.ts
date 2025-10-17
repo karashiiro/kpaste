@@ -5,7 +5,7 @@ import {
   type CreatePasteForm,
   type EditPasteForm,
 } from "./usePasteForm";
-import type { Main as PasteRecord } from "@kpaste/lexicon/types";
+import type { Main as PasteRecord } from "@kpaste-app/lexicon/types";
 
 describe("usePasteForm", () => {
   it("should initialize with default values", () => {

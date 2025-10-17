@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Outlet, useLocation } from "react-router";
-import { OAuthModal, RootLayout, AuthModalProvider } from "@kpaste/ui";
+import { OAuthModal, RootLayout, AuthModalProvider } from "@kpaste-app/ui";
 
 export function App() {
   const [showAuthModal, setShowAuthModal] = useState(false);

@@ -2,13 +2,13 @@ import { useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router";
 import { YStack } from "@tamagui/stacks";
 import { Paragraph } from "@tamagui/text";
-import { InsetCard } from "@kpaste/ui";
+import { InsetCard } from "@kpaste-app/ui";
 import {
   ArrowPathIcon,
   CheckCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { useAuth } from "@kpaste/atproto-auth";
+import { useAuth } from "@kpaste-app/atproto-auth";
 
 export function OAuthCallbackHash() {
   const navigate = useNavigate();

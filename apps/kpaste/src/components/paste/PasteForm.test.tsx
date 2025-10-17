@@ -6,7 +6,7 @@ import { defaultConfig } from "@tamagui/config/v4";
 import { TamaguiProvider } from "@tamagui/core";
 import { PasteForm } from "./PasteForm";
 import type { CreatePasteForm, EditPasteForm } from "../../hooks/usePasteForm";
-import type { Main as PasteRecord } from "@kpaste/lexicon/types";
+import type { Main as PasteRecord } from "@kpaste-app/lexicon/types";
 
 // Mock window.matchMedia for Tamagui Select
 Object.defineProperty(window, "matchMedia", {
@@ -24,8 +24,8 @@ Object.defineProperty(window, "matchMedia", {
 });
 
 // Mock CodeEditor and LanguageSelect components
-vi.mock("@kpaste/ui", async () => {
-  const actual = await vi.importActual("@kpaste/ui");
+vi.mock("@kpaste-app/ui", async () => {
+  const actual = await vi.importActual("@kpaste-app/ui");
   return {
     ...actual,
     CodeEditor: ({

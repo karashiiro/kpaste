@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useAuth } from "@kpaste/atproto-auth";
+import { useAuth } from "@kpaste-app/atproto-auth";
 import type { EditPasteForm } from "./usePasteForm";
 
 export function useUpdatePaste() {

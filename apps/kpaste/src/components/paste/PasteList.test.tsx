@@ -50,8 +50,8 @@ vi.mock("./EditModal", () => ({
 }));
 
 // Mock utility functions
-vi.mock("@kpaste/ui", async () => {
-  const actual = await vi.importActual("@kpaste/ui");
+vi.mock("@kpaste-app/ui", async () => {
+  const actual = await vi.importActual("@kpaste-app/ui");
   return {
     ...actual,
     safeHighlight: vi.fn(
@@ -215,7 +215,7 @@ describe("PasteList", () => {
     });
 
     it("should render paste content with syntax highlighting", async () => {
-      const uiModule = await import("@kpaste/ui");
+      const uiModule = await import("@kpaste-app/ui");
 
       render(
         <TestWrapper>

@@ -4,10 +4,13 @@ import {
   getTextBlob as getTextBlobGeneric,
   getTextBlobs as getTextBlobsGeneric,
   parseAtUri as parseAtUriGeneric,
-} from "@kpaste/atproto-utils";
+} from "@kpaste-app/atproto-utils";
 
 // Re-export generic functions that don't need wrapping
-export { resolveUser, type ResolveUserPdsResult } from "@kpaste/atproto-utils";
+export {
+  resolveUser,
+  type ResolveUserPdsResult,
+} from "@kpaste-app/atproto-utils";
 
 // Define paste collection constant
 const PASTE_COLLECTION = "moe.karashiiro.kpaste.paste";

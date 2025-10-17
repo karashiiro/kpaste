@@ -1,5 +1,5 @@
 {
-  "name": "@kpaste/atproto-utils",
+  "name": "@kpaste-app/atproto-utils",
   "version": "0.0.0",
   "private": true,
   "type": "module",

@@ -1,20 +1,50 @@
 {
-  "name": "@kpaste/lexicon",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@kpaste-app/lexicon",
+  "version": "1.0.0",
+  "description": "ATProto lexicon types for KPaste - code and text snippet sharing",
   "type": "module",
-  "main": "./src/lexicons/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/lexicons/index.ts",
-    "./types": "./src/lexicons/types/moe/karashiiro/kpaste/paste.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/moe/karashiiro/kpaste/paste.d.ts",
+      "import": "./dist/types/moe/karashiiro/kpaste/paste.js"
+    }
   },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
-    "generate": "lex-cli generate -c ./lex.config.js"
+    "generate": "lex-cli generate -c ./lex.config.js",
+    "build": "tsc",
+    "prepublishOnly": "pnpm build"
   },
+  "keywords": [
+    "atproto",
+    "lexicon",
+    "kpaste",
+    "paste",
+    "snippet",
+    "bluesky"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karashiiro/kpaste.git",
+    "directory": "packages/lexicon"
+  },
+  "author": "karashiiro",
+  "license": "MIT",
   "devDependencies": {
-    "@atcute/lex-cli": "^2.2.0"
+    "@atcute/lex-cli": "^2.2.0",
+    "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@atcute/atproto": "^3.1.4"
+    "@atcute/lexicons": "^1.2.2"
   }
 }

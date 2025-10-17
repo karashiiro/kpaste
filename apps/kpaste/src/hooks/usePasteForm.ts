@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import type { Main as PasteRecord } from "@kpaste/lexicon/types";
+import type { Main as PasteRecord } from "@kpaste-app/lexicon/types";
 
 export interface CreatePasteForm {
   title: string;

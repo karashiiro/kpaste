@@ -21,7 +21,7 @@ Object.defineProperty(global, "localStorage", {
 });
 
 // Mock all the hooks
-vi.mock("@kpaste/atproto-auth", () => ({
+vi.mock("@kpaste-app/atproto-auth", () => ({
   useAuth: vi.fn(),
 }));
 
@@ -33,8 +33,8 @@ vi.mock("../../hooks/usePasteForm", () => ({
   usePasteForm: vi.fn(),
 }));
 
-vi.mock("@kpaste/ui", async () => {
-  const actual = await vi.importActual("@kpaste/ui");
+vi.mock("@kpaste-app/ui", async () => {
+  const actual = await vi.importActual("@kpaste-app/ui");
   return {
     ...actual,
     useAuthModal: vi.fn(),
@@ -93,7 +93,7 @@ describe("Home", () => {
     mockLocalStorage.getItem.mockReturnValue(null);
 
     // Mock useAuth
-    const useAuthModule = await import("@kpaste/atproto-auth");
+    const useAuthModule = await import("@kpaste-app/atproto-auth");
     vi.mocked(useAuthModule.useAuth).mockReturnValue({
       isAuthenticated: false,
     } as any);
@@ -114,7 +114,7 @@ describe("Home", () => {
     } as any);
 
     // Mock useAuthModal
-    const uiModule = await import("@kpaste/ui");
+    const uiModule = await import("@kpaste-app/ui");
     vi.mocked(uiModule.useAuthModal).mockReturnValue({
       openAuthModal: mockOpenAuthModal,
     });
@@ -159,7 +159,7 @@ describe("Home", () => {
     });
 
     it("should show correct submit button text when authenticated", async () => {
-      const useAuthModule = await import("@kpaste/atproto-auth");
+      const useAuthModule = await import("@kpaste-app/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         isAuthenticated: true,
       } as any);
@@ -195,7 +195,7 @@ describe("Home", () => {
     });
 
     it("should create paste directly when authenticated", async () => {
-      const useAuthModule = await import("@kpaste/atproto-auth");
+      const useAuthModule = await import("@kpaste-app/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         isAuthenticated: true,
       } as any);
@@ -224,7 +224,7 @@ describe("Home", () => {
 
       mockLocalStorage.getItem.mockReturnValue(JSON.stringify(savedDraft));
 
-      const useAuthModule = await import("@kpaste/atproto-auth");
+      const useAuthModule = await import("@kpaste-app/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         isAuthenticated: true,
       } as any);
@@ -249,7 +249,7 @@ describe("Home", () => {
 
       mockLocalStorage.getItem.mockReturnValue(JSON.stringify(emptyDraft));
 
-      const useAuthModule = await import("@kpaste/atproto-auth");
+      const useAuthModule = await import("@kpaste-app/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         isAuthenticated: true,
       } as any);
@@ -267,7 +267,7 @@ describe("Home", () => {
     it("should handle invalid JSON in localStorage gracefully", async () => {
       mockLocalStorage.getItem.mockReturnValue("invalid json");
 
-      const useAuthModule = await import("@kpaste/atproto-auth");
+      const useAuthModule = await import("@kpaste-app/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         isAuthenticated: true,
       } as any);
@@ -419,7 +419,7 @@ describe("Home", () => {
 
   describe("component lifecycle", () => {
     it("should call useEffect to restore draft only once on mount", async () => {
-      const useAuthModule = await import("@kpaste/atproto-auth");
+      const useAuthModule = await import("@kpaste-app/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         isAuthenticated: true,
       } as any);
@@ -468,7 +468,7 @@ describe("Home", () => {
         setCreateForm: mockSetCreateForm,
       } as any);
 
-      const useAuthModule = await import("@kpaste/atproto-auth");
+      const useAuthModule = await import("@kpaste-app/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         isAuthenticated: true,
       } as any);
@@ -488,7 +488,7 @@ describe("Home", () => {
       const originalLocalStorage = global.localStorage;
       delete (global as any).localStorage;
 
-      const useAuthModule = await import("@kpaste/atproto-auth");
+      const useAuthModule = await import("@kpaste-app/atproto-auth");
       vi.mocked(useAuthModule.useAuth).mockReturnValue({
         isAuthenticated: false, // Set to false to avoid localStorage access
       } as any);

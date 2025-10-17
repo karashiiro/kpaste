@@ -29,16 +29,16 @@ importers:
       '@heroicons/react':
         specifier: ^2.2.0
         version: 2.2.0(react@19.1.1)
-      '@kpaste/atproto-auth':
+      '@kpaste-app/atproto-auth':
         specifier: workspace:*
         version: link:../../packages/atproto-auth
-      '@kpaste/atproto-utils':
+      '@kpaste-app/atproto-utils':
         specifier: workspace:*
         version: link:../../packages/atproto-utils
-      '@kpaste/lexicon':
+      '@kpaste-app/lexicon':
         specifier: workspace:*
         version: link:../../packages/lexicon
-      '@kpaste/ui':
+      '@kpaste-app/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       '@tamagui/button':
@@ -200,13 +200,16 @@ importers:
 
   packages/lexicon:
     dependencies:
-      '@atcute/atproto':
-        specifier: ^3.1.4
-        version: 3.1.4
+      '@atcute/lexicons':
+        specifier: ^1.2.2
+        version: 1.2.2
     devDependencies:
       '@atcute/lex-cli':
         specifier: ^2.2.0
         version: 2.2.0
+      typescript:
+        specifier: ^5.0.0
+        version: 5.8.3
 
   packages/ui:
     dependencies:
@@ -220,7 +223,7 @@ importers:
       '@heroicons/react':
         specifier: ^2.2.0
         version: 2.2.0(react@19.1.1)
-      '@kpaste/atproto-auth':
+      '@kpaste-app/atproto-auth':
         specifier: workspace:*
         version: link:../atproto-auth
       '@tamagui/button':
@@ -317,6 +320,9 @@ packages:
 
   '@atcute/lexicons@1.1.1':
     resolution: {integrity: sha512-k6qy5p3j9fJJ6ekaMPfEfp3ni4TW/XNuH9ZmsuwC0fi0tOjp+Fa8ZQakHwnqOzFt/cVBfGcmYE/lKNAbeTjgUg==}
+
+  '@atcute/lexicons@1.2.2':
+    resolution: {integrity: sha512-bgEhJq5Z70/0TbK5sx+tAkrR8FsCODNiL2gUEvS5PuJfPxmFmRYNWaMGehxSPaXWpU2+Oa9ckceHiYbrItDTkA==}
 
   '@atcute/multibase@1.1.5':
     resolution: {integrity: sha512-vbmEFxgpntMuRqVZOCBgf6bgq69UGrlznQCZirVSit/mlcgyFVkSGbSEfkRnpIcrM8SnaySwuKbVvL+EPLh2dw==}
@@ -1157,6 +1163,9 @@ packages:
 
   '@sinonjs/fake-timers@10.3.0':
     resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
+
+  '@standard-schema/spec@1.0.0':
+    resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
   '@swc/core-darwin-arm64@1.13.5':
     resolution: {integrity: sha512-lKNv7SujeXvKn16gvQqUQI5DdyY8v7xcoO3k06/FJbHJS90zEwZdQiMNRiqpYw/orU543tPaWgz7cIYWhbopiQ==}
@@ -3725,7 +3734,7 @@ snapshots:
 
   '@atcute/identity@1.1.0':
     dependencies:
-      '@atcute/lexicons': 1.1.1
+      '@atcute/lexicons': 1.2.2
       '@badrap/valita': 0.4.6
 
   '@atcute/lex-cli@2.2.0':
@@ -3742,6 +3751,11 @@ snapshots:
 
   '@atcute/lexicons@1.1.1':
     dependencies:
+      esm-env: 1.2.2
+
+  '@atcute/lexicons@1.2.2':
+    dependencies:
+      '@standard-schema/spec': 1.0.0
       esm-env: 1.2.2
 
   '@atcute/multibase@1.1.5':
@@ -4582,6 +4596,8 @@ snapshots:
   '@sinonjs/fake-timers@10.3.0':
     dependencies:
       '@sinonjs/commons': 3.0.1
+
+  '@standard-schema/spec@1.0.0': {}
 
   '@swc/core-darwin-arm64@1.13.5':
     optional: true
