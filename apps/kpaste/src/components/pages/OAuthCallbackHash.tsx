@@ -2,7 +2,7 @@ import { useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router";
 import { YStack } from "@tamagui/stacks";
 import { Paragraph } from "@tamagui/text";
-import { InsetCard } from "../ui/InsetCard";
+import { InsetCard } from "@kpaste/ui";
 import {
   ArrowPathIcon,
   CheckCircleIcon,

@@ -23,44 +23,44 @@ Object.defineProperty(window, "matchMedia", {
   })),
 });
 
-// Mock CodeEditor component since it has complex dependencies
-vi.mock("../ui/CodeEditor", () => ({
-  CodeEditor: ({
-    value,
-    onChange,
-  }: {
-    value: string;
-    onChange: (value: string) => void;
-  }) => (
-    <textarea
-      data-testid="code-editor"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  ),
-}));
-
-// Mock LanguageSelect component to avoid Tamagui Select issues
-vi.mock("../ui/LanguageSelect", () => ({
-  LanguageSelect: ({
-    value,
-    onValueChange,
-  }: {
-    value: string;
-    onValueChange: (value: string) => void;
-  }) => (
-    <select
-      data-testid="language-select"
-      value={value}
-      onChange={(e) => onValueChange(e.target.value)}
-    >
-      <option value="text">Plain Text</option>
-      <option value="javascript">JavaScript</option>
-      <option value="typescript">TypeScript</option>
-      <option value="python">Python</option>
-    </select>
-  ),
-}));
+// Mock CodeEditor and LanguageSelect components
+vi.mock("@kpaste/ui", async () => {
+  const actual = await vi.importActual("@kpaste/ui");
+  return {
+    ...actual,
+    CodeEditor: ({
+      value,
+      onChange,
+    }: {
+      value: string;
+      onChange: (value: string) => void;
+    }) => (
+      <textarea
+        data-testid="code-editor"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    ),
+    LanguageSelect: ({
+      value,
+      onValueChange,
+    }: {
+      value: string;
+      onValueChange: (value: string) => void;
+    }) => (
+      <select
+        data-testid="language-select"
+        value={value}
+        onChange={(e) => onValueChange(e.target.value)}
+      >
+        <option value="text">Plain Text</option>
+        <option value="javascript">JavaScript</option>
+        <option value="typescript">TypeScript</option>
+        <option value="python">Python</option>
+      </select>
+    ),
+  };
+});
 
 // Create Tamagui config for testing
 const config = createTamagui(defaultConfig);

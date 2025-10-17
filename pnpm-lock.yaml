@@ -38,6 +38,9 @@ importers:
       '@kpaste/lexicon':
         specifier: workspace:*
         version: link:../../packages/lexicon
+      '@kpaste/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@tamagui/button':
         specifier: ^1.134.0
         version: 1.134.0(react-dom@19.1.1(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
@@ -204,6 +207,79 @@ importers:
       '@atcute/lex-cli':
         specifier: ^2.2.0
         version: 2.2.0
+
+  packages/ui:
+    dependencies:
+      prismjs:
+        specifier: ^1.30.0
+        version: 1.30.0
+      react-simple-code-editor:
+        specifier: ^0.14.1
+        version: 0.14.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+    devDependencies:
+      '@heroicons/react':
+        specifier: ^2.2.0
+        version: 2.2.0(react@19.1.1)
+      '@kpaste/atproto-auth':
+        specifier: workspace:*
+        version: link:../atproto-auth
+      '@tamagui/button':
+        specifier: ^1.134.0
+        version: 1.134.0(react-dom@19.1.1(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
+      '@tamagui/card':
+        specifier: ^1.134.0
+        version: 1.134.0(react-dom@19.1.1(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
+      '@tamagui/core':
+        specifier: ^1.134.0
+        version: 1.134.0(react-dom@19.1.1(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
+      '@tamagui/image':
+        specifier: ^1.134.0
+        version: 1.134.0(react-dom@19.1.1(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
+      '@tamagui/input':
+        specifier: ^1.134.0
+        version: 1.134.0(react-dom@19.1.1(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
+      '@tamagui/label':
+        specifier: ^1.134.0
+        version: 1.134.0(react-dom@19.1.1(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
+      '@tamagui/lucide-icons':
+        specifier: ^1.134.0
+        version: 1.134.0(react-dom@19.1.1(react@19.1.1))(react-native-svg@15.13.0(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
+      '@tamagui/scroll-view':
+        specifier: ^1.134.0
+        version: 1.134.0(react-dom@19.1.1(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
+      '@tamagui/select':
+        specifier: ^1.134.0
+        version: 1.134.0(react-dom@19.1.1(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
+      '@tamagui/sheet':
+        specifier: ^1.134.0
+        version: 1.134.0(react-dom@19.1.1(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
+      '@tamagui/stacks':
+        specifier: ^1.134.0
+        version: 1.134.0(react-dom@19.1.1(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
+      '@tamagui/text':
+        specifier: ^1.134.0
+        version: 1.134.0(react-dom@19.1.1(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
+      '@tamagui/tooltip':
+        specifier: ^1.134.0
+        version: 1.134.0(react-dom@19.1.1(react@19.1.1))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.1.13)(react@19.1.1))(react@19.1.1)
+      '@types/react':
+        specifier: ^19.1.13
+        version: 19.1.13
+      '@types/react-dom':
+        specifier: ^19.1.9
+        version: 19.1.9(@types/react@19.1.13)
+      react:
+        specifier: ^19.1.1
+        version: 19.1.1
+      react-dom:
+        specifier: ^19.1.1
+        version: 19.1.1(react@19.1.1)
+      typescript:
+        specifier: ~5.8.3
+        version: 5.8.3
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.4(@types/node@24.5.2)(jsdom@27.0.0(postcss@8.5.6))(terser@5.44.0)
 
 packages:
 

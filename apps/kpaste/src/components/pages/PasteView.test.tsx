@@ -90,12 +90,16 @@ vi.mock("../paste/PasteMetadata", () => ({
 }));
 
 // Mock safeHighlight utility
-vi.mock("../../utils/prismUtils", () => ({
-  safeHighlight: vi.fn(
-    (content, language) =>
-      `<span class="highlighted-${language}">${content}</span>`,
-  ),
-}));
+vi.mock("@kpaste/ui", async () => {
+  const actual = await vi.importActual("@kpaste/ui");
+  return {
+    ...actual,
+    safeHighlight: vi.fn(
+      (content, language) =>
+        `<span class="highlighted-${language}">${content}</span>`,
+    ),
+  };
+});
 
 // Test wrapper component
 function TestWrapper({ children }: { children: React.ReactNode }) {
@@ -239,7 +243,7 @@ describe("PasteView", () => {
     });
 
     it("should apply syntax highlighting with correct language", async () => {
-      const { safeHighlight } = await import("../../utils/prismUtils");
+      const { safeHighlight } = await import("@kpaste/ui");
 
       render(
         <TestWrapper>
@@ -535,7 +539,7 @@ describe("PasteView", () => {
         pasteWithoutLanguage,
       );
 
-      const { safeHighlight } = await import("../../utils/prismUtils");
+      const { safeHighlight } = await import("@kpaste/ui");
 
       render(
         <TestWrapper>
@@ -560,7 +564,7 @@ describe("PasteView", () => {
         pasteWithUndefinedLanguage,
       );
 
-      const { safeHighlight } = await import("../../utils/prismUtils");
+      const { safeHighlight } = await import("@kpaste/ui");
 
       render(
         <TestWrapper>

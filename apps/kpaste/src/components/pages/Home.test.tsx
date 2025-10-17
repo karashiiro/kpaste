@@ -33,9 +33,13 @@ vi.mock("../../hooks/usePasteForm", () => ({
   usePasteForm: vi.fn(),
 }));
 
-vi.mock("../../hooks/useAuthContext", () => ({
-  useAuthModal: vi.fn(),
-}));
+vi.mock("@kpaste/ui", async () => {
+  const actual = await vi.importActual("@kpaste/ui");
+  return {
+    ...actual,
+    useAuthModal: vi.fn(),
+  };
+});
 
 // Mock the PasteForm component
 vi.mock("../paste/PasteForm", () => ({
@@ -110,8 +114,8 @@ describe("Home", () => {
     } as any);
 
     // Mock useAuthModal
-    const useAuthContextModule = await import("../../hooks/useAuthContext");
-    vi.mocked(useAuthContextModule.useAuthModal).mockReturnValue({
+    const uiModule = await import("@kpaste/ui");
+    vi.mocked(uiModule.useAuthModal).mockReturnValue({
       openAuthModal: mockOpenAuthModal,
     });
   });

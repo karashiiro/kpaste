@@ -1,15 +1,13 @@
 import { useEffect } from "react";
 import { YStack, XStack } from "@tamagui/stacks";
 import { Paragraph } from "@tamagui/text";
-import { InsetCard } from "../ui/InsetCard";
+import { InsetCard, PageContainer, useAuthModal } from "@kpaste/ui";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "@kpaste/atproto-auth";
 import { usePasteForm } from "../../hooks/usePasteForm";
 import { useCreatePaste } from "../../hooks/useCreatePaste";
-import { PageContainer } from "../layout/PageContainer";
 import { PasteForm } from "../paste/PasteForm";
 import type { CreatePasteForm } from "../../hooks/usePasteForm";
-import { useAuthModal } from "../../hooks/useAuthContext";
 
 export function Home() {
   const { isAuthenticated } = useAuth();

@@ -1,6 +1,6 @@
 import { YStack, XStack } from "@tamagui/stacks";
 import { Paragraph } from "@tamagui/text";
-import { InsetCard } from "../ui/InsetCard";
+import { InsetCard } from "@kpaste/ui";
 import {
   SparklesIcon,
   PencilIcon,
@@ -9,9 +9,9 @@ import {
 } from "@heroicons/react/24/outline";
 import type { CreatePasteForm, EditPasteForm } from "../../hooks/usePasteForm";
 import { PasteFormField } from "./PasteFormField";
-import { CodeEditor } from "../ui/CodeEditor";
-import { LanguageSelect } from "../ui/LanguageSelect";
-import { LoadingButton } from "../ui/LoadingButton";
+import { CodeEditor } from "@kpaste/ui";
+import { LanguageSelect } from "@kpaste/ui";
+import { LoadingButton } from "@kpaste/ui";
 
 type PasteFormData = CreatePasteForm | EditPasteForm;
 

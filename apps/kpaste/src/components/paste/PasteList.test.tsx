@@ -50,11 +50,15 @@ vi.mock("./EditModal", () => ({
 }));
 
 // Mock utility functions
-vi.mock("../../utils/prismUtils", () => ({
-  safeHighlight: vi.fn(
-    (content) => `<span class="highlight">${content}</span>`,
-  ),
-}));
+vi.mock("@kpaste/ui", async () => {
+  const actual = await vi.importActual("@kpaste/ui");
+  return {
+    ...actual,
+    safeHighlight: vi.fn(
+      (content) => `<span class="highlight">${content}</span>`,
+    ),
+  };
+});
 
 vi.mock("../../utils/pdsUtils", () => ({
   parseAtUri: vi.fn((uri) => {
@@ -211,7 +215,7 @@ describe("PasteList", () => {
     });
 
     it("should render paste content with syntax highlighting", async () => {
-      const prismUtilsModule = await import("../../utils/prismUtils");
+      const uiModule = await import("@kpaste/ui");
 
       render(
         <TestWrapper>
@@ -223,11 +227,11 @@ describe("PasteList", () => {
         </TestWrapper>,
       );
 
-      expect(prismUtilsModule.safeHighlight).toHaveBeenCalledWith(
+      expect(uiModule.safeHighlight).toHaveBeenCalledWith(
         "console.log('Hello World');",
         "javascript",
       );
-      expect(prismUtilsModule.safeHighlight).toHaveBeenCalledWith(
+      expect(uiModule.safeHighlight).toHaveBeenCalledWith(
         "print('Hello Python')",
         "python",
       );

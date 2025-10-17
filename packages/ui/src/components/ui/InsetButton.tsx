@@ -1,8 +1,13 @@
+import { Button } from "@tamagui/button";
+import type { ButtonProps } from "@tamagui/button";
 import { Card } from "@tamagui/card";
-import type { CardProps } from "@tamagui/card";
 import { getShadowStyle, type ShadowProps } from "../../utils/shadowUtils";
+import {
+  getVariantStyles,
+  type ColorVariant,
+} from "../../utils/buttonVariants";
 
-interface InsetCardProps extends CardProps, ShadowProps {
+export interface InsetButtonProps extends ButtonProps, ShadowProps {
   /** Border radius for the outer button */
   outerRadius?: string | number;
   /** Border radius for the inner card */
@@ -12,9 +17,10 @@ interface InsetCardProps extends CardProps, ShadowProps {
   insetBorderColor?: string;
   /** Padding inside the card around content */
   cardPadding?: string | number;
+  colorVariant?: ColorVariant;
 }
 
-export function InsetCard({
+export function InsetButton({
   children,
   outerRadius = "12px",
   innerRadius = "8px",
@@ -22,17 +28,32 @@ export function InsetCard({
   insetBorderColor = "var(--borderColor)",
   cardPadding = "$2",
   shadow = true,
-  ...cardProps
-}: InsetCardProps) {
+  colorVariant = "default",
+  style,
+  ...buttonProps
+}: InsetButtonProps) {
+  const variantStyles = getVariantStyles(colorVariant);
+
   return (
-    <Card
+    <Button
       padding={insetPadding}
       borderRadius={outerRadius}
-      backgroundColor="$insetCardBackground"
-      style={{
-        ...getShadowStyle(shadow),
+      height={50}
+      style={style || getShadowStyle(shadow)}
+      focusStyle={{
+        outlineWidth: 0,
+        borderColor: "transparent",
       }}
-      {...cardProps}
+      hoverStyle={{
+        outlineWidth: 0,
+        borderColor: "transparent",
+      }}
+      pressStyle={{
+        outlineWidth: 0,
+        borderColor: "transparent",
+      }}
+      {...variantStyles}
+      {...buttonProps}
     >
       <Card
         unstyled
@@ -43,11 +64,13 @@ export function InsetCard({
         backgroundColor="transparent"
         width="100%"
         height="100%"
+        justifyContent="center"
+        alignItems="center"
         padding={cardPadding}
         boxSizing="border-box"
       >
         {children}
       </Card>
-    </Card>
+    </Button>
   );
 }

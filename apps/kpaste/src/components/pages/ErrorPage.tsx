@@ -1,8 +1,7 @@
 import { YStack } from "@tamagui/stacks";
 import { Paragraph, H1 } from "@tamagui/text";
 import { HomeIcon } from "@heroicons/react/24/outline";
-import { PageContainer } from "../layout/PageContainer";
-import { ActionButton } from "../ui/ActionButton";
+import { PageContainer, ActionButton } from "@kpaste/ui";
 import { useNavigate } from "react-router";
 
 type ErrorKind = "not-found" | "generic";

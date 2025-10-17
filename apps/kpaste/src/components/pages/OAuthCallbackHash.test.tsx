@@ -26,11 +26,15 @@ vi.mock("@kpaste/atproto-auth", () => ({
 }));
 
 // Mock InsetCard
-vi.mock("../ui/InsetCard", () => ({
-  InsetCard: vi.fn(({ children }) => (
-    <div data-testid="inset-card">{children}</div>
-  )),
-}));
+vi.mock("@kpaste/ui", async () => {
+  const actual = await vi.importActual("@kpaste/ui");
+  return {
+    ...actual,
+    InsetCard: vi.fn(({ children }) => (
+      <div data-testid="inset-card">{children}</div>
+    )),
+  };
+});
 
 describe("OAuthCallbackHash", () => {
   beforeEach(() => {
@@ -58,7 +62,7 @@ describe("OAuthCallbackHash", () => {
     });
 
     it("should render InsetCard with blue theme during loading", async () => {
-      const { InsetCard } = await import("../ui/InsetCard");
+      const { InsetCard } = await import("@kpaste/ui");
 
       render(
         <TestWrapper>
@@ -108,7 +112,7 @@ describe("OAuthCallbackHash", () => {
         authState: { state: "authenticated", isLoading: false },
       });
 
-      const { InsetCard } = await import("../ui/InsetCard");
+      const { InsetCard } = await import("@kpaste/ui");
 
       render(
         <TestWrapper>
@@ -191,7 +195,7 @@ describe("OAuthCallbackHash", () => {
         },
       });
 
-      const { InsetCard } = await import("../ui/InsetCard");
+      const { InsetCard } = await import("@kpaste/ui");
 
       render(
         <TestWrapper>

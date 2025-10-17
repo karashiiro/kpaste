@@ -23,18 +23,19 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 // Mock PageContainer and ActionButton
-vi.mock("../layout/PageContainer", () => ({
-  PageContainer: vi.fn(({ children }) => <div>{children}</div>),
-}));
-
-vi.mock("../ui/ActionButton", () => ({
-  ActionButton: vi.fn(({ children, onPress, icon }) => (
-    <button onClick={onPress} data-testid="action-button">
-      {icon}
-      {children}
-    </button>
-  )),
-}));
+vi.mock("@kpaste/ui", async () => {
+  const actual = await vi.importActual("@kpaste/ui");
+  return {
+    ...actual,
+    PageContainer: vi.fn(({ children }) => <div>{children}</div>),
+    ActionButton: vi.fn(({ children, onPress, icon }) => (
+      <button onClick={onPress} data-testid="action-button">
+        {icon}
+        {children}
+      </button>
+    )),
+  };
+});
 
 describe("ErrorPage", () => {
   beforeEach(() => {
@@ -176,7 +177,7 @@ describe("ErrorPage", () => {
       );
 
       // Check that ActionButton was called with an icon
-      const { ActionButton } = await import("../ui/ActionButton");
+      const { ActionButton } = await import("@kpaste/ui");
       const callArgs = (ActionButton as ReturnType<typeof vi.fn>).mock.calls[0];
       expect(callArgs[0]).toMatchObject({
         icon: expect.anything(),
@@ -226,7 +227,7 @@ describe("ErrorPage", () => {
     });
 
     it("should center content for better readability", async () => {
-      const { PageContainer } = await import("../layout/PageContainer");
+      const { PageContainer } = await import("@kpaste/ui");
 
       render(
         <TestWrapper>
@@ -262,7 +263,7 @@ describe("ErrorPage", () => {
 
   describe("component integration", () => {
     it("should pass correct props to PageContainer", async () => {
-      const { PageContainer } = await import("../layout/PageContainer");
+      const { PageContainer } = await import("@kpaste/ui");
 
       render(
         <TestWrapper>
@@ -280,7 +281,7 @@ describe("ErrorPage", () => {
     });
 
     it("should pass correct props to ActionButton", async () => {
-      const { ActionButton } = await import("../ui/ActionButton");
+      const { ActionButton } = await import("@kpaste/ui");
 
       render(
         <TestWrapper>

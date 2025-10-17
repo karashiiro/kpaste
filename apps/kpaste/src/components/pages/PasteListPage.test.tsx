@@ -32,9 +32,13 @@ vi.mock("../paste/PasteListPaginationButtons", () => ({
   )),
 }));
 
-vi.mock("../layout/PageContainer", () => ({
-  PageContainer: vi.fn(({ children }) => <div>{children}</div>),
-}));
+vi.mock("@kpaste/ui", async () => {
+  const actual = await vi.importActual("@kpaste/ui");
+  return {
+    ...actual,
+    PageContainer: vi.fn(({ children }) => <div>{children}</div>),
+  };
+});
 
 describe("PasteListPage", () => {
   const mockPastes: PasteListItem[] = [
@@ -433,7 +437,7 @@ describe("PasteListPage", () => {
     it("should render PageContainer with correct props", async () => {
       const { useLoaderData, useParams } = await import("react-router");
       const { useAuth } = await import("@kpaste/atproto-auth");
-      const { PageContainer } = await import("../layout/PageContainer");
+      const { PageContainer } = await import("@kpaste/ui");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,

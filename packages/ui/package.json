@@ -1,0 +1,60 @@
+{
+  "name": "@kpaste/ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./ui": "./src/components/ui/index.ts",
+    "./auth": "./src/components/auth/index.ts",
+    "./layout": "./src/components/layout/index.ts"
+  },
+  "peerDependencies": {
+    "@kpaste/atproto-auth": "workspace:*",
+    "@tamagui/button": "^1.134.0",
+    "@tamagui/card": "^1.134.0",
+    "@tamagui/core": "^1.134.0",
+    "@tamagui/image": "^1.134.0",
+    "@tamagui/input": "^1.134.0",
+    "@tamagui/label": "^1.134.0",
+    "@tamagui/lucide-icons": "^1.134.0",
+    "@tamagui/scroll-view": "^1.134.0",
+    "@tamagui/select": "^1.134.0",
+    "@tamagui/sheet": "^1.134.0",
+    "@tamagui/stacks": "^1.134.0",
+    "@tamagui/text": "^1.134.0",
+    "@tamagui/tooltip": "^1.134.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@heroicons/react": "^2.2.0",
+    "@kpaste/atproto-auth": "workspace:*",
+    "@tamagui/button": "^1.134.0",
+    "@tamagui/card": "^1.134.0",
+    "@tamagui/core": "^1.134.0",
+    "@tamagui/image": "^1.134.0",
+    "@tamagui/input": "^1.134.0",
+    "@tamagui/label": "^1.134.0",
+    "@tamagui/lucide-icons": "^1.134.0",
+    "@tamagui/scroll-view": "^1.134.0",
+    "@tamagui/select": "^1.134.0",
+    "@tamagui/sheet": "^1.134.0",
+    "@tamagui/stacks": "^1.134.0",
+    "@tamagui/text": "^1.134.0",
+    "@tamagui/tooltip": "^1.134.0",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "prismjs": "^1.30.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-simple-code-editor": "^0.14.1",
+    "typescript": "~5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "prismjs": "^1.30.0",
+    "react-simple-code-editor": "^0.14.1"
+  }
+}

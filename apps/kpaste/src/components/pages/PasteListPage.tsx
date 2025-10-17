@@ -6,7 +6,7 @@ import { PasteList } from "../paste/PasteList";
 import type { PasteListLoaderData } from "../../loaders/pasteListLoader";
 import { useAuth } from "@kpaste/atproto-auth";
 import { PasteListPaginationButtons } from "../paste/PasteListPaginationButtons";
-import { PageContainer } from "../layout/PageContainer";
+import { PageContainer } from "@kpaste/ui";
 
 export function PasteListPage() {
   const { isAuthenticated, session } = useAuth();
