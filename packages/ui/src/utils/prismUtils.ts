@@ -7,6 +7,7 @@ export const SUPPORTED_LANGUAGES = [
   "python",
   "java",
   "cpp",
+  "csharp",
   "rust",
   "go",
   "html",
@@ -28,6 +29,8 @@ export function getPrismLanguage(language: string) {
       return languages.java;
     case "cpp":
       return languages.cpp || languages.c || languages.clike;
+    case "csharp":
+      return languages.csharp;
     case "rust":
       return languages.rust;
     case "go":

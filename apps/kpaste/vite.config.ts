@@ -20,6 +20,7 @@ export default defineConfig({
         "python",
         "java",
         "cpp",
+        "csharp",
         "rust",
         "go",
         "html",

@@ -49,25 +49,28 @@ export function LanguageSelect({
             <Select.Item index={5} value="cpp">
               <Select.ItemText>C++</Select.ItemText>
             </Select.Item>
-            <Select.Item index={6} value="rust">
+            <Select.Item index={6} value="csharp">
+              <Select.ItemText>C#</Select.ItemText>
+            </Select.Item>
+            <Select.Item index={7} value="rust">
               <Select.ItemText>Rust</Select.ItemText>
             </Select.Item>
-            <Select.Item index={7} value="go">
+            <Select.Item index={8} value="go">
               <Select.ItemText>Go</Select.ItemText>
             </Select.Item>
-            <Select.Item index={8} value="html">
+            <Select.Item index={9} value="html">
               <Select.ItemText>HTML</Select.ItemText>
             </Select.Item>
-            <Select.Item index={9} value="css">
+            <Select.Item index={10} value="css">
               <Select.ItemText>CSS</Select.ItemText>
             </Select.Item>
-            <Select.Item index={10} value="json">
+            <Select.Item index={11} value="json">
               <Select.ItemText>JSON</Select.ItemText>
             </Select.Item>
-            <Select.Item index={11} value="markdown">
+            <Select.Item index={12} value="markdown">
               <Select.ItemText>Markdown</Select.ItemText>
             </Select.Item>
-            <Select.Item index={12} value="bash">
+            <Select.Item index={13} value="bash">
               <Select.ItemText>Bash</Select.ItemText>
             </Select.Item>
           </Select.Group>
