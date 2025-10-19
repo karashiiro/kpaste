@@ -1,7 +1,16 @@
 {
-  "extends": "@kpaste-app/tsconfig/react-app.json",
+  "extends": "@kpaste-app/tsconfig/base.json",
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo"
+    "lib": ["ES2022", "DOM"],
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "types": ["@atcute/atproto"],
+    "skipLibCheck": true,
+    "noEmit": false,
+    "allowImportingTsExtensions": false
   },
-  "include": ["src"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

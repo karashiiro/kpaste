@@ -1,0 +1,65 @@
+name: Publish ATProto Utils Package
+
+on:
+  push:
+    tags:
+      - "atproto-utils-v*"
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: lts/*
+          cache: "pnpm"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build atproto-utils package
+        run: pnpm --filter @kpaste-app/atproto-utils build
+
+      - name: Publish to npm
+        run: pnpm --filter @kpaste-app/atproto-utils publish --no-git-checks --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Extract version from tag
+        id: extract_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/atproto-utils-v}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: "@kpaste-app/atproto-utils v${{ steps.extract_version.outputs.VERSION }}"
+          body: |
+            ## @kpaste-app/atproto-utils v${{ steps.extract_version.outputs.VERSION }}
+
+            ATProto utility functions for KPaste have been published to npm.
+
+            Install with:
+            ```bash
+            npm install @kpaste-app/atproto-utils@${{ steps.extract_version.outputs.VERSION }}
+            ```
+
+            See the [package README](https://github.com/karashiiro/kpaste/blob/main/packages/atproto-utils/README.md) for usage details.
+          draft: false
+          prerelease: false

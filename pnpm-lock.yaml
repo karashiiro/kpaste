@@ -181,15 +181,27 @@ importers:
       '@types/node':
         specifier: ^22.0.0
         version: 22.18.10
+      typescript:
+        specifier: ~5.8.3
+        version: 5.8.3
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@22.18.10)(jsdom@27.0.0(postcss@8.5.6))(terser@5.44.0)
 
   packages/atproto-utils:
     devDependencies:
+      '@atcute/atproto':
+        specifier: ^3.1.7
+        version: 3.1.7
       '@atcute/client':
         specifier: ^4.0.3
         version: 4.0.3
+      '@kpaste-app/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: ~5.8.3
+        version: 5.8.3
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.5.2)(jsdom@27.0.0(postcss@8.5.6))(terser@5.44.0)
@@ -302,6 +314,9 @@ packages:
 
   '@atcute/atproto@3.1.4':
     resolution: {integrity: sha512-v0/ue7mZYtjYw4vWbtda51bLwW88mqsUQB8F/UZNO18ANAQWmKq1HDceVqjvruaLe2QPqE43XM3WkEyZ2FhOrA==}
+
+  '@atcute/atproto@3.1.7':
+    resolution: {integrity: sha512-3Ym8qaVZg2vf8qw0KO1aue39z/5oik5J+UDoSes1vr8ddw40UVLA5sV4bXSKmLnhzQHiLLgoVZXe4zaKfozPoQ==}
 
   '@atcute/client@4.0.3':
     resolution: {integrity: sha512-RIOZWFVLca/HiPAAUDqQPOdOreCxTbL5cb+WUf5yqQOKIu5yEAP3eksinmlLmgIrlr5qVOE7brazUUzaskFCfw==}
@@ -3724,6 +3739,10 @@ snapshots:
   '@atcute/atproto@3.1.4':
     dependencies:
       '@atcute/lexicons': 1.1.1
+
+  '@atcute/atproto@3.1.7':
+    dependencies:
+      '@atcute/lexicons': 1.2.2
 
   '@atcute/client@4.0.3':
     dependencies:

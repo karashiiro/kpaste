@@ -1,19 +1,63 @@
 {
   "name": "@kpaste-app/atproto-utils",
   "version": "0.0.0",
-  "private": true,
+  "description": "ATProto utility functions for KPaste",
   "type": "module",
   "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
     "./pds": "./src/pdsUtils.ts",
     "./atproto": "./src/atproto.ts"
   },
+  "publishConfig": {
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "./pds": {
+        "types": "./dist/pdsUtils.d.ts",
+        "import": "./dist/pdsUtils.js"
+      },
+      "./atproto": {
+        "types": "./dist/atproto.d.ts",
+        "import": "./dist/atproto.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "pnpm build"
+  },
+  "keywords": [
+    "atproto",
+    "kpaste",
+    "utilities"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karashiiro/kpaste.git",
+    "directory": "packages/atproto-utils"
+  },
+  "author": "karashiiro",
+  "license": "MIT",
   "peerDependencies": {
     "@atcute/client": "^4.0.0"
   },
   "devDependencies": {
+    "@atcute/atproto": "^3.1.7",
     "@atcute/client": "^4.0.3",
+    "@kpaste-app/tsconfig": "workspace:*",
+    "typescript": "~5.8.3",
     "vitest": "^3.2.4"
   }
 }

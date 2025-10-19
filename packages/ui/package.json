@@ -1,9 +1,10 @@
 {
   "name": "@kpaste-app/ui",
   "version": "0.0.0",
-  "private": true,
+  "description": "React UI components for KPaste built with Tamagui",
   "type": "module",
   "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
     "./ui": "./src/components/ui/index.ts",
@@ -11,6 +12,56 @@
     "./layout": "./src/components/layout/index.ts",
     "./constants": "./src/constants/languages.ts"
   },
+  "publishConfig": {
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "./ui": {
+        "types": "./dist/components/ui/index.d.ts",
+        "import": "./dist/components/ui/index.js"
+      },
+      "./auth": {
+        "types": "./dist/components/auth/index.d.ts",
+        "import": "./dist/components/auth/index.js"
+      },
+      "./layout": {
+        "types": "./dist/components/layout/index.d.ts",
+        "import": "./dist/components/layout/index.js"
+      },
+      "./constants": {
+        "types": "./dist/constants/languages.d.ts",
+        "import": "./dist/constants/languages.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "pnpm build"
+  },
+  "keywords": [
+    "react",
+    "ui",
+    "components",
+    "tamagui",
+    "kpaste"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karashiiro/kpaste.git",
+    "directory": "packages/ui"
+  },
+  "author": "karashiiro",
+  "license": "MIT",
   "peerDependencies": {
     "@kpaste-app/atproto-auth": "workspace:*",
     "@tamagui/button": "^1.134.0",

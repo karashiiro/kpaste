@@ -50,7 +50,7 @@ async function getRecordCore(
   const handler = simpleFetchHandler({
     service: endpoint,
   });
-  const client = new Client({ handler: handler });
+  const client = new Client<any>({ handler: handler });
   const recordResponse = await client.get("com.atproto.repo.getRecord", {
     params: {
       repo: did,
@@ -63,7 +63,7 @@ async function getRecordCore(
     throw data("Record not found", { status: 404 });
   }
 
-  return recordResponse.data;
+  return recordResponse.data as AtProtoRecord;
 }
 
 export async function getRecord(
@@ -91,7 +91,7 @@ export async function getRecord(
   }
 }
 
-async function readTextBlob(client: Client, did: Did, blobCid: string) {
+async function readTextBlob(client: Client<any>, did: Did, blobCid: string) {
   const blobResponse = await client.get("com.atproto.sync.getBlob", {
     params: {
       did: did,
@@ -118,7 +118,7 @@ export async function getTextBlob(
   const blobHandler = simpleFetchHandler({
     service: pdsUrl,
   });
-  const blobClient = new Client({ handler: blobHandler });
+  const blobClient = new Client<any>({ handler: blobHandler });
   return await readTextBlob(blobClient, did, blobCid);
 }
 
@@ -130,7 +130,7 @@ export async function getTextBlobs(
   const blobHandler = simpleFetchHandler({
     service: pdsUrl,
   });
-  const blobClient = new Client({ handler: blobHandler });
+  const blobClient = new Client<any>({ handler: blobHandler });
   return await Promise.all(
     blobCids.map((cid) => readTextBlob(blobClient, did, cid)),
   );

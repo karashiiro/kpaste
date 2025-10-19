@@ -1,19 +1,64 @@
 {
   "name": "@kpaste-app/atproto-auth",
   "version": "0.0.0",
-  "private": true,
+  "description": "ATProto OAuth authentication manager for React applications",
   "type": "module",
   "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
     "./manager": "./src/OAuthAuthManager.ts",
     "./hooks": "./src/useAuth.ts",
     "./types": "./src/types.ts"
   },
-  "scripts": {
-    "test": "vitest",
-    "test:run": "vitest run"
+  "publishConfig": {
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "./manager": {
+        "types": "./dist/OAuthAuthManager.d.ts",
+        "import": "./dist/OAuthAuthManager.js"
+      },
+      "./hooks": {
+        "types": "./dist/useAuth.d.ts",
+        "import": "./dist/useAuth.js"
+      },
+      "./types": {
+        "types": "./dist/types.d.ts",
+        "import": "./dist/types.js"
+      }
+    }
   },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "prepublishOnly": "pnpm build"
+  },
+  "keywords": [
+    "atproto",
+    "oauth",
+    "authentication",
+    "react",
+    "kpaste"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karashiiro/kpaste.git",
+    "directory": "packages/atproto-auth"
+  },
+  "author": "karashiiro",
+  "license": "MIT",
   "peerDependencies": {
     "@atcute/client": "^4.0.0",
     "@atcute/oauth-browser-client": "^1.0.0",
@@ -23,6 +68,7 @@
     "@atcute/client": "^4.0.3",
     "@atcute/oauth-browser-client": "^1.0.26",
     "@types/node": "^22.0.0",
+    "typescript": "~5.8.3",
     "vitest": "^3.2.4"
   }
 }

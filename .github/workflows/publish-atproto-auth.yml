@@ -1,0 +1,65 @@
+name: Publish ATProto Auth Package
+
+on:
+  push:
+    tags:
+      - "atproto-auth-v*"
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: lts/*
+          cache: "pnpm"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build atproto-auth package
+        run: pnpm --filter @kpaste-app/atproto-auth build
+
+      - name: Publish to npm
+        run: pnpm --filter @kpaste-app/atproto-auth publish --no-git-checks --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Extract version from tag
+        id: extract_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/atproto-auth-v}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: "@kpaste-app/atproto-auth v${{ steps.extract_version.outputs.VERSION }}"
+          body: |
+            ## @kpaste-app/atproto-auth v${{ steps.extract_version.outputs.VERSION }}
+
+            ATProto OAuth authentication manager for React applications has been published to npm.
+
+            Install with:
+            ```bash
+            npm install @kpaste-app/atproto-auth@${{ steps.extract_version.outputs.VERSION }}
+            ```
+
+            See the [package README](https://github.com/karashiiro/kpaste/blob/main/packages/atproto-auth/README.md) for usage details.
+          draft: false
+          prerelease: false
