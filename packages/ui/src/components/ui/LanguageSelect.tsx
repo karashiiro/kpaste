@@ -1,5 +1,6 @@
 import { Select } from "@tamagui/select";
 import { Paragraph } from "@tamagui/text";
+import { SUPPORTED_LANGUAGES } from "../../constants/languages";
 
 export interface LanguageSelectProps {
   value: string;
@@ -31,48 +32,11 @@ export function LanguageSelect({
 
         <Select.Viewport minHeight={200}>
           <Select.Group>
-            <Select.Item index={0} value="text">
-              <Select.ItemText>Plain Text</Select.ItemText>
-            </Select.Item>
-            <Select.Item index={1} value="javascript">
-              <Select.ItemText>JavaScript</Select.ItemText>
-            </Select.Item>
-            <Select.Item index={2} value="typescript">
-              <Select.ItemText>TypeScript</Select.ItemText>
-            </Select.Item>
-            <Select.Item index={3} value="python">
-              <Select.ItemText>Python</Select.ItemText>
-            </Select.Item>
-            <Select.Item index={4} value="java">
-              <Select.ItemText>Java</Select.ItemText>
-            </Select.Item>
-            <Select.Item index={5} value="cpp">
-              <Select.ItemText>C++</Select.ItemText>
-            </Select.Item>
-            <Select.Item index={6} value="csharp">
-              <Select.ItemText>C#</Select.ItemText>
-            </Select.Item>
-            <Select.Item index={7} value="rust">
-              <Select.ItemText>Rust</Select.ItemText>
-            </Select.Item>
-            <Select.Item index={8} value="go">
-              <Select.ItemText>Go</Select.ItemText>
-            </Select.Item>
-            <Select.Item index={9} value="html">
-              <Select.ItemText>HTML</Select.ItemText>
-            </Select.Item>
-            <Select.Item index={10} value="css">
-              <Select.ItemText>CSS</Select.ItemText>
-            </Select.Item>
-            <Select.Item index={11} value="json">
-              <Select.ItemText>JSON</Select.ItemText>
-            </Select.Item>
-            <Select.Item index={12} value="markdown">
-              <Select.ItemText>Markdown</Select.ItemText>
-            </Select.Item>
-            <Select.Item index={13} value="bash">
-              <Select.ItemText>Bash</Select.ItemText>
-            </Select.Item>
+            {SUPPORTED_LANGUAGES.map((lang, index) => (
+              <Select.Item key={lang.id} index={index} value={lang.id}>
+                <Select.ItemText>{lang.label}</Select.ItemText>
+              </Select.Item>
+            ))}
           </Select.Group>
         </Select.Viewport>
 

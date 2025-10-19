@@ -1,22 +1,5 @@
 import { highlight, languages } from "prismjs";
 
-export const SUPPORTED_LANGUAGES = [
-  "text",
-  "javascript",
-  "typescript",
-  "python",
-  "java",
-  "cpp",
-  "csharp",
-  "rust",
-  "go",
-  "html",
-  "css",
-  "json",
-  "markdown",
-  "bash",
-];
-
 export function getPrismLanguage(language: string) {
   switch (language) {
     case "javascript":

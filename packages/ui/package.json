@@ -8,7 +8,8 @@
     ".": "./src/index.ts",
     "./ui": "./src/components/ui/index.ts",
     "./auth": "./src/components/auth/index.ts",
-    "./layout": "./src/components/layout/index.ts"
+    "./layout": "./src/components/layout/index.ts",
+    "./constants": "./src/constants/languages.ts"
   },
   "peerDependencies": {
     "@kpaste-app/atproto-auth": "workspace:*",

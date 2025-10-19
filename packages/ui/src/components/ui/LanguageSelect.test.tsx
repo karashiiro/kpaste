@@ -4,7 +4,7 @@ import "@testing-library/jest-dom";
 import { TamaguiProvider, createTamagui } from "@tamagui/core";
 import { defaultConfig } from "@tamagui/config/v4";
 import { LanguageSelect } from "./LanguageSelect";
-import { SUPPORTED_LANGUAGES } from "../../utils/prismUtils";
+import { SUPPORTED_LANGUAGES } from "../../constants/languages";
 
 const config = createTamagui(defaultConfig);
 

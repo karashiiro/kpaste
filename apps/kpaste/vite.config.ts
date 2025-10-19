@@ -2,6 +2,7 @@ import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react-swc";
 import prismjs from "vite-plugin-prismjs";
 import metadata from "./public/oauth-client-metadata.json" with { type: "json" };
+import { SUPPORTED_LANGUAGE_IDS } from "@kpaste-app/ui/constants";
 
 const SERVER_HOST = "127.0.0.1";
 const SERVER_PORT = 5173;
@@ -14,21 +15,8 @@ export default defineConfig({
   },
   plugins: [
     prismjs({
-      languages: [
-        "javascript",
-        "typescript",
-        "python",
-        "java",
-        "cpp",
-        "csharp",
-        "rust",
-        "go",
-        "html",
-        "css",
-        "json",
-        "markdown",
-        "bash",
-      ],
+      // Use shared language config, but exclude 'text' since it's not a real Prism language
+      languages: SUPPORTED_LANGUAGE_IDS.filter((lang) => lang !== "text"),
       theme: "tomorrow",
       css: true,
     }),
