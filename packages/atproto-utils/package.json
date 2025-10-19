@@ -14,10 +14,6 @@
   },
   "devDependencies": {
     "@atcute/client": "^4.0.3",
-    "@atcute/lexicons": "^1.1.1",
     "vitest": "^3.2.4"
-  },
-  "dependencies": {
-    "@atcute/lexicons": "^1.1.1"
   }
 }
