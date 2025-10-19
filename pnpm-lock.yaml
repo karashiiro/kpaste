@@ -211,6 +211,8 @@ importers:
         specifier: ^5.0.0
         version: 5.8.3
 
+  packages/tsconfig: {}
+
   packages/ui:
     dependencies:
       prismjs:

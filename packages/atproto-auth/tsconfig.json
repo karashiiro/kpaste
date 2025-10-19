@@ -1,0 +1,4 @@
+{
+  "extends": "@kpaste-app/tsconfig/library.json",
+  "include": ["src"]
+}
