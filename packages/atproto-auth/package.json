@@ -1,6 +1,6 @@
 {
   "name": "@kpaste-app/atproto-auth",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "ATProto OAuth authentication manager for React applications",
   "type": "module",
   "main": "./src/index.ts",
