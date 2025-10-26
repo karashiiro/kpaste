@@ -13,7 +13,6 @@ import {
   AtSymbolIcon,
 } from "@heroicons/react/24/outline";
 import { Image } from "@tamagui/image";
-import styles from "./OAuthModal.module.css";
 import { LoadingButton } from "../ui/LoadingButton";
 
 interface OAuthModalProps {
@@ -47,7 +46,7 @@ function LoginBrandLink({
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className={styles.link}
+          style={{ color: "white" }}
         >
           {name}
         </a>
