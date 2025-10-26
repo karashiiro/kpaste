@@ -42,7 +42,7 @@ function LoginBrandLink({
           uri: logoUri,
         }}
       />
-      <Paragraph fontWeight="500" color="white">
+      <Paragraph fontWeight="500">
         <a
           href={href}
           target="_blank"
