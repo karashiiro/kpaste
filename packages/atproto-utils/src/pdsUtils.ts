@@ -104,10 +104,27 @@ async function readTextBlob(client: Client<any>, did: Did, blobCid: string) {
     throw data("Failed to load paste content", { status: 500 });
   }
 
-  const blob = blobResponse.data as Blob;
-  const content = await blob.text();
+  const blob = blobResponse.data;
 
-  return content;
+  // Handle both browser Blob and Node.js ArrayBuffer/Buffer
+  if (
+    typeof blob === "object" &&
+    blob !== null &&
+    "text" in blob &&
+    typeof blob.text === "function"
+  ) {
+    // Browser Blob with .text() method
+    return await blob.text();
+  } else if (blob instanceof ArrayBuffer) {
+    // Node.js ArrayBuffer
+    return new TextDecoder().decode(blob);
+  } else if (Buffer.isBuffer(blob)) {
+    // Node.js Buffer
+    return blob.toString("utf-8");
+  } else {
+    // Fallback: try to convert to string
+    return String(blob);
+  }
 }
 
 export async function getTextBlob(
