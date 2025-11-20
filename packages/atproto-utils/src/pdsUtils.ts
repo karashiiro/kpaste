@@ -121,8 +121,7 @@ async function readTextBlob(client: Client<any>, did: Did, blobCid: string) {
     return blob.toString("utf-8");
   }
 
-  // Try arrayBuffer() method (for Blob objects)
-  // Check the method directly instead of using 'in' operator since it might be on the prototype
+  // Try arrayBuffer() method (for proper Blob objects)
   if (
     blob &&
     typeof blob === "object" &&
@@ -134,13 +133,11 @@ async function readTextBlob(client: Client<any>, did: Did, blobCid: string) {
         return new TextDecoder().decode(arrayBuffer);
       }
     } catch (error) {
-      // arrayBuffer() failed, try text() instead
       console.warn("blob.arrayBuffer() failed:", error);
     }
   }
 
-  // Try text() method (for Blob objects)
-  // Check the method directly instead of using 'in' operator since it might be on the prototype
+  // Try text() method (for proper Blob objects)
   if (blob && typeof blob === "object" && typeof blob.text === "function") {
     try {
       const text = await blob.text();
@@ -152,8 +149,54 @@ async function readTextBlob(client: Client<any>, did: Did, blobCid: string) {
     }
   }
 
+  // Handle legacy Blob objects that don't have arrayBuffer() or text() methods
+  // This can happen in older Node.js versions or with certain polyfills
+  if (blob && typeof blob === "object" && blob.constructor?.name === "Blob") {
+    // Try to read the blob using stream() if available
+    if (typeof blob.stream === "function") {
+      try {
+        const stream = blob.stream();
+        const reader = stream.getReader();
+        const chunks: Uint8Array[] = [];
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          chunks.push(value);
+        }
+
+        const totalLength = chunks.reduce(
+          (acc, chunk) => acc + chunk.length,
+          0,
+        );
+        const combined = new Uint8Array(totalLength);
+        let offset = 0;
+        for (const chunk of chunks) {
+          combined.set(chunk, offset);
+          offset += chunk.length;
+        }
+
+        return new TextDecoder().decode(combined);
+      } catch (error) {
+        console.warn("blob.stream() failed:", error);
+      }
+    }
+
+    // Last resort for legacy Blobs: try to access internal buffer if available
+    // This is a hack but might work with some polyfills
+    if ("_buffer" in blob) {
+      const buffer = (blob as any)._buffer;
+      if (buffer instanceof ArrayBuffer || buffer instanceof Uint8Array) {
+        return new TextDecoder().decode(buffer);
+      }
+      if (typeof Buffer !== "undefined" && Buffer.isBuffer(buffer)) {
+        return buffer.toString("utf-8");
+      }
+    }
+  }
+
   // If we get here, we don't know how to handle this blob
-  const errorMsg = `Unable to convert blob to text. Type: ${typeof blob}, Constructor: ${blob?.constructor?.name}, arrayBuffer type: ${typeof blob?.arrayBuffer}, text type: ${typeof blob?.text}`;
+  const errorMsg = `Unable to convert blob to text. Type: ${typeof blob}, Constructor: ${blob?.constructor?.name}, arrayBuffer type: ${typeof blob?.arrayBuffer}, text type: ${typeof blob?.text}, stream type: ${typeof (blob as any)?.stream}`;
   console.error(errorMsg);
   throw data(errorMsg, { status: 500 });
 }
