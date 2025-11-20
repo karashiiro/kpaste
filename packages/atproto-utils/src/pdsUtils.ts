@@ -91,6 +91,102 @@ export async function getRecord(
   }
 }
 
+/**
+ * Converts a buffer-like object to a string using TextDecoder or Buffer.toString()
+ */
+function decodeBuffer(
+  buffer: ArrayBuffer | Uint8Array | Buffer | unknown,
+): string | null {
+  if (buffer instanceof ArrayBuffer || buffer instanceof Uint8Array) {
+    return new TextDecoder().decode(buffer);
+  }
+  if (typeof Buffer !== "undefined" && Buffer.isBuffer(buffer)) {
+    return buffer.toString("utf-8");
+  }
+  return null;
+}
+
+/**
+ * Reads a blob using the stream() method by consuming all chunks
+ */
+async function readBlobStream(blob: any): Promise<string | null> {
+  if (typeof blob.stream !== "function") {
+    return null;
+  }
+
+  const stream = blob.stream();
+  const reader = stream.getReader();
+  const chunks: Uint8Array[] = [];
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    chunks.push(value);
+  }
+
+  const totalLength = chunks.reduce((acc, chunk) => acc + chunk.length, 0);
+  const combined = new Uint8Array(totalLength);
+  let offset = 0;
+  for (const chunk of chunks) {
+    combined.set(chunk, offset);
+    offset += chunk.length;
+  }
+
+  return new TextDecoder().decode(combined);
+}
+
+/**
+ * Attempts to extract buffer data from legacy Blob objects by checking internal properties
+ */
+function extractLegacyBlobBuffer(blob: any): string | null {
+  // Check common internal buffer property names
+  const bufferProps = [
+    "_buffer",
+    "buffer",
+    "data",
+    "_data",
+    "_blob",
+    "content",
+    "_content",
+  ];
+
+  for (const prop of bufferProps) {
+    if (prop in blob) {
+      const decoded = decodeBuffer(blob[prop]);
+      if (decoded) return decoded;
+    }
+  }
+
+  // Scan all own properties (including non-enumerable)
+  const allProps = Object.getOwnPropertyNames(blob);
+  for (const prop of allProps) {
+    try {
+      const decoded = decodeBuffer(blob[prop]);
+      if (decoded) return decoded;
+    } catch {
+      // Ignore property access errors
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Reads a blob using FileReader (browser environments only)
+ */
+async function readBlobWithFileReader(blob: any): Promise<string | null> {
+  if (typeof FileReader === "undefined" || blob.size === undefined) {
+    return null;
+  }
+
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsText(blob);
+  });
+}
+
 async function readTextBlob(client: Client<any>, did: Did, blobCid: string) {
   const blobResponse = await client.get("com.atproto.sync.getBlob", {
     params: {
@@ -106,151 +202,41 @@ async function readTextBlob(client: Client<any>, did: Did, blobCid: string) {
 
   const blob = blobResponse.data;
 
-  // Handle direct ArrayBuffer
-  if (blob instanceof ArrayBuffer) {
-    return new TextDecoder().decode(blob);
-  }
+  // Try direct buffer types
+  const directBuffer = decodeBuffer(blob);
+  if (directBuffer) return directBuffer;
 
-  // Handle Uint8Array
-  if (blob instanceof Uint8Array) {
-    return new TextDecoder().decode(blob);
-  }
-
-  // Handle Node.js Buffer
-  if (typeof Buffer !== "undefined" && Buffer.isBuffer(blob)) {
-    return blob.toString("utf-8");
-  }
-
-  // Try arrayBuffer() method (for proper Blob objects)
-  if (
-    blob &&
-    typeof blob === "object" &&
-    typeof blob.arrayBuffer === "function"
-  ) {
-    try {
+  // Try modern Blob methods
+  if (blob && typeof blob === "object") {
+    // Try arrayBuffer() method
+    if (typeof blob.arrayBuffer === "function") {
       const arrayBuffer = await blob.arrayBuffer();
-      if (arrayBuffer) {
-        return new TextDecoder().decode(arrayBuffer);
-      }
-    } catch (error) {
-      console.warn("blob.arrayBuffer() failed:", error);
+      return new TextDecoder().decode(arrayBuffer);
     }
+
+    // Try text() method
+    if (typeof blob.text === "function") {
+      return await blob.text();
+    }
+
+    // Try stream() method
+    const streamResult = await readBlobStream(blob);
+    if (streamResult) return streamResult;
   }
 
-  // Try text() method (for proper Blob objects)
-  if (blob && typeof blob === "object" && typeof blob.text === "function") {
-    try {
-      const text = await blob.text();
-      if (typeof text === "string") {
-        return text;
-      }
-    } catch (error) {
-      console.warn("blob.text() failed:", error);
-    }
-  }
-
-  // Handle legacy Blob objects that don't have arrayBuffer() or text() methods
-  // This can happen in older Node.js versions or with certain polyfills
+  // Handle legacy Blob objects (Node.js polyfills)
   if (blob && typeof blob === "object" && blob.constructor?.name === "Blob") {
-    // Try to read the blob using stream() if available
-    if (typeof blob.stream === "function") {
-      try {
-        const stream = blob.stream();
-        const reader = stream.getReader();
-        const chunks: Uint8Array[] = [];
+    // Try extracting internal buffer
+    const legacyBuffer = extractLegacyBlobBuffer(blob);
+    if (legacyBuffer) return legacyBuffer;
 
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          chunks.push(value);
-        }
-
-        const totalLength = chunks.reduce(
-          (acc, chunk) => acc + chunk.length,
-          0,
-        );
-        const combined = new Uint8Array(totalLength);
-        let offset = 0;
-        for (const chunk of chunks) {
-          combined.set(chunk, offset);
-          offset += chunk.length;
-        }
-
-        return new TextDecoder().decode(combined);
-      } catch (error) {
-        console.warn("blob.stream() failed:", error);
-      }
-    }
-
-    // For VERY legacy Blobs that only have slice() (like old Node.js buffer-to-blob polyfills)
-    // Try to extract the underlying buffer
-    const blobAny = blob as any;
-
-    // Method 1: Check for internal buffer properties (common in polyfills)
-    // Try ALL possible property names that might contain the data
-    const possibleProps = [
-      "_buffer",
-      "buffer",
-      "data",
-      "_data",
-      "_blob",
-      "content",
-      "_content",
-    ];
-
-    for (const prop of possibleProps) {
-      if (prop in blobAny) {
-        const buffer = blobAny[prop];
-        if (buffer instanceof ArrayBuffer || buffer instanceof Uint8Array) {
-          return new TextDecoder().decode(buffer);
-        }
-        if (typeof Buffer !== "undefined" && Buffer.isBuffer(buffer)) {
-          return buffer.toString("utf-8");
-        }
-      }
-    }
-
-    // Method 1.5: Check ALL own properties (including non-enumerable)
-    const allOwnProps = Object.getOwnPropertyNames(blobAny);
-    for (const prop of allOwnProps) {
-      try {
-        const value = blobAny[prop];
-        if (value instanceof ArrayBuffer || value instanceof Uint8Array) {
-          return new TextDecoder().decode(value);
-        }
-        if (typeof Buffer !== "undefined" && Buffer.isBuffer(value)) {
-          return value.toString("utf-8");
-        }
-      } catch (error) {
-        // Ignore errors accessing properties
-      }
-    }
-
-    // Method 2: If blob has a size, try using FileReader (if available in environment)
-    if (typeof FileReader !== "undefined" && blobAny.size !== undefined) {
-      try {
-        return await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result as string);
-          reader.onerror = () => reject(reader.error);
-          reader.readAsText(blob as any);
-        });
-      } catch (error) {
-        console.warn("FileReader.readAsText() failed:", error);
-      }
-    }
+    // Last resort: FileReader (browser environments)
+    const fileReaderResult = await readBlobWithFileReader(blob);
+    if (fileReaderResult) return fileReaderResult;
   }
 
-  // If we get here, we don't know how to handle this blob
-  // Try to get all available properties and methods for debugging
-  const blobKeys = blob ? Object.keys(blob) : [];
-  const blobProtoKeys = blob
-    ? Object.getOwnPropertyNames(Object.getPrototypeOf(blob))
-    : [];
-
-  const errorMsg = `Unable to convert blob to text. Type: ${typeof blob}, Constructor: ${blob?.constructor?.name}, arrayBuffer: ${typeof blob?.arrayBuffer}, text: ${typeof blob?.text}, stream: ${typeof (blob as any)?.stream}, size: ${(blob as any)?.size}, type: ${(blob as any)?.type}, keys: [${blobKeys.join(", ")}], proto: [${blobProtoKeys.join(", ")}]`;
-  console.error(errorMsg);
-  throw data(errorMsg, { status: 500 });
+  // If all else fails, throw an error
+  throw data("Unable to convert blob to text", { status: 500 });
 }
 
 export async function getTextBlob(
