@@ -14,6 +14,8 @@ export function getPrismLanguage(language: string) {
       return languages.cpp || languages.c || languages.clike;
     case "csharp":
       return languages.csharp;
+    case "lua":
+      return languages.lua;
     case "rust":
       return languages.rust;
     case "go":

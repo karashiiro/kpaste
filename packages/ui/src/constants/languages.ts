@@ -11,6 +11,7 @@ export const SUPPORTED_LANGUAGES: LanguageConfig[] = [
   { id: "java", label: "Java" },
   { id: "cpp", label: "C++" },
   { id: "csharp", label: "C#" },
+  { id: "lua", label: "Lua" },
   { id: "rust", label: "Rust" },
   { id: "go", label: "Go" },
   { id: "html", label: "HTML" },
