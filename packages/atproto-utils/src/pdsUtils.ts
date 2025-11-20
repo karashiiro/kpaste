@@ -196,7 +196,13 @@ async function readTextBlob(client: Client<any>, did: Did, blobCid: string) {
   }
 
   // If we get here, we don't know how to handle this blob
-  const errorMsg = `Unable to convert blob to text. Type: ${typeof blob}, Constructor: ${blob?.constructor?.name}, arrayBuffer type: ${typeof blob?.arrayBuffer}, text type: ${typeof blob?.text}, stream type: ${typeof (blob as any)?.stream}`;
+  // Try to get all available properties and methods for debugging
+  const blobKeys = blob ? Object.keys(blob) : [];
+  const blobProtoKeys = blob
+    ? Object.getOwnPropertyNames(Object.getPrototypeOf(blob))
+    : [];
+
+  const errorMsg = `Unable to convert blob to text. Type: ${typeof blob}, Constructor: ${blob?.constructor?.name}, arrayBuffer: ${typeof blob?.arrayBuffer}, text: ${typeof blob?.text}, stream: ${typeof (blob as any)?.stream}, size: ${(blob as any)?.size}, type: ${(blob as any)?.type}, keys: [${blobKeys.join(", ")}], proto: [${blobProtoKeys.join(", ")}]`;
   console.error(errorMsg);
   throw data(errorMsg, { status: 500 });
 }
