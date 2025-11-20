@@ -182,15 +182,61 @@ async function readTextBlob(client: Client<any>, did: Did, blobCid: string) {
       }
     }
 
-    // Last resort for legacy Blobs: try to access internal buffer if available
-    // This is a hack but might work with some polyfills
-    if ("_buffer" in blob) {
-      const buffer = (blob as any)._buffer;
-      if (buffer instanceof ArrayBuffer || buffer instanceof Uint8Array) {
-        return new TextDecoder().decode(buffer);
+    // For VERY legacy Blobs that only have slice() (like old Node.js buffer-to-blob polyfills)
+    // Try to extract the underlying buffer
+    const blobAny = blob as any;
+
+    // Method 1: Check for internal buffer properties (common in polyfills)
+    // Try ALL possible property names that might contain the data
+    const possibleProps = [
+      "_buffer",
+      "buffer",
+      "data",
+      "_data",
+      "_blob",
+      "content",
+      "_content",
+    ];
+
+    for (const prop of possibleProps) {
+      if (prop in blobAny) {
+        const buffer = blobAny[prop];
+        if (buffer instanceof ArrayBuffer || buffer instanceof Uint8Array) {
+          return new TextDecoder().decode(buffer);
+        }
+        if (typeof Buffer !== "undefined" && Buffer.isBuffer(buffer)) {
+          return buffer.toString("utf-8");
+        }
       }
-      if (typeof Buffer !== "undefined" && Buffer.isBuffer(buffer)) {
-        return buffer.toString("utf-8");
+    }
+
+    // Method 1.5: Check ALL own properties (including non-enumerable)
+    const allOwnProps = Object.getOwnPropertyNames(blobAny);
+    for (const prop of allOwnProps) {
+      try {
+        const value = blobAny[prop];
+        if (value instanceof ArrayBuffer || value instanceof Uint8Array) {
+          return new TextDecoder().decode(value);
+        }
+        if (typeof Buffer !== "undefined" && Buffer.isBuffer(value)) {
+          return value.toString("utf-8");
+        }
+      } catch (error) {
+        // Ignore errors accessing properties
+      }
+    }
+
+    // Method 2: If blob has a size, try using FileReader (if available in environment)
+    if (typeof FileReader !== "undefined" && blobAny.size !== undefined) {
+      try {
+        return await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = () => reject(reader.error);
+          reader.readAsText(blob as any);
+        });
+      } catch (error) {
+        console.warn("FileReader.readAsText() failed:", error);
       }
     }
   }
