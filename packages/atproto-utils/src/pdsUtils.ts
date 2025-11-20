@@ -106,60 +106,56 @@ async function readTextBlob(client: Client<any>, did: Did, blobCid: string) {
 
   const blob = blobResponse.data;
 
-  // Priority 1: ArrayBuffer (most common in Node.js)
+  // Handle direct ArrayBuffer
   if (blob instanceof ArrayBuffer) {
     return new TextDecoder().decode(blob);
   }
 
-  // Priority 2: Uint8Array
+  // Handle Uint8Array
   if (blob instanceof Uint8Array) {
     return new TextDecoder().decode(blob);
   }
 
-  // Priority 3: Node.js Buffer
+  // Handle Node.js Buffer
   if (typeof Buffer !== "undefined" && Buffer.isBuffer(blob)) {
     return blob.toString("utf-8");
   }
 
-  // Priority 4: Try arrayBuffer() method (handles both Blob and Response objects)
+  // Try arrayBuffer() method (for Blob objects)
+  // Check the method directly instead of using 'in' operator since it might be on the prototype
   if (
+    blob &&
     typeof blob === "object" &&
-    blob !== null &&
-    "arrayBuffer" in blob &&
     typeof blob.arrayBuffer === "function"
   ) {
     try {
       const arrayBuffer = await blob.arrayBuffer();
-      if (arrayBuffer instanceof ArrayBuffer) {
+      if (arrayBuffer) {
         return new TextDecoder().decode(arrayBuffer);
       }
     } catch (error) {
+      // arrayBuffer() failed, try text() instead
       console.warn("blob.arrayBuffer() failed:", error);
     }
   }
 
-  // Priority 5: Try text() method (for proper Blob objects)
-  if (
-    typeof blob === "object" &&
-    blob !== null &&
-    "text" in blob &&
-    typeof blob.text === "function"
-  ) {
+  // Try text() method (for Blob objects)
+  // Check the method directly instead of using 'in' operator since it might be on the prototype
+  if (blob && typeof blob === "object" && typeof blob.text === "function") {
     try {
-      const result = await blob.text();
-      if (typeof result === "string") {
-        return result;
+      const text = await blob.text();
+      if (typeof text === "string") {
+        return text;
       }
     } catch (error) {
       console.warn("blob.text() failed:", error);
     }
   }
 
-  // Last resort: throw error with debug info
-  throw data(
-    `Unable to convert blob to text. Type: ${typeof blob}, Constructor: ${blob?.constructor?.name}, Keys: ${blob ? Object.keys(blob).join(", ") : "none"}`,
-    { status: 500 },
-  );
+  // If we get here, we don't know how to handle this blob
+  const errorMsg = `Unable to convert blob to text. Type: ${typeof blob}, Constructor: ${blob?.constructor?.name}, arrayBuffer type: ${typeof blob?.arrayBuffer}, text type: ${typeof blob?.text}`;
+  console.error(errorMsg);
+  throw data(errorMsg, { status: 500 });
 }
 
 export async function getTextBlob(
