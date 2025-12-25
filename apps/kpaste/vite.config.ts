@@ -2,10 +2,28 @@ import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react-swc";
 import prismjs from "vite-plugin-prismjs";
 import metadata from "./public/oauth-client-metadata.json" with { type: "json" };
-import { SUPPORTED_LANGUAGE_IDS } from "@kpaste-app/ui/constants";
 
 const SERVER_HOST = "127.0.0.1";
 const SERVER_PORT = 5173;
+
+// Inline language IDs to avoid TypeScript import issues in config file
+const SUPPORTED_LANGUAGE_IDS = [
+  "text",
+  "javascript",
+  "typescript",
+  "python",
+  "java",
+  "cpp",
+  "csharp",
+  "lua",
+  "rust",
+  "go",
+  "html",
+  "css",
+  "json",
+  "markdown",
+  "bash",
+];
 
 // https://vite.dev/config/
 export default defineConfig({
