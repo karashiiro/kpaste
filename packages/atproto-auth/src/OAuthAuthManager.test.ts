@@ -473,6 +473,100 @@ describe("OAuthAuthManager", () => {
 
       consoleSpy.mockRestore();
     });
+
+    it("should clear persisted session if token is expired", async () => {
+      const expiredSession = {
+        did: "did:plc:test123",
+        handle: "test.bsky.social",
+        accessJwt: "token",
+        refreshJwt: "refresh",
+        active: true,
+        endpoint: { url: "https://bsky.social", name: "bsky.social" },
+        createdAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() - 1000).toISOString(), // Expired 1 second ago
+        profile: { did: "did:plc:test123", handle: "test.bsky.social" },
+      };
+
+      mockLocalStorage.getItem.mockReturnValue(JSON.stringify(expiredSession));
+
+      const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+      const { deleteStoredSession } = await import("@atcute/oauth-browser-client");
+
+      authManager = new OAuthAuthManager();
+      await authManager.initialize();
+
+      const state = authManager.getState();
+      expect(state.state).toBe("unauthenticated");
+      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith(
+        "atproto_oauth_session",
+      );
+      expect(deleteStoredSession).toHaveBeenCalledWith("did:plc:test123");
+      expect(consoleLogSpy).toHaveBeenCalledWith(
+        "Persisted session has expired, clearing",
+      );
+
+      consoleLogSpy.mockRestore();
+    });
+
+    it("should load persisted session with future expiresAt", async () => {
+      const validSession = {
+        did: "did:plc:test123",
+        handle: "test.bsky.social",
+        accessJwt: "token",
+        refreshJwt: "refresh",
+        active: true,
+        endpoint: { url: "https://bsky.social", name: "bsky.social" },
+        createdAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + 3600000).toISOString(), // Expires in 1 hour
+        profile: { did: "did:plc:test123", handle: "test.bsky.social" },
+      };
+
+      mockLocalStorage.getItem.mockReturnValue(JSON.stringify(validSession));
+
+      const { getSession } = await import("@atcute/oauth-browser-client");
+      (getSession as any).mockResolvedValue({
+        info: { sub: "did:plc:test123" },
+        token: { access: "token" },
+      });
+
+      authManager = new OAuthAuthManager();
+      await authManager.initialize();
+
+      const state = authManager.getState();
+      expect(state.state).toBe("authenticated");
+      expect(state.session?.did).toBe("did:plc:test123");
+      expect(getSession).toHaveBeenCalledWith("did:plc:test123", { allowStale: true });
+    });
+
+    it("should load persisted session without expiresAt field (backward compatibility)", async () => {
+      const sessionWithoutExpiry = {
+        did: "did:plc:test123",
+        handle: "test.bsky.social",
+        accessJwt: "token",
+        refreshJwt: "refresh",
+        active: true,
+        endpoint: { url: "https://bsky.social", name: "bsky.social" },
+        createdAt: new Date().toISOString(),
+        // No expiresAt field
+        profile: { did: "did:plc:test123", handle: "test.bsky.social" },
+      };
+
+      mockLocalStorage.getItem.mockReturnValue(JSON.stringify(sessionWithoutExpiry));
+
+      const { getSession } = await import("@atcute/oauth-browser-client");
+      (getSession as any).mockResolvedValue({
+        info: { sub: "did:plc:test123" },
+        token: { access: "token" },
+      });
+
+      authManager = new OAuthAuthManager();
+      await authManager.initialize();
+
+      const state = authManager.getState();
+      expect(state.state).toBe("authenticated");
+      expect(state.session?.did).toBe("did:plc:test123");
+      expect(getSession).toHaveBeenCalledWith("did:plc:test123", { allowStale: true });
+    });
   });
 
   describe("utility methods", () => {

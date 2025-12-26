@@ -341,6 +341,17 @@ export class OAuthAuthManager {
         expiresAt: parsed.expiresAt ? new Date(parsed.expiresAt) : undefined,
       };
 
+      // Check if token is expired before attempting to resume
+      if (session.expiresAt && session.expiresAt < new Date()) {
+        console.log("Persisted session has expired, clearing");
+        this.clearPersistedSession();
+        // Also delete from OAuth client storage
+        if (session.did) {
+          deleteStoredSession(session.did);
+        }
+        return;
+      }
+
       // Try to resume OAuth session
       const oauthSession = await getSession(session.did, { allowStale: true });
 
