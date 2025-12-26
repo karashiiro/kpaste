@@ -128,7 +128,7 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
               <LoginBrandLink
                 href="https://sprk.so/"
                 name="Spark"
-                logoUri="https://sprk.so/meta/favicon.ico"
+                logoUri="https://sprk.so/favicon.ico"
               />
               <XStack justifyContent="center" alignItems="center" gap="$2">
                 <AtSymbolIcon width={19} height={19} color="white" />
