@@ -18,7 +18,10 @@ function TestWrapper({ children }: { children: React.ReactNode }) {
   );
 }
 
-describe("PasteView - Live Data Integration", () => {
+// Skip live data tests in CI — they require network access to external APIs
+const describeLive = process.env.CI ? describe.skip : describe;
+
+describeLive("PasteView - Live Data Integration", () => {
   it(
     "should render arbitrary live paste records from production using real loader",
     async () => {

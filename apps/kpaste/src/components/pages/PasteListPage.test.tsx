@@ -15,7 +15,6 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => (
 // Mock all the dependencies
 vi.mock("react-router", () => ({
   useLoaderData: vi.fn(),
-  useParams: vi.fn(),
 }));
 
 vi.mock("@kpaste-app/atproto-auth", () => ({
@@ -82,13 +81,11 @@ describe("PasteListPage", () => {
 
   describe("rendering", () => {
     it("should render the paste list page with basic structure", async () => {
-      const { useLoaderData, useParams } = await import("react-router");
+      const { useLoaderData } = await import("react-router");
       const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
-      });
-      (useParams as ReturnType<typeof vi.fn>).mockReturnValue({
         handle: "test.bsky.social",
       });
       (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
@@ -107,13 +104,11 @@ describe("PasteListPage", () => {
     });
 
     it("should render with empty paste list", async () => {
-      const { useLoaderData, useParams } = await import("react-router");
+      const { useLoaderData } = await import("react-router");
       const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: [],
-      });
-      (useParams as ReturnType<typeof vi.fn>).mockReturnValue({
         handle: "empty.bsky.social",
       });
       (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
@@ -131,13 +126,11 @@ describe("PasteListPage", () => {
     });
 
     it("should render nothing when userHandle is undefined", async () => {
-      const { useLoaderData, useParams } = await import("react-router");
+      const { useLoaderData } = await import("react-router");
       const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
-      });
-      (useParams as ReturnType<typeof vi.fn>).mockReturnValue({
         handle: undefined,
       });
       (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
@@ -158,13 +151,11 @@ describe("PasteListPage", () => {
 
   describe("viewing own pastes", () => {
     it("should display 'Your Pastes' when viewing own pastes", async () => {
-      const { useLoaderData, useParams } = await import("react-router");
+      const { useLoaderData } = await import("react-router");
       const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
-      });
-      (useParams as ReturnType<typeof vi.fn>).mockReturnValue({
         handle: "myhandle.bsky.social",
       });
       (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
@@ -186,7 +177,7 @@ describe("PasteListPage", () => {
     });
 
     it("should pass currentUserSession to PasteList when authenticated", async () => {
-      const { useLoaderData, useParams } = await import("react-router");
+      const { useLoaderData } = await import("react-router");
       const { useAuth } = await import("@kpaste-app/atproto-auth");
       const { PasteList } = await import("../paste/PasteList");
 
@@ -197,8 +188,6 @@ describe("PasteListPage", () => {
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
-      });
-      (useParams as ReturnType<typeof vi.fn>).mockReturnValue({
         handle: "myhandle.bsky.social",
       });
       (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
@@ -224,13 +213,11 @@ describe("PasteListPage", () => {
 
   describe("viewing other user's pastes", () => {
     it("should display other user's handle when viewing their pastes", async () => {
-      const { useLoaderData, useParams } = await import("react-router");
+      const { useLoaderData } = await import("react-router");
       const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
-      });
-      (useParams as ReturnType<typeof vi.fn>).mockReturnValue({
         handle: "other.bsky.social",
       });
       (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
@@ -256,13 +243,11 @@ describe("PasteListPage", () => {
     });
 
     it("should display user handle when not authenticated", async () => {
-      const { useLoaderData, useParams } = await import("react-router");
+      const { useLoaderData } = await import("react-router");
       const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
-      });
-      (useParams as ReturnType<typeof vi.fn>).mockReturnValue({
         handle: "someone.bsky.social",
       });
       (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
@@ -285,14 +270,12 @@ describe("PasteListPage", () => {
     });
 
     it("should pass null session to PasteList when not authenticated", async () => {
-      const { useLoaderData, useParams } = await import("react-router");
+      const { useLoaderData } = await import("react-router");
       const { useAuth } = await import("@kpaste-app/atproto-auth");
       const { PasteList } = await import("../paste/PasteList");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
-      });
-      (useParams as ReturnType<typeof vi.fn>).mockReturnValue({
         handle: "other.bsky.social",
       });
       (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
@@ -318,16 +301,14 @@ describe("PasteListPage", () => {
 
   describe("pagination", () => {
     it("should render pagination buttons twice (top and bottom)", async () => {
-      const { useLoaderData, useParams } = await import("react-router");
+      const { useLoaderData } = await import("react-router");
       const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
+        handle: "test.bsky.social",
         cursor: "cursor123",
         nextCursor: "next456",
-      });
-      (useParams as ReturnType<typeof vi.fn>).mockReturnValue({
-        handle: "test.bsky.social",
       });
       (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
         isAuthenticated: false,
@@ -347,13 +328,11 @@ describe("PasteListPage", () => {
 
   describe("accessibility", () => {
     it("should have proper heading structure", async () => {
-      const { useLoaderData, useParams } = await import("react-router");
+      const { useLoaderData } = await import("react-router");
       const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
-      });
-      (useParams as ReturnType<typeof vi.fn>).mockReturnValue({
         handle: "test.bsky.social",
       });
       (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
@@ -376,13 +355,11 @@ describe("PasteListPage", () => {
     });
 
     it("should render book icon for visual identification", async () => {
-      const { useLoaderData, useParams } = await import("react-router");
+      const { useLoaderData } = await import("react-router");
       const { useAuth } = await import("@kpaste-app/atproto-auth");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
-      });
-      (useParams as ReturnType<typeof vi.fn>).mockReturnValue({
         handle: "test.bsky.social",
       });
       (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
@@ -404,14 +381,12 @@ describe("PasteListPage", () => {
 
   describe("component integration", () => {
     it("should pass correct props to PasteList component", async () => {
-      const { useLoaderData, useParams } = await import("react-router");
+      const { useLoaderData } = await import("react-router");
       const { useAuth } = await import("@kpaste-app/atproto-auth");
       const { PasteList } = await import("../paste/PasteList");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
-      });
-      (useParams as ReturnType<typeof vi.fn>).mockReturnValue({
         handle: "test.bsky.social",
       });
       (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
@@ -435,14 +410,12 @@ describe("PasteListPage", () => {
     });
 
     it("should render PageContainer with correct props", async () => {
-      const { useLoaderData, useParams } = await import("react-router");
+      const { useLoaderData } = await import("react-router");
       const { useAuth } = await import("@kpaste-app/atproto-auth");
       const { PageContainer } = await import("@kpaste-app/ui");
 
       (useLoaderData as ReturnType<typeof vi.fn>).mockReturnValue({
         pastes: mockPastes,
-      });
-      (useParams as ReturnType<typeof vi.fn>).mockReturnValue({
         handle: "test.bsky.social",
       });
       (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
