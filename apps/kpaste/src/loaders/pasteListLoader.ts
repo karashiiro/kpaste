@@ -6,6 +6,7 @@ import { getTextBlobs, resolveUser } from "../utils/pdsUtils";
 
 export interface PasteListLoaderData {
   pastes: PasteListItem[];
+  handle: string;
   prevCursor?: string;
   cursor?: string;
   nextCursor?: string;
@@ -31,7 +32,7 @@ export async function pasteListLoader({
     throw data("Invalid URL parameters", { status: 400 });
   }
 
-  const { did, pdsUrl } = await resolveUser(handle);
+  const { did, pdsUrl, handle: resolvedHandle } = await resolveUser(handle);
 
   const pdsHandler = simpleFetchHandler({
     service: pdsUrl,
@@ -69,6 +70,7 @@ export async function pasteListLoader({
       value: rec.value as PasteRecord,
       content: contents[index],
     })),
+    handle: resolvedHandle,
     prevCursor: prevCursor || undefined,
     cursor: cursor || undefined,
     nextCursor: cursor === pastesData.cursor ? undefined : pastesData.cursor,

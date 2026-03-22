@@ -10,21 +10,22 @@ interface MiniDidDocument {
 export interface ResolveUserPdsResult {
   did: Did;
   pdsUrl: string;
+  handle: string;
 }
 
 export async function resolveUser(
-  handle: string,
+  identifier: string,
 ): Promise<ResolveUserPdsResult> {
-  // Resolve handle to DID/PDS using slingshot
+  // Resolve handle or DID to DID/PDS using slingshot
   // TODO: Have some sort of fallback - manual PDS resolution is annoying though
   const endpoint = new URL(
     "https://slingshot.microcosm.blue/xrpc/com.bad-example.identity.resolveMiniDoc",
   );
-  endpoint.searchParams.set("identifier", handle);
+  endpoint.searchParams.set("identifier", identifier);
 
   const resolveResponse = await fetch(endpoint);
   if (!resolveResponse.ok) {
-    throw data(`Failed to resolve handle: ${handle}`, {
+    throw data(`Failed to resolve identifier: ${identifier}`, {
       status: 404,
     });
   }
@@ -32,7 +33,24 @@ export async function resolveUser(
   const miniDidDocument: MiniDidDocument = await resolveResponse.json();
   const { did, pds } = miniDidDocument;
 
-  return { did, pdsUrl: pds };
+  // If the identifier is a DID, resolve the handle via the PDS
+  let handle: string;
+  if (identifier.startsWith("did:")) {
+    const handler = simpleFetchHandler({ service: pds });
+    const client = new Client<any>({ handler });
+    const describeResponse = await client.get(
+      "com.atproto.repo.describeRepo",
+      { params: { repo: did } },
+    );
+    if (!describeResponse.ok) {
+      throw data(`Failed to resolve handle for DID: ${did}`, { status: 404 });
+    }
+    handle = describeResponse.data.handle;
+  } else {
+    handle = identifier;
+  }
+
+  return { did, pdsUrl: pds, handle };
 }
 
 export interface AtProtoRecord {

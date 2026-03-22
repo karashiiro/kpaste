@@ -1,7 +1,7 @@
 import { YStack, XStack } from "@tamagui/stacks";
 import { Paragraph } from "@tamagui/text";
 import { BookOpenIcon } from "@heroicons/react/24/outline";
-import { useLoaderData, useParams } from "react-router";
+import { useLoaderData } from "react-router";
 import { PasteList } from "../paste/PasteList";
 import type { PasteListLoaderData } from "../../loaders/pasteListLoader";
 import { useAuth } from "@kpaste-app/atproto-auth";
@@ -10,8 +10,7 @@ import { PageContainer } from "@kpaste-app/ui";
 
 export function PasteListPage() {
   const { isAuthenticated, session } = useAuth();
-  const { handle: userHandle } = useParams();
-  const { pastes } = useLoaderData() as PasteListLoaderData;
+  const { pastes, handle: userHandle } = useLoaderData() as PasteListLoaderData;
 
   // Check if viewing current user's own pastes
   const isViewingOwnPastes = isAuthenticated && session?.handle === userHandle;

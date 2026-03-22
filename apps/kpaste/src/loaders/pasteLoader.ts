@@ -21,7 +21,7 @@ export async function pasteLoader({
     throw data("Invalid URL parameters", { status: 400 });
   }
 
-  const { did, pdsUrl } = await resolveUser(handle);
+  const { did, pdsUrl, handle: resolvedHandle } = await resolveUser(handle);
 
   const pasteData = await getPasteRecord(pdsUrl, did, rkey);
 
@@ -38,7 +38,7 @@ export async function pasteLoader({
     uri: pasteData.uri,
     cid: pasteData.cid!,
     value: pasteData.value as PasteRecord,
-    handle,
+    handle: resolvedHandle,
     rkey,
     pdsUrl,
     content,
