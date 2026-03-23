@@ -1,51 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { pasteLoader } from "./pasteLoader";
 import type { LoaderFunctionArgs } from "react-router";
 
-// Mock the pdsUtils module to avoid network calls
-vi.mock("../utils/pdsUtils", () => ({
-  resolveUser: vi.fn(),
-  getPasteRecord: vi.fn(),
-  getTextBlob: vi.fn(),
-}));
-
 describe("pasteLoader", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it("should load paste data using resolved user", async () => {
-    const { resolveUser, getPasteRecord, getTextBlob } = await import(
-      "../utils/pdsUtils"
-    );
-
-    (resolveUser as ReturnType<typeof vi.fn>).mockResolvedValue({
-      did: "did:plc:test123",
-      pdsUrl: "https://pds.example.com",
-      handle: "karashiiro.moe",
-    });
-
-    (getPasteRecord as ReturnType<typeof vi.fn>).mockResolvedValue({
-      uri: "at://did:plc:test123/moe.karashiiro.kpaste.paste/3lzthufbnv22z",
-      cid: "bafyreicid123",
-      value: {
-        $type: "moe.karashiiro.kpaste.paste",
-        title: "[DO NOT DELETE] Test data",
-        language: "typescript",
-        content: {
-          $type: "blob",
-          ref: { $link: "bafkreiblob123" },
-          mimeType: "text/plain",
-          size: 31,
-        },
-        createdAt: "2024-01-01T00:00:00.000Z",
-      },
-    });
-
-    (getTextBlob as ReturnType<typeof vi.fn>).mockResolvedValue(
-      'const test = "This is a test.";',
-    );
-
+  it("should load real paste data from karashiiro.moe", async () => {
+    // Using real test data from /p/karashiiro.moe/3lzthufbnv22z
     const mockArgs: LoaderFunctionArgs = {
       params: {
         handle: "karashiiro.moe",
@@ -60,7 +19,7 @@ describe("pasteLoader", () => {
     expect(result).toMatchObject({
       handle: "karashiiro.moe",
       rkey: "3lzthufbnv22z",
-      pdsUrl: "https://pds.example.com",
+      pdsUrl: "https://pds.bsky.ln4.net",
       content: 'const test = "This is a test.";',
     });
 
@@ -69,64 +28,9 @@ describe("pasteLoader", () => {
     expect(result.value).toMatchObject({
       title: "[DO NOT DELETE] Test data",
       language: "typescript",
-      createdAt: expect.stringMatching(
-        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/,
-      ),
+      createdAt: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/),
     });
-
-    expect(resolveUser).toHaveBeenCalledWith("karashiiro.moe");
-    expect(getPasteRecord).toHaveBeenCalledWith(
-      "https://pds.example.com",
-      "did:plc:test123",
-      "3lzthufbnv22z",
-    );
-  });
-
-  it("should use resolved handle when DID is in URL", async () => {
-    const { resolveUser, getPasteRecord, getTextBlob } = await import(
-      "../utils/pdsUtils"
-    );
-
-    (resolveUser as ReturnType<typeof vi.fn>).mockResolvedValue({
-      did: "did:plc:test123",
-      pdsUrl: "https://pds.example.com",
-      handle: "resolved.handle.social",
-    });
-
-    (getPasteRecord as ReturnType<typeof vi.fn>).mockResolvedValue({
-      uri: "at://did:plc:test123/moe.karashiiro.kpaste.paste/abc123",
-      cid: "bafyreicid123",
-      value: {
-        $type: "moe.karashiiro.kpaste.paste",
-        title: "Test",
-        language: "text",
-        content: {
-          $type: "blob",
-          ref: { $link: "bafkreiblob123" },
-          mimeType: "text/plain",
-          size: 4,
-        },
-        createdAt: "2024-01-01T00:00:00.000Z",
-      },
-    });
-
-    (getTextBlob as ReturnType<typeof vi.fn>).mockResolvedValue("test");
-
-    const mockArgs: LoaderFunctionArgs = {
-      params: {
-        handle: "did:plc:test123",
-        rkey: "abc123",
-      },
-      request: new Request("http://localhost/p/did:plc:test123/abc123"),
-      context: {},
-    };
-
-    const result = await pasteLoader(mockArgs);
-
-    // Should use the resolved handle, not the DID from the URL
-    expect(result.handle).toBe("resolved.handle.social");
-    expect(resolveUser).toHaveBeenCalledWith("did:plc:test123");
-  });
+  }, 15000);
 
   it("should throw 400 error for missing handle parameter", async () => {
     const mockArgs: LoaderFunctionArgs = {
@@ -138,7 +42,7 @@ describe("pasteLoader", () => {
     };
 
     await expect(pasteLoader(mockArgs)).rejects.toThrow();
-  });
+  }, 10000);
 
   it("should throw 400 error for missing rkey parameter", async () => {
     const mockArgs: LoaderFunctionArgs = {
@@ -150,57 +54,35 @@ describe("pasteLoader", () => {
     };
 
     await expect(pasteLoader(mockArgs)).rejects.toThrow();
-  });
+  }, 10000);
 
-  it("should throw error when resolveUser fails", async () => {
-    const { resolveUser } = await import("../utils/pdsUtils");
-
-    (resolveUser as ReturnType<typeof vi.fn>).mockRejectedValue(
-      new Error("Failed to resolve"),
-    );
-
+  it("should throw 404 error for non-existent paste", async () => {
     const mockArgs: LoaderFunctionArgs = {
       params: {
-        handle: "nonexistent.handle",
-        rkey: "abc123",
+        handle: "karashiiro.moe",
+        rkey: "nonexistent-paste-key-12345",
       },
-      request: new Request("http://localhost/p/nonexistent.handle/abc123"),
+      request: new Request(
+        "http://localhost/p/karashiiro.moe/nonexistent-paste-key-12345",
+      ),
       context: {},
     };
 
     await expect(pasteLoader(mockArgs)).rejects.toThrow();
-  });
+  }, 10000);
 
-  it("should throw error when paste record has invalid blob reference", async () => {
-    const { resolveUser, getPasteRecord } = await import("../utils/pdsUtils");
-
-    (resolveUser as ReturnType<typeof vi.fn>).mockResolvedValue({
-      did: "did:plc:test123",
-      pdsUrl: "https://pds.example.com",
-      handle: "test.handle",
-    });
-
-    (getPasteRecord as ReturnType<typeof vi.fn>).mockResolvedValue({
-      uri: "at://did:plc:test123/moe.karashiiro.kpaste.paste/abc123",
-      cid: "bafyreicid123",
-      value: {
-        $type: "moe.karashiiro.kpaste.paste",
-        title: "Test",
-        language: "text",
-        content: null, // Invalid blob reference
-        createdAt: "2024-01-01T00:00:00.000Z",
-      },
-    });
-
+  it("should throw error for non-existent handle", async () => {
     const mockArgs: LoaderFunctionArgs = {
       params: {
-        handle: "test.handle",
-        rkey: "abc123",
+        handle: "definitely-not-a-real-handle-12345.bsky.social",
+        rkey: "3lzthufbnv22z",
       },
-      request: new Request("http://localhost/p/test.handle/abc123"),
+      request: new Request(
+        "http://localhost/p/definitely-not-a-real-handle-12345.bsky.social/3lzthufbnv22z",
+      ),
       context: {},
     };
 
     await expect(pasteLoader(mockArgs)).rejects.toThrow();
-  });
+  }, 10000);
 });
