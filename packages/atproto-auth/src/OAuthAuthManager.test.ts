@@ -14,8 +14,13 @@ vi.mock("@atcute/oauth-browser-client", () => ({
   OAuthUserAgent: vi.fn().mockImplementation(() => ({ type: "mock-agent" })),
 }));
 
+const mockClientGet = vi.fn();
+
 vi.mock("@atcute/client", () => ({
-  Client: vi.fn().mockImplementation(() => ({ type: "mock-client" })),
+  Client: vi.fn().mockImplementation(() => ({
+    type: "mock-client",
+    get: mockClientGet,
+  })),
 }));
 
 // Mock window and storage
@@ -55,6 +60,7 @@ describe("OAuthAuthManager", () => {
     vi.clearAllMocks();
     mockLocalStorage.getItem.mockReturnValue(null);
     mockSessionStorage.getItem.mockReturnValue(null);
+    mockClientGet.mockResolvedValue({ ok: true, status: 200, data: {} });
 
     // Mock env vars
     vi.stubEnv("VITE_OAUTH_CLIENT_ID", "test-client-id");
@@ -566,6 +572,126 @@ describe("OAuthAuthManager", () => {
       expect(state.state).toBe("authenticated");
       expect(state.session?.did).toBe("did:plc:test123");
       expect(getSession).toHaveBeenCalledWith("did:plc:test123", { allowStale: true });
+    });
+
+    it("should clear persisted session when server rejects token with 401", async () => {
+      const validSession = {
+        did: "did:plc:test123",
+        handle: "test.bsky.social",
+        accessJwt: "token",
+        refreshJwt: "refresh",
+        active: true,
+        endpoint: { url: "https://bsky.social", name: "bsky.social" },
+        createdAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + 3600000).toISOString(),
+        profile: { did: "did:plc:test123", handle: "test.bsky.social" },
+      };
+
+      mockLocalStorage.getItem.mockReturnValue(JSON.stringify(validSession));
+
+      const { getSession, deleteStoredSession } = await import(
+        "@atcute/oauth-browser-client"
+      );
+      (getSession as any).mockResolvedValue({
+        info: { sub: "did:plc:test123" },
+        token: { access: "token" },
+      });
+      mockClientGet.mockResolvedValue({ ok: false, status: 401, data: {} });
+
+      const consoleLogSpy = vi
+        .spyOn(console, "log")
+        .mockImplementation(() => {});
+
+      authManager = new OAuthAuthManager();
+      await authManager.initialize();
+
+      const state = authManager.getState();
+      expect(state.state).toBe("unauthenticated");
+      expect(mockClientGet).toHaveBeenCalledWith(
+        "com.atproto.server.getSession",
+        {},
+      );
+      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith(
+        "atproto_oauth_session",
+      );
+      expect(deleteStoredSession).toHaveBeenCalledWith("did:plc:test123");
+      expect(authManager.getClient()).toBeNull();
+      expect(authManager.getAgent()).toBeNull();
+
+      consoleLogSpy.mockRestore();
+    });
+
+    it("should keep persisted session when validation request fails transiently", async () => {
+      const validSession = {
+        did: "did:plc:test123",
+        handle: "test.bsky.social",
+        accessJwt: "token",
+        refreshJwt: "refresh",
+        active: true,
+        endpoint: { url: "https://bsky.social", name: "bsky.social" },
+        createdAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + 3600000).toISOString(),
+        profile: { did: "did:plc:test123", handle: "test.bsky.social" },
+      };
+
+      mockLocalStorage.getItem.mockReturnValue(JSON.stringify(validSession));
+
+      const { getSession } = await import("@atcute/oauth-browser-client");
+      (getSession as any).mockResolvedValue({
+        info: { sub: "did:plc:test123" },
+        token: { access: "token" },
+      });
+      // Server hiccup, not an auth failure — session should stay loaded.
+      mockClientGet.mockResolvedValue({ ok: false, status: 503, data: {} });
+
+      const consoleWarnSpy = vi
+        .spyOn(console, "warn")
+        .mockImplementation(() => {});
+
+      authManager = new OAuthAuthManager();
+      await authManager.initialize();
+
+      const state = authManager.getState();
+      expect(state.state).toBe("authenticated");
+      expect(state.session?.did).toBe("did:plc:test123");
+
+      consoleWarnSpy.mockRestore();
+    });
+
+    it("should keep persisted session when validation request throws", async () => {
+      const validSession = {
+        did: "did:plc:test123",
+        handle: "test.bsky.social",
+        accessJwt: "token",
+        refreshJwt: "refresh",
+        active: true,
+        endpoint: { url: "https://bsky.social", name: "bsky.social" },
+        createdAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + 3600000).toISOString(),
+        profile: { did: "did:plc:test123", handle: "test.bsky.social" },
+      };
+
+      mockLocalStorage.getItem.mockReturnValue(JSON.stringify(validSession));
+
+      const { getSession } = await import("@atcute/oauth-browser-client");
+      (getSession as any).mockResolvedValue({
+        info: { sub: "did:plc:test123" },
+        token: { access: "token" },
+      });
+      mockClientGet.mockRejectedValue(new Error("Network unreachable"));
+
+      const consoleWarnSpy = vi
+        .spyOn(console, "warn")
+        .mockImplementation(() => {});
+
+      authManager = new OAuthAuthManager();
+      await authManager.initialize();
+
+      const state = authManager.getState();
+      expect(state.state).toBe("authenticated");
+      expect(state.session?.did).toBe("did:plc:test123");
+
+      consoleWarnSpy.mockRestore();
     });
   });
 

@@ -344,31 +344,67 @@ export class OAuthAuthManager {
       // Check if token is expired before attempting to resume
       if (session.expiresAt && session.expiresAt < new Date()) {
         console.log("Persisted session has expired, clearing");
-        this.clearPersistedSession();
-        // Also delete from OAuth client storage
         if (session.did) {
           deleteStoredSession(session.did);
         }
+        this.clearLoadedSession();
         return;
       }
 
       // Try to resume OAuth session
       const oauthSession = await getSession(session.did, { allowStale: true });
 
-      if (oauthSession) {
-        this.agent = new OAuthUserAgent(oauthSession);
-        this.client = new Client({ handler: this.agent });
-
-        this.setState({
-          state: "authenticated",
-          session: session,
-        });
-      } else {
-        this.clearPersistedSession();
+      if (!oauthSession) {
+        this.clearLoadedSession();
+        return;
       }
+
+      this.agent = new OAuthUserAgent(oauthSession);
+      this.client = new Client({ handler: this.agent });
+
+      // Verify the token still works against the PDS — catches tokens that
+      // were revoked server-side before their local expiry was reached.
+      const isValid = await this.validateSessionWithServer();
+      if (!isValid) {
+        console.log("Persisted session is no longer valid, clearing");
+        deleteStoredSession(session.did);
+        this.clearLoadedSession();
+        return;
+      }
+
+      this.setState({
+        state: "authenticated",
+        session: session,
+      });
     } catch (error) {
       console.warn("Failed to load persisted session:", error);
-      this.clearPersistedSession();
+      this.clearLoadedSession();
+    }
+  }
+
+  private clearLoadedSession(): void {
+    this.agent = null;
+    this.client = null;
+    this.setState({
+      state: "unauthenticated",
+      session: undefined,
+      error: undefined,
+    });
+  }
+
+  private async validateSessionWithServer(): Promise<boolean> {
+    if (!this.client) return false;
+    try {
+      const response = await this.client.get(
+        "com.atproto.server.getSession",
+        {},
+      );
+      // Only a clear auth failure (401) should force logout; transient
+      // server/network problems leave the session intact.
+      return response.ok || response.status !== 401;
+    } catch (error) {
+      console.warn("Session validation request failed:", error);
+      return true;
     }
   }
 
