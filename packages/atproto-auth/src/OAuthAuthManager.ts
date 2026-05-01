@@ -7,7 +7,6 @@ import type {
 } from "./types";
 import {
   configureOAuth,
-  resolveFromIdentity,
   createAuthorizationUrl,
   finalizeAuthorization,
   getSession,
@@ -15,7 +14,15 @@ import {
   OAuthUserAgent,
 } from "@atcute/oauth-browser-client";
 import type { Session } from "@atcute/oauth-browser-client";
+import {
+  CompositeDidDocumentResolver,
+  LocalActorResolver,
+  PlcDidDocumentResolver,
+  WebDidDocumentResolver,
+  XrpcHandleResolver,
+} from "@atcute/identity-resolver";
 import { Client } from "@atcute/client";
+import type { ActorIdentifier } from "@atcute/lexicons";
 
 type TimerHandle = ReturnType<typeof setInterval>;
 
@@ -76,6 +83,17 @@ export class OAuthAuthManager {
           import.meta.env.VITE_OAUTH_REDIRECT_URI ||
           `${window.location.origin}/oauth/callback`,
       },
+      identityResolver: new LocalActorResolver({
+        handleResolver: new XrpcHandleResolver({
+          serviceUrl: "https://public.api.bsky.app",
+        }),
+        didDocumentResolver: new CompositeDidDocumentResolver({
+          methods: {
+            plc: new PlcDidDocumentResolver(),
+            web: new WebDidDocumentResolver(),
+          },
+        }),
+      }),
     });
   }
 
@@ -148,14 +166,14 @@ export class OAuthAuthManager {
     });
 
     try {
-      // Resolve identity and service metadata
-      const { metadata, identity } = await resolveFromIdentity(request.handle);
-
-      // Create authorization URL
       const authUrl = await createAuthorizationUrl({
-        metadata: metadata,
-        identity: identity,
-        scope: import.meta.env.VITE_OAUTH_SCOPE || "atproto transition:generic",
+        target: {
+          type: "account",
+          identifier: request.handle as ActorIdentifier,
+        },
+        scope:
+          import.meta.env.VITE_OAUTH_SCOPE ||
+          "atproto repo:moe.karashiiro.kpaste.paste blob:text/plain rpc:com.atproto.server.getSession?aud=*",
       });
 
       // Store handle for after redirect
@@ -179,7 +197,7 @@ export class OAuthAuthManager {
     this.setState({ isLoading: true });
 
     try {
-      const oauthSession = await finalizeAuthorization(params);
+      const { session: oauthSession } = await finalizeAuthorization(params);
       const handle = this.retrieveStoredHandle();
 
       this.initializeClientFromSession(oauthSession);

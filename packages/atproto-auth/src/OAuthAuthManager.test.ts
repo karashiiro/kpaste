@@ -6,12 +6,19 @@ import type { AuthStateData } from "./types";
 // Mock all OAuth dependencies with simpler approach
 vi.mock("@atcute/oauth-browser-client", () => ({
   configureOAuth: vi.fn(),
-  resolveFromIdentity: vi.fn(),
   createAuthorizationUrl: vi.fn(),
   finalizeAuthorization: vi.fn(),
   getSession: vi.fn(),
   deleteStoredSession: vi.fn(),
   OAuthUserAgent: vi.fn().mockImplementation(() => ({ type: "mock-agent" })),
+}));
+
+vi.mock("@atcute/identity-resolver", () => ({
+  CompositeDidDocumentResolver: vi.fn(),
+  LocalActorResolver: vi.fn(),
+  PlcDidDocumentResolver: vi.fn(),
+  WebDidDocumentResolver: vi.fn(),
+  XrpcHandleResolver: vi.fn(),
 }));
 
 const mockClientGet = vi.fn();
@@ -68,7 +75,10 @@ describe("OAuthAuthManager", () => {
       "VITE_OAUTH_REDIRECT_URI",
       "http://localhost:5173/oauth/callback",
     );
-    vi.stubEnv("VITE_OAUTH_SCOPE", "atproto transition:generic");
+    vi.stubEnv(
+      "VITE_OAUTH_SCOPE",
+      "atproto repo:moe.karashiiro.kpaste.paste blob:text/plain rpc:com.atproto.server.getSession?aud=*",
+    );
   });
 
   afterEach(() => {
@@ -189,14 +199,10 @@ describe("OAuthAuthManager", () => {
     });
 
     it("should set authenticating state when starting login", async () => {
-      const { resolveFromIdentity, createAuthorizationUrl } = await import(
+      const { createAuthorizationUrl } = await import(
         "@atcute/oauth-browser-client"
       );
 
-      (resolveFromIdentity as any).mockResolvedValue({
-        metadata: { issuer: "https://bsky.social" },
-        identity: { did: "did:plc:test123" },
-      });
       (createAuthorizationUrl as any).mockResolvedValue(
         "https://bsky.social/oauth/authorize",
       );
@@ -212,6 +218,11 @@ describe("OAuthAuthManager", () => {
           isLoading: true,
         }),
       );
+      expect(createAuthorizationUrl).toHaveBeenCalledWith(
+        expect.objectContaining({
+          target: { type: "account", identifier: "test.bsky.social" },
+        }),
+      );
       expect(mockSessionStorage.setItem).toHaveBeenCalledWith(
         "oauth_handle",
         "test.bsky.social",
@@ -222,11 +233,11 @@ describe("OAuthAuthManager", () => {
     });
 
     it("should handle login errors", async () => {
-      const { resolveFromIdentity } = await import(
+      const { createAuthorizationUrl } = await import(
         "@atcute/oauth-browser-client"
       );
       const error = new Error("Failed to resolve identity");
-      (resolveFromIdentity as any).mockRejectedValue(error);
+      (createAuthorizationUrl as any).mockRejectedValue(error);
 
       await authManager.startLogin({ handle: "invalid.handle" });
 
@@ -241,10 +252,10 @@ describe("OAuthAuthManager", () => {
     });
 
     it("should handle unknown error types", async () => {
-      const { resolveFromIdentity } = await import(
+      const { createAuthorizationUrl } = await import(
         "@atcute/oauth-browser-client"
       );
-      (resolveFromIdentity as any).mockRejectedValue("string error");
+      (createAuthorizationUrl as any).mockRejectedValue("string error");
 
       await authManager.startLogin({ handle: "test.bsky.social" });
 
@@ -281,7 +292,10 @@ describe("OAuthAuthManager", () => {
         },
       };
 
-      (finalizeAuthorization as any).mockResolvedValue(mockOAuthSession);
+      (finalizeAuthorization as any).mockResolvedValue({
+        session: mockOAuthSession,
+        state: null,
+      });
       mockSessionStorage.getItem.mockReturnValue("test.bsky.social");
 
       const params = new URLSearchParams("code=auth_code&state=random_state");
@@ -309,8 +323,11 @@ describe("OAuthAuthManager", () => {
       );
 
       (finalizeAuthorization as any).mockResolvedValue({
-        info: { sub: "did:plc:test123", aud: "https://bsky.social" },
-        token: { access: "token", refresh: "refresh" },
+        session: {
+          info: { sub: "did:plc:test123", aud: "https://bsky.social" },
+          token: { access: "token", refresh: "refresh" },
+        },
+        state: null,
       });
       mockSessionStorage.getItem.mockReturnValue(null);
 
@@ -396,12 +413,15 @@ describe("OAuthAuthManager", () => {
       );
 
       (finalizeAuthorization as any).mockResolvedValue({
-        info: { sub: "did:plc:test123", aud: "https://bsky.social" },
-        token: {
-          access: "token",
-          refresh: "refresh",
-          expires_at: Math.floor(Date.now() / 1000) + 3600,
+        session: {
+          info: { sub: "did:plc:test123", aud: "https://bsky.social" },
+          token: {
+            access: "token",
+            refresh: "refresh",
+            expires_at: Math.floor(Date.now() / 1000) + 3600,
+          },
         },
+        state: null,
       });
       mockSessionStorage.getItem.mockReturnValue("test.bsky.social");
 

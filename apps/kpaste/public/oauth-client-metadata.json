@@ -6,7 +6,7 @@
   "tos_uri": "https://kp.krs.moe",
   "policy_uri": "https://kp.krs.moe",
   "redirect_uris": ["https://kp.krs.moe/oauth/callback.html"],
-  "scope": "atproto transition:generic",
+  "scope": "atproto repo:moe.karashiiro.kpaste.paste blob:text/plain rpc:com.atproto.server.getSession?aud=*",
   "grant_types": ["authorization_code", "refresh_token"],
   "response_types": ["code"],
   "application_type": "web",
