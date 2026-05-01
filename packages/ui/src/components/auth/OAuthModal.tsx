@@ -123,7 +123,7 @@ export function OAuthModal({ isOpen, onClose }: OAuthModalProps) {
               <LoginBrandLink
                 href="https://tangled.org/"
                 name="tangled"
-                logoUri="https://tangled.org/favicon.ico"
+                logoUri="https://tangled.org/static/logos/dolly.ico"
               />
               <LoginBrandLink
                 href="https://sprk.so/"
