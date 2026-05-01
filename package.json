@@ -12,7 +12,9 @@
     "test": "pnpm --recursive test",
     "test:run": "pnpm --recursive test:run",
     "test:coverage": "pnpm --recursive test:coverage",
-    "publish-lexicon": "pnpm --filter kpaste publish-lexicon"
+    "publish-lexicon": "pnpm --filter kpaste publish-lexicon",
+    "check": "pnpm lint && pnpm test:run",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {
     "prettier": "3.6.2"
